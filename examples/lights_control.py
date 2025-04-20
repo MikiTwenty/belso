@@ -17,11 +17,8 @@ class LightControlSchema(Schema):
     ]
 
 def main():
-    # Create our schema
-    light_schema = LightControlSchema
-
     # Convert to Ollama format
-    ollama_schema = SchemaTranslator.translate(light_schema, to="ollama")
+    ollama_schema = SchemaTranslator.translate(LightControlSchema, to="ollama")
 
     print("\nConverted schema to Ollama format:")
     print(json.dumps(ollama_schema, indent=4))
