@@ -2,8 +2,8 @@ from typing import Type
 
 from pydantic import create_model, Field as PydanticField, BaseModel
 
+from belso.schemas import Schema, Field
 from belso.utils.logging import get_logger
-from belso.translator.schemas import Schema, Field
 
 # Replace standard logger with our custom logger
 logger = get_logger(__name__)

@@ -2,7 +2,7 @@ from typing import Any, Type
 
 from google.ai.generativelanguage_v1beta.types import content
 
-from belso.translator.schemas import Schema, Field
+from belso.schemas import Schema, Field
 from belso.utils.logging import get_logger
 
 logger = get_logger(__name__)

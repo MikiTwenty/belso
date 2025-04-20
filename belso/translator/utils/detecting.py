@@ -4,7 +4,7 @@ import xml.etree.ElementTree as ET
 from pydantic import BaseModel
 from google.ai.generativelanguage_v1beta.types import content
 
-from belso.translator.schemas import Schema
+from belso.schemas import Schema
 from belso.utils.logging import get_logger
 
 # Get a module-specific logger

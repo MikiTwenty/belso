@@ -1,8 +1,8 @@
 import json
 from typing import Any, Dict, Type, Union
 
+from belso.schemas import Schema
 from belso.utils.logging import get_logger
-from belso.translator.schemas import Schema
 
 # Get a module-specific logger
 logger = get_logger(__name__)
