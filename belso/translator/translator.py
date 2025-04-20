@@ -1,107 +1,96 @@
-import logging
-from typing import Any, Dict, Type
+from typing import Any, Dict, Type, Union
 
-from pydantic import create_model, Field as PydanticField
-from google.ai.generativelanguage_v1beta.types import content
-
-from belso.translator.schemas import Schema
-
-logger = logging.getLogger(__name__)
+from belso.translator.utils import detect_schema_format
+from belso.translator.providers import (
+    to_google,
+    to_ollama,
+    to_openai,
+    to_anthropic,
+    from_google,
+    from_ollama,
+    from_openai,
+    from_anthropic
+)
 
 class SchemaTranslator:
     @staticmethod
-    def to_gemini(schema: Type[Schema]) -> content.Schema:
+    def detect_format(schema: Any) -> str:
         """
-        Translate a standard schema to Google Gemini format.
+        Detect the format of a schema.\n
+        ---
+        ### Args
+        - `schema`: the schema to detect.\n
+        ---
+        ### Returns
+        - `str`: the detected format as a string.
         """
-        try:
-            # Type mapping for Gemini
-            type_mapping = {
-                list: content.Type.ARRAY,
-                bool: content.Type.BOOLEAN,
-                str: content.Type.STRING,
-                float: content.Type.NUMBER,
-                int: content.Type.INTEGER,
-                dict: content.Type.OBJECT,
-                Any: content.Type.TYPE_UNSPECIFIED,
-            }
-
-            properties = {}
-            required_fields = schema.get_required_fields()
-
-            # Build properties for each field
-            for field in schema.fields:
-                field_type = type_mapping.get(field.type, content.Type.TYPE_UNSPECIFIED)
-                properties[field.name] = content.Schema(
-                    type=field_type,
-                    description=field.description
-                )
-
-            # Create the schema
-            gemini_schema = content.Schema(
-                type=content.Type.OBJECT,
-                properties=properties,
-                required=required_fields
-            )
-
-            return gemini_schema
-
-        except Exception as e:
-            logger.error(f"Error translating schema to Gemini format: {e}")
-            return {}
+        return detect_schema_format(schema)
 
     @staticmethod
-    def to_ollama(schema: Type[Schema]) -> Dict[str, Any]:
+    def translate(
+            schema: Any,
+            to: str,
+            from_format: str = None
+        ) -> Union[Dict[str, Any], Type]:
         """
-        Translate a standard schema to Ollama format.
+        Translate a schema to a specific format.
+        This method can automatically detect the input schema format and convert it
+        to our internal format before translating to the target format.\n
+        ---
+        ### Args
+        - `schema`: the schema to translate.\n
+        - `to`: the target format (`"google"`, `"ollama"`, `"openai"`, `"anthropic"`).\n
+        - `from_format`: optional format hint for the input schema.
+        If `None`, the format will be auto-detected.\n
+        ---
+        ### Returns
+        - `Dict[str, Any]`: the translated schema in the target format.\n
+        - `Type`: the translated schema as a pydantic model.
         """
-        try:
-            properties = {}
-            required_fields = schema.get_required_fields()
+        # Detect input format if not specified
+        if from_format is None:
+            from_format = detect_schema_format(schema)
 
-            # Build properties for each field
-            for field in schema.fields:
-                properties[field.name] = {
-                    "type": "string" if field.type == str else "number" if field.type in [int, float] else "boolean" if field.type == bool else "array" if field.type == list else "object",
-                    "description": field.description
-                }
+        # Convert to our internal format if needed
+        if from_format != "belso":
+            belso_schema = SchemaTranslator.standardize(schema, from_format)
+        else:
+            belso_schema = schema
 
-            # Create the schema
-            ollama_schema = {
-                "type": "object",
-                "properties": properties,
-                "required": required_fields
-            }
-
-            return ollama_schema
-
-        except Exception as e:
-            logger.error(f"Error translating schema to Ollama format: {e}")
-            return {}
+        # Translate to target format
+        if to == "google":
+            return to_google(belso_schema)
+        elif to == "ollama":
+            return to_ollama(belso_schema)
+        elif to == "openai":
+            return to_openai(belso_schema)
+        elif to == "anthropic":
+            return to_anthropic(belso_schema)
+        else:
+            raise ValueError(f"Provider {to} not supported.")
 
     @staticmethod
-    def to_gpt(schema: Type[Schema]) -> Type:
+    def standardize(
+            schema: Any,
+            from_format: str
+        ) -> Type:
         """
-        Translate a standard schema to OpenAI GPT format (Pydantic model).
+        Convert a schema from a specific format to our internal Belso format.\n
+        ---
+        ### Args
+        - `schema`: the schema to convert.\n
+        - `from_format`: the format of the input schema (`"google"`, `"ollama"`, `"openai"`, `"anthropic"`).\n
+        ---
+        ### Returns
+        - `Type`: the converted schema as a Belso Schema subclass.
         """
-        try:
-            field_definitions = {}
-
-            # Build field definitions for Pydantic model
-            for field in schema.fields:
-                field_type = field.type
-                if not field.required and field.default is not None:
-                    field_definitions[field.name] = (field_type, PydanticField(default=field.default, description=field.description))
-                else:
-                    field_definitions[field.name] = (field_type, PydanticField(description=field.description))
-
-            # Create a Pydantic model dynamically
-            model_name = schema.__name__ if hasattr(schema, "__name__") else "DynamicModel"
-            pydantic_model = create_model(model_name, **field_definitions)
-
-            return pydantic_model
-
-        except Exception as e:
-            logger.error(f"Error translating schema to GPT format: {e}")
-            # Return a simple fallback model if translation fails
-            return create_model("FallbackModel", text=(str, ...))
+        if from_format == "google":
+            return from_google(schema)
+        elif from_format == "ollama":
+            return from_ollama(schema)
+        elif from_format == "openai":
+            return from_openai(schema)
+        elif from_format == "anthropic":
+            return from_anthropic(schema)
+        else:
+            raise ValueError(f"Conversion from {from_format} format is not supported.")
