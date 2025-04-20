@@ -51,15 +51,30 @@ def detect_schema_format(schema: Any) -> str:
                 return "xml"
             logger.debug("String input detected, but not recognized as XML. Might be a file path.")
 
-        # Check if it's an Anthropic or Ollama schema (JSON Schema)
+        # Check if it's a JSON Schema-based format (Anthropic, Ollama, Mistral, etc.)
         if isinstance(schema, dict):
+            # Check for JSON Schema identifier
             if "$schema" in schema and "http://json-schema.org" in schema["$schema"]:
-                logger.debug("Detected Anthropic schema format.")
-                return "anthropic"
+                # Differentiate between providers that use JSON Schema
+                if "title" in schema and isinstance(schema["title"], str):
+                    logger.debug("Detected LangChain schema format.")
+                    return "langchain"
+                else:
+                    # Both Anthropic and Mistral use JSON Schema, try to differentiate
+                    # This is a simplistic approach - in practice you might need more specific checks
+                    logger.debug("Detected JSON Schema format (Anthropic/Mistral).")
+                    return "anthropic"  # Default to Anthropic if can't differentiate
             elif "type" in schema and schema["type"] == "object" and "properties" in schema:
-                # Basic check for Ollama schema
-                logger.debug("Detected Ollama schema format.")
-                return "ollama"
+                # Basic check for Ollama/Hugging Face schema
+                if "title" in schema:
+                    logger.debug("Detected LangChain schema format.")
+                    return "langchain"
+                elif "format" in schema and schema["format"] == "huggingface":
+                    logger.debug("Detected Hugging Face schema format.")
+                    return "huggingface"
+                else:
+                    logger.debug("Detected Ollama schema format.")
+                    return "ollama"
             elif "name" in schema and "fields" in schema and isinstance(schema["fields"], list):
                 # Check for our JSON format
                 logger.debug("Detected Belso JSON schema format.")

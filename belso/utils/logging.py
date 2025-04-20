@@ -20,11 +20,15 @@ def get_logger(name:Optional[str]=None) -> logging.Logger:
     - `logging.Logger`: the logger instance.
     """
     if name:
-        return logging.getLogger(f"belso.{name}")
+        # Check if name already starts with "belso." to avoid duplication
+        if name.startswith("belso."):
+            return logging.getLogger(name)
+        else:
+            return logging.getLogger(f"belso.{name}")
     return logger
 
 def configure_logger(
-        level: Optional[int] = None,
+        level: int = logging.INFO,
         log_file: Optional[str] = None,
         log_format: Optional[str] = None,
         propagate: bool = True,

@@ -2,7 +2,10 @@
 from belso.translator.providers.google import to_google, from_google
 from belso.translator.providers.openai import to_openai, from_openai
 from belso.translator.providers.ollama import to_ollama, from_ollama
+from belso.translator.providers.mistral import to_mistral, from_mistral
 from belso.translator.providers.anthropic import to_anthropic, from_anthropic
+from belso.translator.providers.langchain import to_langchain, from_langchain
+from belso.translator.providers.huggingface import to_huggingface, from_huggingface
 
 __all__ = [
     "to_google",
@@ -12,5 +15,11 @@ __all__ = [
     "to_ollama",
     "from_ollama",
     "to_anthropic",
-    "from_anthropic"
+    "from_anthropic",
+    "to_huggingface",
+    "from_huggingface",
+    "to_langchain",
+    "from_langchain",
+    "to_mistral",
+    "from_mistral"
 ]
