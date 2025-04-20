@@ -17,6 +17,10 @@ from belso.translator.serialization import (
     schema_to_xml,
     xml_to_schema
 )
+from belso.utils.logging import get_logger
+
+# Get a module-specific logger
+logger = get_logger(__name__)
 
 class SchemaTranslator:
     @staticmethod
@@ -30,7 +34,10 @@ class SchemaTranslator:
         ### Returns
         - `str`: the detected format as a string.
         """
-        return detect_schema_format(schema)
+        logger.debug("Delegating schema format detection...")
+        format_type = detect_schema_format(schema)
+        logger.debug(f"Detected schema format: {format_type}.")
+        return format_type
 
     @staticmethod
     def translate(
@@ -54,31 +61,51 @@ class SchemaTranslator:
         - `Type`: the translated schema as a pydantic model.\n
         - `str`: the translated schema as XML string.
         """
-        # Detect input format if not specified
-        if from_format is None:
-            from_format = detect_schema_format(schema)
+        try:
+            logger.debug(f"Starting schema translation to '{to}' format...")
 
-        # Convert to our internal format if needed
-        if from_format != "belso":
-            belso_schema = SchemaTranslator.standardize(schema, from_format)
-        else:
-            belso_schema = schema
+            # Detect input format if not specified
+            if from_format is None:
+                logger.debug("No source format specified, auto-detecting...")
+                from_format = detect_schema_format(schema)
+                logger.debug(f"Auto-detected source format: '{from_format}'.")
+            else:
+                logger.debug(f"Using provided source format: '{from_format}'.")
 
-        # Translate to target format
-        if to == "google":
-            return to_google(belso_schema)
-        elif to == "ollama":
-            return to_ollama(belso_schema)
-        elif to == "openai":
-            return to_openai(belso_schema)
-        elif to == "anthropic":
-            return to_anthropic(belso_schema)
-        elif to == "json":
-            return schema_to_json(belso_schema)
-        elif to == "xml":
-            return schema_to_xml(belso_schema)
-        else:
-            raise ValueError(f"Provider {to} not supported.")
+            # Convert to our internal format if needed
+            if from_format != "belso":
+                logger.debug(f"Converting from '{from_format}' to internal Belso format...")
+                belso_schema = SchemaTranslator.standardize(schema, from_format)
+                logger.debug("Successfully converted to Belso format.")
+            else:
+                logger.debug("Schema is already in Belso format, no conversion needed.")
+                belso_schema = schema
+
+            # Translate to target format
+            logger.debug(f"Translating from Belso format to '{to}' format...")
+            if to == "google":
+                result = to_google(belso_schema)
+            elif to == "ollama":
+                result = to_ollama(belso_schema)
+            elif to == "openai":
+                result = to_openai(belso_schema)
+            elif to == "anthropic":
+                result = to_anthropic(belso_schema)
+            elif to == "json":
+                result = schema_to_json(belso_schema)
+            elif to == "xml":
+                result = schema_to_xml(belso_schema)
+            else:
+                logger.error(f"Unsupported target format: '{to}'.")
+                raise ValueError(f"Provider {to} not supported.")
+
+            logger.debug(f"Successfully translated schema to '{to}' format.")
+            return result
+
+        except Exception as e:
+            logger.error(f"Error during schema translation: {e}")
+            logger.debug("Translation error details", exc_info=True)
+            raise
 
     @staticmethod
     def standardize(
@@ -95,20 +122,38 @@ class SchemaTranslator:
         ### Returns
         - `Type`: the converted schema as a Belso Schema subclass.
         """
-        if from_format == "google":
-            return from_google(schema)
-        elif from_format == "ollama":
-            return from_ollama(schema)
-        elif from_format == "openai":
-            return from_openai(schema)
-        elif from_format == "anthropic":
-            return from_anthropic(schema)
-        elif from_format == "json":
-            return json_to_schema(schema)
-        elif from_format == "xml":
-            return xml_to_schema(schema)
-        else:
-            raise ValueError(f"Conversion from {from_format} format is not supported.")
+        try:
+            logger.debug(f"Standardizing schema from '{from_format}' format to Belso format...")
+
+            if from_format == "google":
+                logger.debug("Converting from Google format...")
+                result = from_google(schema)
+            elif from_format == "ollama":
+                logger.debug("Converting from Ollama format...")
+                result = from_ollama(schema)
+            elif from_format == "openai":
+                logger.debug("Converting from OpenAI format...")
+                result = from_openai(schema)
+            elif from_format == "anthropic":
+                logger.debug("Converting from Anthropic format...")
+                result = from_anthropic(schema)
+            elif from_format == "json":
+                logger.debug("Converting from JSON format...")
+                result = json_to_schema(schema)
+            elif from_format == "xml":
+                logger.debug("Converting from XML format...")
+                result = xml_to_schema(schema)
+            else:
+                logger.error(f"Unsupported source format: '{from_format}'")
+                raise ValueError(f"Conversion from {from_format} format is not supported.")
+
+            logger.debug(f"Successfully standardized schema to Belso format.")
+            return result
+
+        except Exception as e:
+            logger.error(f"Error during schema standardization: {e}")
+            logger.debug("Standardization error details", exc_info=True)
+            raise
 
     @staticmethod
     def to_json(
@@ -125,14 +170,31 @@ class SchemaTranslator:
         ### Returns
         - `Dict[str, Any]`: the schema in JSON format.
         """
-        # First ensure we have a Belso schema
-        format_type = SchemaTranslator.detect_format(schema)
-        if format_type != "belso":
-            belso_schema = SchemaTranslator.standardize(schema, format_type)
-        else:
-            belso_schema = schema
+        try:
+            logger.debug("Converting schema to JSON format...")
 
-        return schema_to_json(belso_schema, file_path)
+            # First ensure we have a Belso schema
+            format_type = SchemaTranslator.detect_format(schema)
+            if format_type != "belso":
+                logger.debug(f"Schema is in '{format_type}' format, converting to Belso format first...")
+                belso_schema = SchemaTranslator.standardize(schema, format_type)
+                logger.debug("Successfully converted to Belso format.")
+            else:
+                logger.debug("Schema is already in Belso format, no conversion needed.")
+                belso_schema = schema
+
+            # Save path info for logging
+            path_info = f" and saving to '{file_path}'" if file_path else ""
+            logger.debug(f"Converting Belso schema to JSON{path_info}...")
+
+            result = schema_to_json(belso_schema, file_path)
+            logger.debug("Successfully converted schema to JSON format.")
+            return result
+
+        except Exception as e:
+            logger.error(f"Error during schema to JSON conversion: {e}")
+            logger.debug("JSON conversion error details", exc_info=True)
+            raise
 
     @staticmethod
     def from_json(json_input: Union[Dict[str, Any], str]) -> Type:
@@ -145,7 +207,21 @@ class SchemaTranslator:
         ### Returns
         - `Type`: the converted schema as a Belso Schema subclass.
         """
-        return json_to_schema(json_input)
+        try:
+            # Log different message based on input type
+            if isinstance(json_input, str):
+                logger.debug(f"Converting JSON from file '{json_input}' to Belso schema...")
+            else:
+                logger.debug("Converting JSON dictionary to Belso schema...")
+
+            result = json_to_schema(json_input)
+            logger.debug("Successfully converted JSON to Belso schema.")
+            return result
+
+        except Exception as e:
+            logger.error(f"Error during JSON to schema conversion: {e}")
+            logger.debug("JSON conversion error details", exc_info=True)
+            raise
 
     @staticmethod
     def to_xml(
@@ -162,14 +238,31 @@ class SchemaTranslator:
         ### Returns
         - `str`: the schema in XML format.
         """
-        # First ensure we have a Belso schema
-        format_type = SchemaTranslator.detect_format(schema)
-        if format_type != "belso":
-            belso_schema = SchemaTranslator.standardize(schema, format_type)
-        else:
-            belso_schema = schema
+        try:
+            logger.debug("Converting schema to XML format...")
 
-        return schema_to_xml(belso_schema, file_path)
+            # First ensure we have a Belso schema
+            format_type = SchemaTranslator.detect_format(schema)
+            if format_type != "belso":
+                logger.debug(f"Schema is in '{format_type}' format, converting to Belso format first...")
+                belso_schema = SchemaTranslator.standardize(schema, format_type)
+                logger.debug("Successfully converted to Belso format.")
+            else:
+                logger.debug("Schema is already in Belso format, no conversion needed.")
+                belso_schema = schema
+
+            # Save path info for logging
+            path_info = f" and saving to '{file_path}'" if file_path else ""
+            logger.debug(f"Converting Belso schema to XML{path_info}...")
+
+            result = schema_to_xml(belso_schema, file_path)
+            logger.debug("Successfully converted schema to XML format.")
+            return result
+
+        except Exception as e:
+            logger.error(f"Error during schema to XML conversion: {e}")
+            logger.debug("XML conversion error details", exc_info=True)
+            raise
 
     @staticmethod
     def from_xml(xml_input: Union[str, Any]) -> Type:
@@ -182,4 +275,21 @@ class SchemaTranslator:
         ### Returns
         - `Type`: the converted schema as a Belso Schema subclass.
         """
-        return xml_to_schema(xml_input)
+        try:
+            # Log different message based on input type
+            if isinstance(xml_input, str):
+                if xml_input.strip().startswith("<"):
+                    logger.debug("Converting XML string to Belso schema...")
+                else:
+                    logger.debug(f"Converting XML from file '{xml_input}' to Belso schema...")
+            else:
+                logger.debug("Converting XML Element to Belso schema...")
+
+            result = xml_to_schema(xml_input)
+            logger.debug("Successfully converted XML to Belso schema.")
+            return result
+
+        except Exception as e:
+            logger.error(f"Error during XML to schema conversion: {e}")
+            logger.debug("XML conversion error details", exc_info=True)
+            raise
