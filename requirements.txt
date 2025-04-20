@@ -1,0 +1,3 @@
+pydantic
+google-generativeai
+google.ai.generativelanguage

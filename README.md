@@ -1,1 +1,1 @@
-# better-llm-structured-outputs
+# better-llms-structured-outputs
