@@ -25,6 +25,10 @@ from belso.translator.serialization import (
 )
 from belso.utils import PROVIDERS
 from belso.utils.logging import get_logger
+from belso.utils.schema_helpers import (
+    is_schema_supported,
+    create_fallback_schema
+)
 
 # Get a module-specific logger
 logger = get_logger(__name__)
@@ -50,7 +54,8 @@ class SchemaTranslator:
     def translate(
             schema: Any,
             to: str,
-            from_format: Optional[str] = None
+            from_format: Optional[str] = None,
+            raise_on_unsupported: bool = True
         ) -> Union[Dict[str, Any], Type, str]:
         """
         Translate a schema to a specific format.
@@ -62,6 +67,8 @@ class SchemaTranslator:
         - `to` (`str`): the target format. Can be a string or a `belso.utils.PROVIDERS` attribute.\n
         - `from_format` (`Optional[str]`): optional format hint for the input schema.
         If `None`, the format will be auto-detected.\n
+        - `raise_on_unsupported` (`bool`): whether to raise an exception if the schema is not supported.
+        If `False`, a fallback schema will be returned instead.\n
         ---
         ### Returns
         - `Dict[str, Any]`: the translated schema in the target format.\n
@@ -88,6 +95,9 @@ class SchemaTranslator:
                 logger.debug("Schema is already in Belso format, no conversion needed.")
                 belso_schema = schema
 
+            if not is_schema_supported(belso_schema, to):
+                return create_fallback_schema(belso_schema)
+
             # Translate to target format
             logger.debug(f"Translating from Belso format to '{to}' format...")
             if to == PROVIDERS.GOOGLE:
@@ -96,8 +106,6 @@ class SchemaTranslator:
                 result = to_ollama(belso_schema)
             elif to == PROVIDERS.OPENAI:
                 result = to_openai(belso_schema)
-            elif to == PROVIDERS.AZURE_OPENAI:
-                result = to_azure_openai(belso_schema)
             elif to == PROVIDERS.ANTHROPIC:
                 result = to_anthropic(belso_schema)
             elif to == PROVIDERS.LANGCHAIN:
