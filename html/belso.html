@@ -1,0 +1,644 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>belso package &mdash; belso 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="belso.schemas package" href="belso.schemas.html" />
+    <link rel="prev" title="belso" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            belso
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">belso</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">belso package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="belso.schemas.html">belso.schemas package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.html">belso.translator package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.validator.html">belso.validator package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.utils.html">belso.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-belso">Module contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#belso.Field"><code class="docutils literal notranslate"><span class="pre">Field</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#belso.Schema"><code class="docutils literal notranslate"><span class="pre">Schema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#belso.SchemaTranslator"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#belso.SchemaValidator"><code class="docutils literal notranslate"><span class="pre">SchemaValidator</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">belso package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="belso.schemas.html">belso.schemas package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="belso.translator.html">belso.translator package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="belso.validator.html">belso.validator package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="belso.utils.html">belso.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-belso">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#belso.Field"><code class="docutils literal notranslate"><span class="pre">Field</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#belso.Schema"><code class="docutils literal notranslate"><span class="pre">Schema</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#belso.Schema.fields"><code class="docutils literal notranslate"><span class="pre">Schema.fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#belso.Schema.get_field_by_name"><code class="docutils literal notranslate"><span class="pre">Schema.get_field_by_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#belso.Schema.get_required_fields"><code class="docutils literal notranslate"><span class="pre">Schema.get_required_fields()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#belso.Schema.name"><code class="docutils literal notranslate"><span class="pre">Schema.name</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#belso.SchemaTranslator"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#belso.SchemaTranslator.detect_format"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator.detect_format()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#belso.SchemaTranslator.from_json"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator.from_json()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#belso.SchemaTranslator.from_xml"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator.from_xml()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#belso.SchemaTranslator.standardize"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator.standardize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#belso.SchemaTranslator.to_json"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator.to_json()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#belso.SchemaTranslator.to_xml"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator.to_xml()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#belso.SchemaTranslator.translate"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator.translate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#belso.SchemaValidator"><code class="docutils literal notranslate"><span class="pre">SchemaValidator</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#belso.SchemaValidator.validate"><code class="docutils literal notranslate"><span class="pre">SchemaValidator.validate()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">belso</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">belso</a></li>
+      <li class="breadcrumb-item active">belso package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/belso.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="belso-package">
+<h1>belso package<a class="headerlink" href="#belso-package" title="Link to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="belso.schemas.html">belso.schemas package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="belso.schemas.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="belso.schemas.html#module-belso.schemas.base">belso.schemas.base module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="belso.schemas.html#belso.schemas.base.Field"><code class="docutils literal notranslate"><span class="pre">Field</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="belso.schemas.html#belso.schemas.base.Schema"><code class="docutils literal notranslate"><span class="pre">Schema</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="belso.schemas.html#belso.schemas.base.Schema.fields"><code class="docutils literal notranslate"><span class="pre">Schema.fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.schemas.html#belso.schemas.base.Schema.get_field_by_name"><code class="docutils literal notranslate"><span class="pre">Schema.get_field_by_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.schemas.html#belso.schemas.base.Schema.get_required_fields"><code class="docutils literal notranslate"><span class="pre">Schema.get_required_fields()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.schemas.html#belso.schemas.base.Schema.name"><code class="docutils literal notranslate"><span class="pre">Schema.name</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="belso.schemas.html#module-belso.schemas.nested">belso.schemas.nested module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="belso.schemas.html#belso.schemas.nested.ArrayField"><code class="docutils literal notranslate"><span class="pre">ArrayField</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="belso.schemas.html#belso.schemas.nested.ArrayField.__init__"><code class="docutils literal notranslate"><span class="pre">ArrayField.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="belso.schemas.html#belso.schemas.nested.NestedField"><code class="docutils literal notranslate"><span class="pre">NestedField</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="belso.schemas.html#belso.schemas.nested.NestedField.__init__"><code class="docutils literal notranslate"><span class="pre">NestedField.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="belso.schemas.html#module-belso.schemas">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="belso.schemas.html#belso.schemas.Field"><code class="docutils literal notranslate"><span class="pre">Field</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="belso.schemas.html#belso.schemas.Schema"><code class="docutils literal notranslate"><span class="pre">Schema</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="belso.schemas.html#belso.schemas.Schema.fields"><code class="docutils literal notranslate"><span class="pre">Schema.fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.schemas.html#belso.schemas.Schema.get_field_by_name"><code class="docutils literal notranslate"><span class="pre">Schema.get_field_by_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.schemas.html#belso.schemas.Schema.get_required_fields"><code class="docutils literal notranslate"><span class="pre">Schema.get_required_fields()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.schemas.html#belso.schemas.Schema.name"><code class="docutils literal notranslate"><span class="pre">Schema.name</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="belso.translator.html">belso.translator package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="belso.translator.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="belso.translator.providers.html">belso.translator.providers package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.providers.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.providers.html#module-belso.translator.providers.anthropic">belso.translator.providers.anthropic module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.providers.html#module-belso.translator.providers.google">belso.translator.providers.google module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.providers.html#module-belso.translator.providers.huggingface">belso.translator.providers.huggingface module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.providers.html#module-belso.translator.providers.langchain">belso.translator.providers.langchain module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.providers.html#module-belso.translator.providers.mistral">belso.translator.providers.mistral module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.providers.html#module-belso.translator.providers.ollama">belso.translator.providers.ollama module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.providers.html#module-belso.translator.providers.openai">belso.translator.providers.openai module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.providers.html#module-belso.translator.providers">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="belso.translator.serialization.html">belso.translator.serialization package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.serialization.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.serialization.html#module-belso.translator.serialization.json_format">belso.translator.serialization.json_format module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.serialization.html#module-belso.translator.serialization.xml_format">belso.translator.serialization.xml_format module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.serialization.html#module-belso.translator.serialization">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="belso.translator.utils.html">belso.translator.utils package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.utils.html#module-belso.translator.utils.detecting">belso.translator.utils.detecting module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.utils.html#module-belso.translator.utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="belso.translator.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="belso.translator.html#module-belso.translator.translator">belso.translator.translator module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="belso.translator.html#belso.translator.translator.SchemaTranslator"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.html#belso.translator.translator.SchemaTranslator.detect_format"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator.detect_format()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.html#belso.translator.translator.SchemaTranslator.from_json"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator.from_json()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.html#belso.translator.translator.SchemaTranslator.from_xml"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator.from_xml()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.html#belso.translator.translator.SchemaTranslator.standardize"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator.standardize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.html#belso.translator.translator.SchemaTranslator.to_json"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator.to_json()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.html#belso.translator.translator.SchemaTranslator.to_xml"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator.to_xml()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.html#belso.translator.translator.SchemaTranslator.translate"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator.translate()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="belso.translator.html#module-belso.translator">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="belso.translator.html#belso.translator.SchemaTranslator"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.html#belso.translator.SchemaTranslator.detect_format"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator.detect_format()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.html#belso.translator.SchemaTranslator.from_json"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator.from_json()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.html#belso.translator.SchemaTranslator.from_xml"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator.from_xml()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.html#belso.translator.SchemaTranslator.standardize"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator.standardize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.html#belso.translator.SchemaTranslator.to_json"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator.to_json()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.html#belso.translator.SchemaTranslator.to_xml"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator.to_xml()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.html#belso.translator.SchemaTranslator.translate"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator.translate()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="belso.validator.html">belso.validator package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="belso.validator.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="belso.validator.html#module-belso.validator.validator">belso.validator.validator module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="belso.validator.html#belso.validator.validator.SchemaValidator"><code class="docutils literal notranslate"><span class="pre">SchemaValidator</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="belso.validator.html#belso.validator.validator.SchemaValidator.validate"><code class="docutils literal notranslate"><span class="pre">SchemaValidator.validate()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="belso.validator.html#module-belso.validator">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="belso.validator.html#belso.validator.SchemaValidator"><code class="docutils literal notranslate"><span class="pre">SchemaValidator</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="belso.validator.html#belso.validator.SchemaValidator.validate"><code class="docutils literal notranslate"><span class="pre">SchemaValidator.validate()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="belso.utils.html">belso.utils package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="belso.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="belso.utils.html#module-belso.utils.classes">belso.utils.classes module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="belso.utils.html#belso.utils.classes.PROVIDERS"><code class="docutils literal notranslate"><span class="pre">PROVIDERS</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="belso.utils.html#belso.utils.classes.PROVIDERS.ANTHROPIC"><code class="docutils literal notranslate"><span class="pre">PROVIDERS.ANTHROPIC</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.utils.html#belso.utils.classes.PROVIDERS.AZURE_OPENAI"><code class="docutils literal notranslate"><span class="pre">PROVIDERS.AZURE_OPENAI</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.utils.html#belso.utils.classes.PROVIDERS.BELSO"><code class="docutils literal notranslate"><span class="pre">PROVIDERS.BELSO</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.utils.html#belso.utils.classes.PROVIDERS.GOOGLE"><code class="docutils literal notranslate"><span class="pre">PROVIDERS.GOOGLE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.utils.html#belso.utils.classes.PROVIDERS.HUGGINGFACE"><code class="docutils literal notranslate"><span class="pre">PROVIDERS.HUGGINGFACE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.utils.html#belso.utils.classes.PROVIDERS.JSON"><code class="docutils literal notranslate"><span class="pre">PROVIDERS.JSON</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.utils.html#belso.utils.classes.PROVIDERS.LANGCHAIN"><code class="docutils literal notranslate"><span class="pre">PROVIDERS.LANGCHAIN</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.utils.html#belso.utils.classes.PROVIDERS.MISTRAL"><code class="docutils literal notranslate"><span class="pre">PROVIDERS.MISTRAL</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.utils.html#belso.utils.classes.PROVIDERS.OLLAMA"><code class="docutils literal notranslate"><span class="pre">PROVIDERS.OLLAMA</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.utils.html#belso.utils.classes.PROVIDERS.OPENAI"><code class="docutils literal notranslate"><span class="pre">PROVIDERS.OPENAI</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.utils.html#belso.utils.classes.PROVIDERS.XML"><code class="docutils literal notranslate"><span class="pre">PROVIDERS.XML</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.utils.html#belso.utils.classes.PROVIDERS.get_all_providers"><code class="docutils literal notranslate"><span class="pre">PROVIDERS.get_all_providers()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="belso.utils.html#module-belso.utils.logging">belso.utils.logging module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="belso.utils.html#belso.utils.logging.configure_logger"><code class="docutils literal notranslate"><span class="pre">configure_logger()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="belso.utils.html#belso.utils.logging.disable_logging"><code class="docutils literal notranslate"><span class="pre">disable_logging()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="belso.utils.html#belso.utils.logging.get_logger"><code class="docutils literal notranslate"><span class="pre">get_logger()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="belso.utils.html#belso.utils.logging.log_exception"><code class="docutils literal notranslate"><span class="pre">log_exception()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="belso.utils.html#belso.utils.logging.restore_logging"><code class="docutils literal notranslate"><span class="pre">restore_logging()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="belso.utils.html#module-belso.utils.schema_helpers">belso.utils.schema_helpers module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="belso.utils.html#belso.utils.schema_helpers.build_properties_dict"><code class="docutils literal notranslate"><span class="pre">build_properties_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="belso.utils.html#belso.utils.schema_helpers.create_fallback_schema"><code class="docutils literal notranslate"><span class="pre">create_fallback_schema()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="belso.utils.html#belso.utils.schema_helpers.is_schema_supported"><code class="docutils literal notranslate"><span class="pre">is_schema_supported()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="belso.utils.html#belso.utils.schema_helpers.map_json_to_python_type"><code class="docutils literal notranslate"><span class="pre">map_json_to_python_type()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="belso.utils.html#belso.utils.schema_helpers.map_python_to_json_type"><code class="docutils literal notranslate"><span class="pre">map_python_to_json_type()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="belso.utils.html#module-belso.utils">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="belso.utils.html#belso.utils.PROVIDERS"><code class="docutils literal notranslate"><span class="pre">PROVIDERS</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="belso.utils.html#belso.utils.PROVIDERS.ANTHROPIC"><code class="docutils literal notranslate"><span class="pre">PROVIDERS.ANTHROPIC</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.utils.html#belso.utils.PROVIDERS.AZURE_OPENAI"><code class="docutils literal notranslate"><span class="pre">PROVIDERS.AZURE_OPENAI</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.utils.html#belso.utils.PROVIDERS.BELSO"><code class="docutils literal notranslate"><span class="pre">PROVIDERS.BELSO</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.utils.html#belso.utils.PROVIDERS.GOOGLE"><code class="docutils literal notranslate"><span class="pre">PROVIDERS.GOOGLE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.utils.html#belso.utils.PROVIDERS.HUGGINGFACE"><code class="docutils literal notranslate"><span class="pre">PROVIDERS.HUGGINGFACE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.utils.html#belso.utils.PROVIDERS.JSON"><code class="docutils literal notranslate"><span class="pre">PROVIDERS.JSON</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.utils.html#belso.utils.PROVIDERS.LANGCHAIN"><code class="docutils literal notranslate"><span class="pre">PROVIDERS.LANGCHAIN</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.utils.html#belso.utils.PROVIDERS.MISTRAL"><code class="docutils literal notranslate"><span class="pre">PROVIDERS.MISTRAL</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.utils.html#belso.utils.PROVIDERS.OLLAMA"><code class="docutils literal notranslate"><span class="pre">PROVIDERS.OLLAMA</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.utils.html#belso.utils.PROVIDERS.OPENAI"><code class="docutils literal notranslate"><span class="pre">PROVIDERS.OPENAI</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.utils.html#belso.utils.PROVIDERS.XML"><code class="docutils literal notranslate"><span class="pre">PROVIDERS.XML</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.utils.html#belso.utils.PROVIDERS.get_all_providers"><code class="docutils literal notranslate"><span class="pre">PROVIDERS.get_all_providers()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="module-belso">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-belso" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="belso.Field">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">belso.</span></span><span class="sig-name descname"><span class="pre">Field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/schemas/base.html#Field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.Field" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="belso.Schema">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">belso.</span></span><span class="sig-name descname"><span class="pre">Schema</span></span><a class="reference internal" href="_modules/belso/schemas/base.html#Schema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.Schema" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.Schema.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">ClassVar</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code><span class="pre">[</span><a class="reference internal" href="belso.schemas.html#belso.schemas.base.Field" title="belso.schemas.base.Field"><code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code></a><span class="pre">]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#belso.Schema.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="belso.Schema.get_field_by_name">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_field_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/schemas/base.html#Schema.get_field_by_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.Schema.get_field_by_name" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<a class="reference internal" href="belso.schemas.html#belso.schemas.base.Field" title="belso.schemas.base.Field"><code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="belso.Schema.get_required_fields">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_required_fields</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/schemas/base.html#Schema.get_required_fields"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.Schema.get_required_fields" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.Schema.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">ClassVar</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#belso.Schema.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="belso.SchemaTranslator">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">belso.</span></span><span class="sig-name descname"><span class="pre">SchemaTranslator</span></span><a class="reference internal" href="_modules/belso/translator/translator.html#SchemaTranslator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.SchemaTranslator" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="belso.SchemaTranslator.detect_format">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">detect_format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/translator.html#SchemaTranslator.detect_format"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.SchemaTranslator.detect_format" title="Link to this definition"></a></dt>
+<dd><p>Detect the format of a schema.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+</dl>
+<section id="args">
+<h3>Args<a class="headerlink" href="#args" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>schema</cite>: the schema to detect.</p></li>
+</ul>
+</section>
+<section id="returns">
+<h3>Returns<a class="headerlink" href="#returns" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>str</cite>: the detected format as a string.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="belso.SchemaTranslator.from_json">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_input</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/translator.html#SchemaTranslator.from_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.SchemaTranslator.from_json" title="Link to this definition"></a></dt>
+<dd><p>Convert JSON data or a JSON file to a belso schema.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code></span></p>
+</dd>
+</dl>
+<section id="id1">
+<h3>Args<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">param json_input<span class="colon">:</span></dt>
+<dd class="field-odd"><p>either a JSON dictionary or a file path to a JSON file.</p>
+</dd>
+<dt class="field-even">type json_input<span class="colon">:</span></dt>
+<dd class="field-even"><p>Union[Dict[str, Any], str]</p>
+</dd>
+</dl>
+</section>
+<section id="id2">
+<h3>Returns<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Type</cite>: the converted schema as a belso Schema subclass.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="belso.SchemaTranslator.from_xml">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_xml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xml_input</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/translator.html#SchemaTranslator.from_xml"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.SchemaTranslator.from_xml" title="Link to this definition"></a></dt>
+<dd><p>Convert XML data or an XML file to a belso schema.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code></span></p>
+</dd>
+</dl>
+<section id="id3">
+<h3>Args<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">param xml_input<span class="colon">:</span></dt>
+<dd class="field-odd"><p>either an XML string, Element, or a file path to an XML file.</p>
+</dd>
+<dt class="field-even">type xml_input<span class="colon">:</span></dt>
+<dd class="field-even"><p>Union[str, Any]</p>
+</dd>
+</dl>
+</section>
+<section id="id4">
+<h3>Returns<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Type</cite>: the converted schema as a belso Schema subclass.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="belso.SchemaTranslator.standardize">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">standardize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_format</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/translator.html#SchemaTranslator.standardize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.SchemaTranslator.standardize" title="Link to this definition"></a></dt>
+<dd><p>Convert a schema from a specific format to our internal belso format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code></span></p>
+</dd>
+</dl>
+<section id="id5">
+<h3>Args<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>schema</cite>: the schema to convert.</p></li>
+<li><p><cite>from_format</cite>: the format of the input schema (<cite>“google”</cite>, <cite>“ollama”</cite>, <cite>“openai”</cite>, <cite>“anthropic”</cite>, <cite>“json”</cite>, <cite>“xml”</cite>).</p></li>
+</ul>
+</section>
+<section id="id6">
+<h3>Returns<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Type</cite>: the converted schema as a belso Schema subclass.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="belso.SchemaTranslator.to_json">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">to_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/translator.html#SchemaTranslator.to_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.SchemaTranslator.to_json" title="Link to this definition"></a></dt>
+<dd><p>Convert a schema to standardized JSON format and optionally save to a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</span></p>
+</dd>
+</dl>
+<section id="id7">
+<h3>Args<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">param schema<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the schema to convert.</p>
+</dd>
+<dt class="field-even">type schema<span class="colon">:</span></dt>
+<dd class="field-even"><p>Type</p>
+</dd>
+<dt class="field-odd">param file_path<span class="colon">:</span></dt>
+<dd class="field-odd"><p>optional path to save the JSON to a file.</p>
+</dd>
+<dt class="field-even">type file_path<span class="colon">:</span></dt>
+<dd class="field-even"><p>Optional[str]</p>
+</dd>
+</dl>
+</section>
+<section id="id8">
+<h3>Returns<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Dict[str, Any]</cite>: the schema in JSON format.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="belso.SchemaTranslator.to_xml">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">to_xml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/translator.html#SchemaTranslator.to_xml"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.SchemaTranslator.to_xml" title="Link to this definition"></a></dt>
+<dd><p>Convert a schema to XML format and optionally save to a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+</dl>
+<section id="id9">
+<h3>Args<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">param schema<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the schema to convert.</p>
+</dd>
+<dt class="field-even">type schema<span class="colon">:</span></dt>
+<dd class="field-even"><p>Type</p>
+</dd>
+<dt class="field-odd">param file_path<span class="colon">:</span></dt>
+<dd class="field-odd"><p>optional path to save the XML to a file.</p>
+</dd>
+<dt class="field-even">type file_path<span class="colon">:</span></dt>
+<dd class="field-even"><p>Optional[str]</p>
+</dd>
+</dl>
+</section>
+<section id="id10">
+<h3>Returns<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>str</cite>: the schema in XML format.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="belso.SchemaTranslator.translate">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">translate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/translator.html#SchemaTranslator.translate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.SchemaTranslator.translate" title="Link to this definition"></a></dt>
+<dd><p>Translate a schema to a specific format.
+This method can automatically detect the input schema format and convert it
+to our internal format before translating to the target format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span></p>
+</dd>
+</dl>
+<section id="id11">
+<h3>Args<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">param schema<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the schema to translate.</p>
+</dd>
+<dt class="field-even">type schema<span class="colon">:</span></dt>
+<dd class="field-even"><p>Any</p>
+</dd>
+<dt class="field-odd">param to<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the target format. Can be a string or a <cite>belso.utils.PROVIDERS</cite> attribute.</p>
+</dd>
+<dt class="field-even">type to<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">param from_format<span class="colon">:</span></dt>
+<dd class="field-odd"><p>optional format hint for the input schema, if <cite>None</cite>, the format will be auto-detected.</p>
+</dd>
+<dt class="field-even">type from_format<span class="colon">:</span></dt>
+<dd class="field-even"><p>Optional[str]</p>
+</dd>
+</dl>
+</section>
+<section id="id12">
+<h3>Returns<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Union[Dict[str, Any], Type, str]</cite>: the translated schema in the target format.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="belso.SchemaValidator">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">belso.</span></span><span class="sig-name descname"><span class="pre">SchemaValidator</span></span><a class="reference internal" href="_modules/belso/validator/validator.html#SchemaValidator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.SchemaValidator" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="belso.SchemaValidator.validate">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/validator/validator.html#SchemaValidator.validate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.SchemaValidator.validate" title="Link to this definition"></a></dt>
+<dd><p>Validate that the provided data conforms to the given schema.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</span></p>
+</dd>
+</dl>
+<section id="id13">
+<h3>Args<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">param data<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the data to validate (either a dict or JSON string).</p>
+</dd>
+<dt class="field-even">type data<span class="colon">:</span></dt>
+<dd class="field-even"><p>Any</p>
+</dd>
+<dt class="field-odd">param schema<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the schema to validate against.</p>
+</dd>
+<dt class="field-even">type schema<span class="colon">:</span></dt>
+<dd class="field-even"><p>Type[Schema]</p>
+</dd>
+</dl>
+</section>
+<section id="id14">
+<h3>Returns:<a class="headerlink" href="#id14" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Dict[str, Any]</cite>: the validated data.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="belso" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="belso.schemas.html" class="btn btn-neutral float-right" title="belso.schemas package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Michele Ventimiglia.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
