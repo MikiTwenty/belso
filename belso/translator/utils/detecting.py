@@ -25,7 +25,7 @@ def detect_schema_format(schema: Any) -> str:
     try:
         # Check if it's our custom Schema format
         if isinstance(schema, type) and issubclass(schema, Schema):
-            logger.debug("Detected Belso schema format.")
+            logger.debug("Detected belso schema format.")
             return "belso"
 
         # Check if it's a Google Gemini schema
@@ -77,7 +77,7 @@ def detect_schema_format(schema: Any) -> str:
                     return "ollama"
             elif "name" in schema and "fields" in schema and isinstance(schema["fields"], list):
                 # Check for our JSON format
-                logger.debug("Detected Belso JSON schema format.")
+                logger.debug("Detected belso JSON schema format.")
                 return "json"
             logger.debug("Dictionary input detected, but not recognized as a known schema format.")
 

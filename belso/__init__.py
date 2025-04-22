@@ -10,12 +10,12 @@ with open(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'VERSION')) a
 
 # Get the main logger for the package
 logger = get_logger()
-logger.info(f"Belso v{__version__} initialized.")
+logger.info(f"belso v{__version__} initialized.")
 
 # Import and expose main components
 from belso.translator import SchemaTranslator
 
 __all__ = [
     "SchemaTranslator",
-    "__version__",
+    "__version__"
 ]

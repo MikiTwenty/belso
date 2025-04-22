@@ -47,16 +47,16 @@ def to_huggingface(schema: Type[Schema]) -> Dict[str, Any]:
 
 def from_huggingface(schema: Dict[str, Any]) -> Type[Schema]:
     """
-    Convert a Hugging Face schema to Belso Schema format.\n
+    Convert a Hugging Face schema to belso Schema format.\n
     ---
     ### Args
     - `schema`: the schema to convert.\n
     ---
     ### Returns
-    - `Type`: the converted schema as a Belso Schema subclass.
+    - `Type`: the converted schema as a belso Schema subclass.
     """
     try:
-        logger.debug("Starting conversion from Hugging Face schema to Belso format...")
+        logger.debug("Starting conversion from Hugging Face schema to belso format...")
 
         # Create a new Schema class
         class ConvertedSchema(Schema):
@@ -93,11 +93,11 @@ def from_huggingface(schema: Dict[str, Any]) -> Type[Schema]:
                 )
             )
 
-        logger.debug(f"Successfully converted Hugging Face schema to Belso schema with {len(ConvertedSchema.fields)} fields.")
+        logger.debug(f"Successfully converted Hugging Face schema to belso schema with {len(ConvertedSchema.fields)} fields.")
         return ConvertedSchema
 
     except Exception as e:
-        logger.error(f"Error converting Hugging Face schema to Belso format: {e}")
+        logger.error(f"Error converting Hugging Face schema to belso format: {e}")
         logger.debug("Conversion error details", exc_info=True)
         # Return a minimal schema if conversion fails
         return create_fallback_schema()

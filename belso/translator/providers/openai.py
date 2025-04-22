@@ -55,7 +55,7 @@ def to_openai(schema: Type[Schema]) -> Type:
 
 def from_openai(schema: Type[BaseModel]) -> Type[Schema]:
     """
-    Convert an OpenAI schema (Pydantic model) to Belso Schema format.\n
+    Convert an OpenAI schema (Pydantic model) to belso Schema format.\n
     ---
     ### Args
     - `schema`: the schema to convert.\n
@@ -65,7 +65,7 @@ def from_openai(schema: Type[BaseModel]) -> Type[Schema]:
     """
     try:
         schema_name = schema.__name__ if hasattr(schema, "__name__") else "unnamed"
-        logger.debug(f"Starting conversion from OpenAI schema '{schema_name}' to Belso format...")
+        logger.debug(f"Starting conversion from OpenAI schema '{schema_name}' to belso format...")
 
         # Create a new Schema class
         class ConvertedSchema(Schema):
@@ -125,11 +125,11 @@ def from_openai(schema: Type[BaseModel]) -> Type[Schema]:
                 )
             )
 
-        logger.debug(f"Successfully converted OpenAI schema to Belso schema with {len(ConvertedSchema.fields)} fields.")
+        logger.debug(f"Successfully converted OpenAI schema to belso schema with {len(ConvertedSchema.fields)} fields.")
         return ConvertedSchema
 
     except Exception as e:
-        logger.error(f"Error converting OpenAI schema to Belso format: {e}")
+        logger.error(f"Error converting OpenAI schema to belso format: {e}")
         logger.debug("Conversion error details", exc_info=True)
         # Return a minimal schema if conversion fails
         return create_fallback_schema()

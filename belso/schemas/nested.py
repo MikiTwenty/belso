@@ -22,8 +22,8 @@ class NestedField(Field):
         ### Args
         - `name` (`str`): the name of the field.
         - `schema` (`Type[Schema]`): the nested schema.
-        - `description` (`str`, optional): the description of the field. Defaults to an empty string.
-        - `required` (`bool`, optional): whether the field is required. Defaults to `True`.
+        - `description` (`Optional[str]`): the description of the field, defaults to an empty string.
+        - `required` (`Optional[bool]`): whether the field is required, defaults to `True`.
         """
         super().__init__(name=name, type=dict, description=description, required=required)
         self.schema = schema

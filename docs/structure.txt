@@ -1,0 +1,48 @@
+├── AUTHORS
+├── CHANGES
+├── LICENSE
+├── MANIFEST.in
+├── README.md
+├── VERSION
+├── belso/
+│   ├── __init__.py
+│   ├── schemas/
+│   │   ├── __init__.py
+│   │   ├── base.py
+│   │   └── nested.py
+│   ├── translator/
+│   │   ├── __init__.py
+│   │   ├── providers/
+│   │   │   ├── __init__.py
+│   │   │   ├── anthropic.py
+│   │   │   ├── google.py
+│   │   │   ├── huggingface.py
+│   │   │   ├── langchain.py
+│   │   │   ├── mistral.py
+│   │   │   ├── ollama.py
+│   │   │   └── openai.py
+│   │   ├── serialization/
+│   │   │   ├── __init__.py
+│   │   │   ├── json_format.py
+│   │   │   └── xml_format.py
+│   │   ├── translator.py
+│   │   └── utils/
+│   │       ├── __init__.py
+│   │       └── detecting.py
+│   ├── utils/
+│   │   ├── __init__.py
+│   │   ├── classes.py
+│   │   ├── logging.py
+│   │   └── schema_helpers.py
+│   └── validator/
+│       ├── __init__.py
+│       └── validator.py
+├── docs/
+│   ├── source/
+│   │   ├── conf.py
+│   └── structure.txt
+├── examples/
+│   └── lights_control.py
+├── requirements.txt
+├── setup.py
+└── tests/

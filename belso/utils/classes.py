@@ -2,15 +2,6 @@ class PROVIDERS:
     """
     A class that provides constants for supported schema providers.
     This allows for more readable code when specifying providers in the translate method.
-
-    Example usage:
-    ```python
-    from belso.translator import SchemaTranslator
-    from belso.translator.providers import Provider
-
-    # Convert a schema to OpenAI format
-    openai_schema = SchemaTranslator.translate(my_schema, Provider.OPENAI)
-    ```
     """
     # Core providers
     BELSO = "belso"
@@ -32,10 +23,10 @@ class PROVIDERS:
     @classmethod
     def get_all_providers(cls) -> list:
         """
-        Get a list of all supported providers.
-
-        Returns:
-            list: A list of all provider constants.
+        Get a list of all supported providers.\n
+        ---
+        ### Returns
+        - `list`: A list of all provider constants.
         """
         return [
             cls.BELSO,

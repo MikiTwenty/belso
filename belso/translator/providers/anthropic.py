@@ -50,7 +50,7 @@ def to_anthropic(schema: Type[Schema]) -> Dict[str, Any]:
 
 def from_anthropic(schema: Dict[str, Any]) -> Type[Schema]:
     """
-    Convert an Anthropic schema to Belso Schema format.\n
+    Convert an Anthropic schema to belso Schema format.\n
     ---
     ### Args
     - `schema` (`Dict[str, Any]`): the Anthropic schema to convert.\n
@@ -59,7 +59,7 @@ def from_anthropic(schema: Dict[str, Any]) -> Type[Schema]:
     - `Type[Schema]`: a standard schema subclass
     """
     try:
-        logger.debug("Starting conversion from Anthropic schema to Belso format...")
+        logger.debug("Starting conversion from Anthropic schema to belso format...")
 
         # Create a new Schema class
         class ConvertedSchema(Schema):
@@ -96,11 +96,11 @@ def from_anthropic(schema: Dict[str, Any]) -> Type[Schema]:
                 )
             )
 
-        logger.debug(f"Successfully converted Anthropic schema to Belso schema with {len(ConvertedSchema.fields)} fields.")
+        logger.debug(f"Successfully converted Anthropic schema to belso schema with {len(ConvertedSchema.fields)} fields.")
         return ConvertedSchema
 
     except Exception as e:
-        logger.error(f"Error converting Anthropic schema to Belso format: {e}")
+        logger.error(f"Error converting Anthropic schema to belso format: {e}")
         logger.debug("Conversion error details", exc_info=True)
         # Return a minimal schema if conversion fails
         return create_fallback_schema()

@@ -14,7 +14,7 @@ def schema_to_json(
         file_path: Optional[Union[str, Path, PathLike]] = None
     ) -> Dict[str, Any]:
     """
-    Convert a Belso Schema to a standardized JSON format and optionally save to a file.\n
+    Convert a belso Schema to a standardized JSON format and optionally save to a file.\n
     ---
     ### Args
     - `schema` (`Type[Schema]`): the schema to convert.\n
@@ -75,13 +75,13 @@ def schema_to_json(
 
 def json_to_schema(json_input: Union[Dict[str, Any], str]) -> Type[Schema]:
     """
-    Convert a standardized JSON format or JSON file to a Belso Schema.\n
+    Convert a standardized JSON format or JSON file to a belso Schema.\n
     ---
     ### Args
     - `json_input`: either a JSON dictionary or a file path to a JSON file.\n
     ---
     ### Returns
-    - `Type[Schema]`: the Belso Schema.
+    - `Type[Schema]`: the belso Schema.
     """
     try:
         # Check if input is a file path

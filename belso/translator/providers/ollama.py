@@ -48,16 +48,16 @@ def to_ollama(schema: Type[Schema]) -> Dict[str, Any]:
 
 def from_ollama(schema: Dict[str, Any]) -> Type[Schema]:
     """
-    Convert an Ollama schema to Belso Schema format.\n
+    Convert an Ollama schema to belso Schema format.\n
     ---
     ### Args
     - `schema` (`Dict[str, Any]`): the schema to convert.\n
     ---
     ### Returns:
-    - `Type[Schema]`: the converted schema as a Belso Schema subclass.
+    - `Type[Schema]`: the converted schema as a belso Schema subclass.
     """
     try:
-        logger.debug("Starting conversion from Ollama schema to Belso format...")
+        logger.debug("Starting conversion from Ollama schema to belso format...")
 
         if not isinstance(schema, dict) or "properties" not in schema:
             raise ValueError("Invalid Ollama schema format: missing properties")
@@ -93,11 +93,11 @@ def from_ollama(schema: Dict[str, Any]) -> Type[Schema]:
                 )
             )
 
-        logger.debug(f"Successfully converted Ollama schema to Belso schema with {len(ConvertedSchema.fields)} fields.")
+        logger.debug(f"Successfully converted Ollama schema to belso schema with {len(ConvertedSchema.fields)} fields.")
         return ConvertedSchema
 
     except Exception as e:
-        logger.error(f"Error converting Ollama schema to Belso format: {e}")
+        logger.error(f"Error converting Ollama schema to belso format: {e}")
         logger.debug("Conversion error details", exc_info=True)
         # Return a minimal schema if conversion fails
         return create_fallback_schema()

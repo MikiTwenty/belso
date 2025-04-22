@@ -13,7 +13,7 @@ def to_google(schema: Type[Schema]) -> content.Schema:
     Translate a standard schema to Google Gemini format.\n
     ---
     ### Args
-    - `schema` (`Type[Schema]`) : the Belso schema to translate.\n
+    - `schema` (`Type[Schema]`) : the belso schema to translate.\n
     ---
     ### Returns
     - `content.Schema`: a Google Gemini schema in dict format for use in the API.
@@ -64,7 +64,7 @@ def to_google(schema: Type[Schema]) -> content.Schema:
 
 def from_google(schema: content.Schema) -> Type[Schema]:
     """
-    Convert a Google Gemini schema to Belso Schema format.\n
+    Convert a Google Gemini schema to belso Schema format.\n
     ---
     ### Args
     - `schema` (`content.Schema`) : the Google Gemini schema to convert.\n
@@ -73,7 +73,7 @@ def from_google(schema: content.Schema) -> Type[Schema]:
     - `Type[Schema]`: a standard schema.
     """
     try:
-        logger.debug("Starting conversion from Google schema to Belso format...")
+        logger.debug("Starting conversion from Google schema to belso format...")
 
         # Create a new Schema class
         class ConvertedSchema(Schema):
@@ -114,11 +114,11 @@ def from_google(schema: content.Schema) -> Type[Schema]:
                 )
             )
 
-        logger.debug(f"Successfully converted Google schema to Belso schema with {len(ConvertedSchema.fields)} fields.")
+        logger.debug(f"Successfully converted Google schema to belso schema with {len(ConvertedSchema.fields)} fields.")
         return ConvertedSchema
 
     except Exception as e:
-        logger.error(f"Error converting Google schema to Belso format: {e}")
+        logger.error(f"Error converting Google schema to belso format: {e}")
         logger.debug("Conversion error details", exc_info=True)
         # Return a minimal schema if conversion fails
         return create_fallback_schema()

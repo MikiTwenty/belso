@@ -3,7 +3,7 @@ import sys
 import logging
 from typing import Optional, Dict, Any
 
-# Create a dedicated logger for the Belso package
+# Create a dedicated logger for the belso package
 logger = logging.getLogger("belso")
 
 # Store original logger level to restore it if needed
@@ -11,7 +11,7 @@ _original_level = logger.level
 
 def get_logger(name:Optional[str]=None) -> logging.Logger:
     """
-    Get a logger instance for a specific module within Belso.\n
+    Get a logger instance for a specific module within belso.\n
     ---
     ### Args
     - `name` (`str`): the name of the module (will be prefixed with 'belso.').\n
@@ -35,7 +35,7 @@ def configure_logger(
         handler_config: Optional[Dict[str, Any]] = None
     ) -> None:
     """
-    Configure the Belso logger without affecting parent loggers.\n
+    Configure the belso logger without affecting parent loggers.\n
     ---
     ### Args
     - `level` (`int`): the logging level.
@@ -91,7 +91,7 @@ def configure_logger(
 
 def disable_logging() -> None:
     """
-    Temporarily disable Belso logging.
+    Temporarily disable belso logging.
     """
     global _original_level
     _original_level = logger.level
@@ -99,7 +99,7 @@ def disable_logging() -> None:
 
 def restore_logging() -> None:
     """
-    Restore Belso logging to its previous state.
+    Restore belso logging to its previous state.
     """
     logger.setLevel(_original_level)
 
