@@ -1,3 +1,6 @@
+from os import PathLike
+from pathlib import Path
+from typing import Optional
 import xml.dom.minidom as minidom
 import xml.etree.ElementTree as ET
 from typing import Any, Type, Union
@@ -10,14 +13,14 @@ logger = get_logger(__name__)
 
 def schema_to_xml(
         schema: Type[Schema],
-        file_path: str = None
+        file_path: Optional[Union[str, Path, PathLike]] = None
     ) -> str:
     """
     Convert a Belso Schema to XML format and optionally save to a file.\n
     ---
     ### Args
-    - `schema`: the schema to convert.\n
-    - `file_path`: optional path to save the XML to a file.\n
+    - `schema` (`Type[Schema]`): the schema to convert.\n
+    - `file_path` (`Optional[Union[str, Path, PathLike]]`): path to save the XML to a file.\n
     ---
     ### Returns
     - `str`: the schema in XML format.

@@ -1,5 +1,7 @@
 import json
-from typing import Dict, Any, Type, Union
+from os import PathLike
+from pathlib import Path
+from typing import Dict, Any, Optional, Type, Union
 
 from belso.schemas import Schema, Field
 from belso.utils.logging import get_logger
@@ -9,14 +11,14 @@ logger = get_logger(__name__)
 
 def schema_to_json(
         schema: Type[Schema],
-        file_path: str = None
+        file_path: Optional[Union[str, Path, PathLike]] = None
     ) -> Dict[str, Any]:
     """
     Convert a Belso Schema to a standardized JSON format and optionally save to a file.\n
     ---
     ### Args
-    - `schema`: the schema to convert.\n
-    - `file_path`: optional path to save the JSON to a file.\n
+    - `schema` (`Type[Schema]`): the schema to convert.\n
+    - `file_path` (`Optional[Union[str, Path, PathLike]]`): path to save the JSON to a file.\n
     ---
     ### Returns
     - `Dict[str, Any]`: the schema in JSON format.

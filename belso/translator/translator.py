@@ -54,8 +54,7 @@ class SchemaTranslator:
     def translate(
             schema: Any,
             to: str,
-            from_format: Optional[str] = None,
-            raise_on_unsupported: bool = True
+            from_format: Optional[str] = None
         ) -> Union[Dict[str, Any], Type, str]:
         """
         Translate a schema to a specific format.
@@ -63,17 +62,13 @@ class SchemaTranslator:
         to our internal format before translating to the target format.\n
         ---
         ### Args
-        - `schema` (`Any`): the schema to translate.\n
-        - `to` (`str`): the target format. Can be a string or a `belso.utils.PROVIDERS` attribute.\n
+        - `schema` (`Any`): the schema to translate.
+        - `to` (`str`): the target format. Can be a string or a `belso.utils.PROVIDERS` attribute.
         - `from_format` (`Optional[str]`): optional format hint for the input schema.
         If `None`, the format will be auto-detected.\n
-        - `raise_on_unsupported` (`bool`): whether to raise an exception if the schema is not supported.
-        If `False`, a fallback schema will be returned instead.\n
         ---
         ### Returns
-        - `Dict[str, Any]`: the translated schema in the target format.\n
-        - `Type`: the translated schema as a pydantic model.\n
-        - `str`: the translated schema as XML string.
+        - `Union[Dict[str, Any], Type, str]`: the translated schema in the target format.
         """
         try:
             logger.debug(f"Starting schema translation to '{to}' format...")

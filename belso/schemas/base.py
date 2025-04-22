@@ -1,4 +1,4 @@
-from typing import Any, List, Optional, Type
+from typing import Any, List, Optional, Type, ClassVar
 
 class Field:
     def __init__(
@@ -16,8 +16,8 @@ class Field:
         self.default = default
 
 class Schema:
-    name: str = ''
-    fields: List[Field] = []
+    name: ClassVar[str] = ''
+    fields: ClassVar[List[Field]] = []
 
     @classmethod
     def get_required_fields(cls) -> List[str]:
