@@ -4,19 +4,6 @@
 .pylintrc
 pyproject.toml
 
-# Documentation build directories
-docs/_build/
-docs/build/
-site/
-build/html/
-build/doctrees/
-
-# Auto-generated API documentation
-docs/api/
-
-# Documentation tool caches
-.doctrees/
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
