@@ -1,0 +1,855 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>belso.translator.providers package &mdash; belso 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="belso.translator.serialization package" href="belso.translator.serialization.html" />
+    <link rel="prev" title="belso.translator package" href="belso.translator.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            belso
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">belso</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="belso.html">belso package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="belso.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="belso.schemas.html">belso.schemas package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="belso.translator.html">belso.translator package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.validator.html">belso.validator package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.utils.html">belso.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="belso.html#module-belso">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="belso.html">belso package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="belso.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="belso.schemas.html">belso.schemas package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="belso.translator.html">belso.translator package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="belso.translator.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.html#module-belso.translator.translator">belso.translator.translator module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="belso.translator.html#module-belso.translator">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="belso.validator.html">belso.validator package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="belso.utils.html">belso.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="belso.html#module-belso">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">belso</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">belso</a></li>
+          <li class="breadcrumb-item"><a href="belso.html">belso package</a></li>
+          <li class="breadcrumb-item"><a href="belso.translator.html">belso.translator package</a></li>
+      <li class="breadcrumb-item active">belso.translator.providers package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/belso.translator.providers.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="belso-translator-providers-package">
+<h1>belso.translator.providers package<a class="headerlink" href="#belso-translator-providers-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-belso.translator.providers.anthropic">
+<span id="belso-translator-providers-anthropic-module"></span><h2>belso.translator.providers.anthropic module<a class="headerlink" href="#module-belso.translator.providers.anthropic" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.translator.providers.anthropic.from_anthropic">
+<span class="sig-prename descclassname"><span class="pre">belso.translator.providers.anthropic.</span></span><span class="sig-name descname"><span class="pre">from_anthropic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/providers/anthropic.html#from_anthropic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.translator.providers.anthropic.from_anthropic" title="Link to this definition"></a></dt>
+<dd><p>Convert an Anthropic schema to belso Schema format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code>[<a class="reference internal" href="belso.schemas.html#belso.schemas.base.Schema" title="belso.schemas.base.Schema"><code class="xref py py-class docutils literal notranslate"><span class="pre">Schema</span></code></a>]</span></p>
+</dd>
+</dl>
+<section id="args">
+<h3>Args<a class="headerlink" href="#args" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">param schema<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the Anthropic schema to convert.</p>
+</dd>
+<dt class="field-even">type schema<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dict[str, Any]</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h3>Returns<a class="headerlink" href="#returns" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Type[Schema]</cite>: a standard schema subclass</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.translator.providers.anthropic.to_anthropic">
+<span class="sig-prename descclassname"><span class="pre">belso.translator.providers.anthropic.</span></span><span class="sig-name descname"><span class="pre">to_anthropic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/providers/anthropic.html#to_anthropic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.translator.providers.anthropic.to_anthropic" title="Link to this definition"></a></dt>
+<dd><p>Translate a standard schema to Anthropic Claude format.
+Anthropic Claude uses a JSON schema format similar to OpenAPI.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</span></p>
+</dd>
+</dl>
+<section id="id1">
+<h3>Args<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">param schema<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the schema to convert.</p>
+</dd>
+<dt class="field-even">type schema<span class="colon">:</span></dt>
+<dd class="field-even"><p>Type[Schema]</p>
+</dd>
+</dl>
+</section>
+<section id="id2">
+<h3>Returns<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Dict[str, Any]</cite>: the converted schema.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-belso.translator.providers.google">
+<span id="belso-translator-providers-google-module"></span><h2>belso.translator.providers.google module<a class="headerlink" href="#module-belso.translator.providers.google" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.translator.providers.google.from_google">
+<span class="sig-prename descclassname"><span class="pre">belso.translator.providers.google.</span></span><span class="sig-name descname"><span class="pre">from_google</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/providers/google.html#from_google"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.translator.providers.google.from_google" title="Link to this definition"></a></dt>
+<dd><p>Convert a Google Gemini schema to belso Schema format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code>[<a class="reference internal" href="belso.schemas.html#belso.schemas.base.Schema" title="belso.schemas.base.Schema"><code class="xref py py-class docutils literal notranslate"><span class="pre">Schema</span></code></a>]</span></p>
+</dd>
+</dl>
+<section id="id3">
+<h3>Args<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>schema</cite> (<cite>content.Schema</cite>) : the Google Gemini schema to convert.</p></li>
+</ul>
+</section>
+<section id="id4">
+<h3>Returns<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Type[Schema]</cite>: a standard schema.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.translator.providers.google.to_google">
+<span class="sig-prename descclassname"><span class="pre">belso.translator.providers.google.</span></span><span class="sig-name descname"><span class="pre">to_google</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/providers/google.html#to_google"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.translator.providers.google.to_google" title="Link to this definition"></a></dt>
+<dd><p>Translate a standard schema to Google Gemini format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Schema</span></code></span></p>
+</dd>
+</dl>
+<section id="id5">
+<h3>Args<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>schema</cite> (<cite>Type[Schema]</cite>) : the belso schema to translate.</p></li>
+</ul>
+</section>
+<section id="id6">
+<h3>Returns<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>content.Schema</cite>: a Google Gemini schema in dict format for use in the API.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-belso.translator.providers.huggingface">
+<span id="belso-translator-providers-huggingface-module"></span><h2>belso.translator.providers.huggingface module<a class="headerlink" href="#module-belso.translator.providers.huggingface" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.translator.providers.huggingface.from_huggingface">
+<span class="sig-prename descclassname"><span class="pre">belso.translator.providers.huggingface.</span></span><span class="sig-name descname"><span class="pre">from_huggingface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/providers/huggingface.html#from_huggingface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.translator.providers.huggingface.from_huggingface" title="Link to this definition"></a></dt>
+<dd><p>Convert a Hugging Face schema to belso Schema format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code>[<a class="reference internal" href="belso.schemas.html#belso.schemas.base.Schema" title="belso.schemas.base.Schema"><code class="xref py py-class docutils literal notranslate"><span class="pre">Schema</span></code></a>]</span></p>
+</dd>
+</dl>
+<section id="id7">
+<h3>Args<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>schema</cite>: the schema to convert.</p></li>
+</ul>
+</section>
+<section id="id8">
+<h3>Returns<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Type</cite>: the converted schema as a belso Schema subclass.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.translator.providers.huggingface.to_huggingface">
+<span class="sig-prename descclassname"><span class="pre">belso.translator.providers.huggingface.</span></span><span class="sig-name descname"><span class="pre">to_huggingface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/providers/huggingface.html#to_huggingface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.translator.providers.huggingface.to_huggingface" title="Link to this definition"></a></dt>
+<dd><p>Translate a standard schema to Hugging Face format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</span></p>
+</dd>
+</dl>
+<section id="id9">
+<h3>Args<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>schema</cite>: the schema to convert.</p></li>
+</ul>
+</section>
+<section id="id10">
+<h3>Returns<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Dict[str, Any]</cite>: the converted schema as a dictionary.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-belso.translator.providers.langchain">
+<span id="belso-translator-providers-langchain-module"></span><h2>belso.translator.providers.langchain module<a class="headerlink" href="#module-belso.translator.providers.langchain" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.translator.providers.langchain.from_langchain">
+<span class="sig-prename descclassname"><span class="pre">belso.translator.providers.langchain.</span></span><span class="sig-name descname"><span class="pre">from_langchain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/providers/langchain.html#from_langchain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.translator.providers.langchain.from_langchain" title="Link to this definition"></a></dt>
+<dd><p>Convert a LangChain schema to belso Schema format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code>[<a class="reference internal" href="belso.schemas.html#belso.schemas.base.Schema" title="belso.schemas.base.Schema"><code class="xref py py-class docutils literal notranslate"><span class="pre">Schema</span></code></a>]</span></p>
+</dd>
+</dl>
+<section id="id11">
+<h3>Args<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>schema</cite>: the schema to convert.</p></li>
+</ul>
+</section>
+<section id="id12">
+<h3>Returns<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Type</cite>: the converted schema as a belso Schema subclass.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.translator.providers.langchain.to_langchain">
+<span class="sig-prename descclassname"><span class="pre">belso.translator.providers.langchain.</span></span><span class="sig-name descname"><span class="pre">to_langchain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/providers/langchain.html#to_langchain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.translator.providers.langchain.to_langchain" title="Link to this definition"></a></dt>
+<dd><p>Translate a standard schema to LangChain format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</span></p>
+</dd>
+</dl>
+<section id="id13">
+<h3>Args<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>schema</cite>: the schema to convert.</p></li>
+</ul>
+</section>
+<section id="id14">
+<h3>Returns<a class="headerlink" href="#id14" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Dict[str, Any]</cite>: the converted schema as a dictionary for LangChain.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-belso.translator.providers.mistral">
+<span id="belso-translator-providers-mistral-module"></span><h2>belso.translator.providers.mistral module<a class="headerlink" href="#module-belso.translator.providers.mistral" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.translator.providers.mistral.from_mistral">
+<span class="sig-prename descclassname"><span class="pre">belso.translator.providers.mistral.</span></span><span class="sig-name descname"><span class="pre">from_mistral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/providers/mistral.html#from_mistral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.translator.providers.mistral.from_mistral" title="Link to this definition"></a></dt>
+<dd><p>Convert a Mistral AI schema to belso Schema format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code>[<a class="reference internal" href="belso.schemas.html#belso.schemas.base.Schema" title="belso.schemas.base.Schema"><code class="xref py py-class docutils literal notranslate"><span class="pre">Schema</span></code></a>]</span></p>
+</dd>
+</dl>
+<section id="id15">
+<h3>Args<a class="headerlink" href="#id15" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>schema</cite>: the schema to convert.</p></li>
+</ul>
+</section>
+<section id="id16">
+<h3>Returns<a class="headerlink" href="#id16" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Type</cite>: the converted schema as a belso Schema subclass.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.translator.providers.mistral.to_mistral">
+<span class="sig-prename descclassname"><span class="pre">belso.translator.providers.mistral.</span></span><span class="sig-name descname"><span class="pre">to_mistral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/providers/mistral.html#to_mistral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.translator.providers.mistral.to_mistral" title="Link to this definition"></a></dt>
+<dd><p>Translate a standard schema to Mistral AI format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</span></p>
+</dd>
+</dl>
+<section id="id17">
+<h3>Args<a class="headerlink" href="#id17" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>schema</cite>: the schema to convert.</p></li>
+</ul>
+</section>
+<section id="id18">
+<h3>Returns<a class="headerlink" href="#id18" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Dict[str, Any]</cite>: the converted schema as a dictionary.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-belso.translator.providers.ollama">
+<span id="belso-translator-providers-ollama-module"></span><h2>belso.translator.providers.ollama module<a class="headerlink" href="#module-belso.translator.providers.ollama" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.translator.providers.ollama.from_ollama">
+<span class="sig-prename descclassname"><span class="pre">belso.translator.providers.ollama.</span></span><span class="sig-name descname"><span class="pre">from_ollama</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/providers/ollama.html#from_ollama"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.translator.providers.ollama.from_ollama" title="Link to this definition"></a></dt>
+<dd><p>Convert an Ollama schema to belso Schema format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code>[<a class="reference internal" href="belso.schemas.html#belso.schemas.base.Schema" title="belso.schemas.base.Schema"><code class="xref py py-class docutils literal notranslate"><span class="pre">Schema</span></code></a>]</span></p>
+</dd>
+</dl>
+<section id="id19">
+<h3>Args<a class="headerlink" href="#id19" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">param schema<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the schema to convert.</p>
+</dd>
+<dt class="field-even">type schema<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dict[str, Any]</p>
+</dd>
+</dl>
+</section>
+<section id="id20">
+<h3>Returns:<a class="headerlink" href="#id20" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Type[Schema]</cite>: the converted schema as a belso Schema subclass.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.translator.providers.ollama.to_ollama">
+<span class="sig-prename descclassname"><span class="pre">belso.translator.providers.ollama.</span></span><span class="sig-name descname"><span class="pre">to_ollama</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/providers/ollama.html#to_ollama"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.translator.providers.ollama.to_ollama" title="Link to this definition"></a></dt>
+<dd><p>Translate a standard schema to Ollama format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</span></p>
+</dd>
+</dl>
+<section id="id21">
+<h3>Args<a class="headerlink" href="#id21" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">param schema<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the schema to translate.</p>
+</dd>
+<dt class="field-even">type schema<span class="colon">:</span></dt>
+<dd class="field-even"><p>Type[Schema]</p>
+</dd>
+</dl>
+</section>
+<section id="id22">
+<h3>Returns:<a class="headerlink" href="#id22" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Dict[str, Any]</cite>: the translated schema in Ollama format.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-belso.translator.providers.openai">
+<span id="belso-translator-providers-openai-module"></span><h2>belso.translator.providers.openai module<a class="headerlink" href="#module-belso.translator.providers.openai" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.translator.providers.openai.from_openai">
+<span class="sig-prename descclassname"><span class="pre">belso.translator.providers.openai.</span></span><span class="sig-name descname"><span class="pre">from_openai</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/providers/openai.html#from_openai"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.translator.providers.openai.from_openai" title="Link to this definition"></a></dt>
+<dd><p>Convert an OpenAI schema (Pydantic model) to belso Schema format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code>[<a class="reference internal" href="belso.schemas.html#belso.schemas.base.Schema" title="belso.schemas.base.Schema"><code class="xref py py-class docutils literal notranslate"><span class="pre">Schema</span></code></a>]</span></p>
+</dd>
+</dl>
+<section id="id23">
+<h3>Args<a class="headerlink" href="#id23" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>schema</cite>: the schema to convert.</p></li>
+</ul>
+</section>
+<section id="id24">
+<h3>Returns<a class="headerlink" href="#id24" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Type</cite>: the converted schema as a standard Schema subclass.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.translator.providers.openai.to_openai">
+<span class="sig-prename descclassname"><span class="pre">belso.translator.providers.openai.</span></span><span class="sig-name descname"><span class="pre">to_openai</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/providers/openai.html#to_openai"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.translator.providers.openai.to_openai" title="Link to this definition"></a></dt>
+<dd><p>Translate a standard schema to OpenAI GPT format (Pydantic model).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code></span></p>
+</dd>
+</dl>
+<section id="id25">
+<h3>Args<a class="headerlink" href="#id25" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>schema</cite>: the schema to translate.</p></li>
+</ul>
+</section>
+<section id="id26">
+<h3>Returns<a class="headerlink" href="#id26" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Type</cite>: the translated schema as a Pydantic model.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-belso.translator.providers">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-belso.translator.providers" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.translator.providers.from_anthropic">
+<span class="sig-prename descclassname"><span class="pre">belso.translator.providers.</span></span><span class="sig-name descname"><span class="pre">from_anthropic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/providers/anthropic.html#from_anthropic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.translator.providers.from_anthropic" title="Link to this definition"></a></dt>
+<dd><p>Convert an Anthropic schema to belso Schema format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code>[<a class="reference internal" href="belso.schemas.html#belso.schemas.base.Schema" title="belso.schemas.base.Schema"><code class="xref py py-class docutils literal notranslate"><span class="pre">Schema</span></code></a>]</span></p>
+</dd>
+</dl>
+<section id="id27">
+<h3>Args<a class="headerlink" href="#id27" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">param schema<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the Anthropic schema to convert.</p>
+</dd>
+<dt class="field-even">type schema<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dict[str, Any]</p>
+</dd>
+</dl>
+</section>
+<section id="id28">
+<h3>Returns<a class="headerlink" href="#id28" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Type[Schema]</cite>: a standard schema subclass</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.translator.providers.from_google">
+<span class="sig-prename descclassname"><span class="pre">belso.translator.providers.</span></span><span class="sig-name descname"><span class="pre">from_google</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/providers/google.html#from_google"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.translator.providers.from_google" title="Link to this definition"></a></dt>
+<dd><p>Convert a Google Gemini schema to belso Schema format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code>[<a class="reference internal" href="belso.schemas.html#belso.schemas.base.Schema" title="belso.schemas.base.Schema"><code class="xref py py-class docutils literal notranslate"><span class="pre">Schema</span></code></a>]</span></p>
+</dd>
+</dl>
+<section id="id29">
+<h3>Args<a class="headerlink" href="#id29" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>schema</cite> (<cite>content.Schema</cite>) : the Google Gemini schema to convert.</p></li>
+</ul>
+</section>
+<section id="id30">
+<h3>Returns<a class="headerlink" href="#id30" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Type[Schema]</cite>: a standard schema.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.translator.providers.from_huggingface">
+<span class="sig-prename descclassname"><span class="pre">belso.translator.providers.</span></span><span class="sig-name descname"><span class="pre">from_huggingface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/providers/huggingface.html#from_huggingface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.translator.providers.from_huggingface" title="Link to this definition"></a></dt>
+<dd><p>Convert a Hugging Face schema to belso Schema format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code>[<a class="reference internal" href="belso.schemas.html#belso.schemas.base.Schema" title="belso.schemas.base.Schema"><code class="xref py py-class docutils literal notranslate"><span class="pre">Schema</span></code></a>]</span></p>
+</dd>
+</dl>
+<section id="id31">
+<h3>Args<a class="headerlink" href="#id31" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>schema</cite>: the schema to convert.</p></li>
+</ul>
+</section>
+<section id="id32">
+<h3>Returns<a class="headerlink" href="#id32" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Type</cite>: the converted schema as a belso Schema subclass.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.translator.providers.from_langchain">
+<span class="sig-prename descclassname"><span class="pre">belso.translator.providers.</span></span><span class="sig-name descname"><span class="pre">from_langchain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/providers/langchain.html#from_langchain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.translator.providers.from_langchain" title="Link to this definition"></a></dt>
+<dd><p>Convert a LangChain schema to belso Schema format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code>[<a class="reference internal" href="belso.schemas.html#belso.schemas.base.Schema" title="belso.schemas.base.Schema"><code class="xref py py-class docutils literal notranslate"><span class="pre">Schema</span></code></a>]</span></p>
+</dd>
+</dl>
+<section id="id33">
+<h3>Args<a class="headerlink" href="#id33" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>schema</cite>: the schema to convert.</p></li>
+</ul>
+</section>
+<section id="id34">
+<h3>Returns<a class="headerlink" href="#id34" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Type</cite>: the converted schema as a belso Schema subclass.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.translator.providers.from_mistral">
+<span class="sig-prename descclassname"><span class="pre">belso.translator.providers.</span></span><span class="sig-name descname"><span class="pre">from_mistral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/providers/mistral.html#from_mistral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.translator.providers.from_mistral" title="Link to this definition"></a></dt>
+<dd><p>Convert a Mistral AI schema to belso Schema format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code>[<a class="reference internal" href="belso.schemas.html#belso.schemas.base.Schema" title="belso.schemas.base.Schema"><code class="xref py py-class docutils literal notranslate"><span class="pre">Schema</span></code></a>]</span></p>
+</dd>
+</dl>
+<section id="id35">
+<h3>Args<a class="headerlink" href="#id35" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>schema</cite>: the schema to convert.</p></li>
+</ul>
+</section>
+<section id="id36">
+<h3>Returns<a class="headerlink" href="#id36" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Type</cite>: the converted schema as a belso Schema subclass.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.translator.providers.from_ollama">
+<span class="sig-prename descclassname"><span class="pre">belso.translator.providers.</span></span><span class="sig-name descname"><span class="pre">from_ollama</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/providers/ollama.html#from_ollama"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.translator.providers.from_ollama" title="Link to this definition"></a></dt>
+<dd><p>Convert an Ollama schema to belso Schema format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code>[<a class="reference internal" href="belso.schemas.html#belso.schemas.base.Schema" title="belso.schemas.base.Schema"><code class="xref py py-class docutils literal notranslate"><span class="pre">Schema</span></code></a>]</span></p>
+</dd>
+</dl>
+<section id="id37">
+<h3>Args<a class="headerlink" href="#id37" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">param schema<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the schema to convert.</p>
+</dd>
+<dt class="field-even">type schema<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dict[str, Any]</p>
+</dd>
+</dl>
+</section>
+<section id="id38">
+<h3>Returns:<a class="headerlink" href="#id38" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Type[Schema]</cite>: the converted schema as a belso Schema subclass.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.translator.providers.from_openai">
+<span class="sig-prename descclassname"><span class="pre">belso.translator.providers.</span></span><span class="sig-name descname"><span class="pre">from_openai</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/providers/openai.html#from_openai"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.translator.providers.from_openai" title="Link to this definition"></a></dt>
+<dd><p>Convert an OpenAI schema (Pydantic model) to belso Schema format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code>[<a class="reference internal" href="belso.schemas.html#belso.schemas.base.Schema" title="belso.schemas.base.Schema"><code class="xref py py-class docutils literal notranslate"><span class="pre">Schema</span></code></a>]</span></p>
+</dd>
+</dl>
+<section id="id39">
+<h3>Args<a class="headerlink" href="#id39" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>schema</cite>: the schema to convert.</p></li>
+</ul>
+</section>
+<section id="id40">
+<h3>Returns<a class="headerlink" href="#id40" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Type</cite>: the converted schema as a standard Schema subclass.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.translator.providers.to_anthropic">
+<span class="sig-prename descclassname"><span class="pre">belso.translator.providers.</span></span><span class="sig-name descname"><span class="pre">to_anthropic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/providers/anthropic.html#to_anthropic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.translator.providers.to_anthropic" title="Link to this definition"></a></dt>
+<dd><p>Translate a standard schema to Anthropic Claude format.
+Anthropic Claude uses a JSON schema format similar to OpenAPI.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</span></p>
+</dd>
+</dl>
+<section id="id41">
+<h3>Args<a class="headerlink" href="#id41" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">param schema<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the schema to convert.</p>
+</dd>
+<dt class="field-even">type schema<span class="colon">:</span></dt>
+<dd class="field-even"><p>Type[Schema]</p>
+</dd>
+</dl>
+</section>
+<section id="id42">
+<h3>Returns<a class="headerlink" href="#id42" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Dict[str, Any]</cite>: the converted schema.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.translator.providers.to_google">
+<span class="sig-prename descclassname"><span class="pre">belso.translator.providers.</span></span><span class="sig-name descname"><span class="pre">to_google</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/providers/google.html#to_google"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.translator.providers.to_google" title="Link to this definition"></a></dt>
+<dd><p>Translate a standard schema to Google Gemini format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Schema</span></code></span></p>
+</dd>
+</dl>
+<section id="id43">
+<h3>Args<a class="headerlink" href="#id43" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>schema</cite> (<cite>Type[Schema]</cite>) : the belso schema to translate.</p></li>
+</ul>
+</section>
+<section id="id44">
+<h3>Returns<a class="headerlink" href="#id44" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>content.Schema</cite>: a Google Gemini schema in dict format for use in the API.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.translator.providers.to_huggingface">
+<span class="sig-prename descclassname"><span class="pre">belso.translator.providers.</span></span><span class="sig-name descname"><span class="pre">to_huggingface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/providers/huggingface.html#to_huggingface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.translator.providers.to_huggingface" title="Link to this definition"></a></dt>
+<dd><p>Translate a standard schema to Hugging Face format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</span></p>
+</dd>
+</dl>
+<section id="id45">
+<h3>Args<a class="headerlink" href="#id45" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>schema</cite>: the schema to convert.</p></li>
+</ul>
+</section>
+<section id="id46">
+<h3>Returns<a class="headerlink" href="#id46" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Dict[str, Any]</cite>: the converted schema as a dictionary.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.translator.providers.to_langchain">
+<span class="sig-prename descclassname"><span class="pre">belso.translator.providers.</span></span><span class="sig-name descname"><span class="pre">to_langchain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/providers/langchain.html#to_langchain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.translator.providers.to_langchain" title="Link to this definition"></a></dt>
+<dd><p>Translate a standard schema to LangChain format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</span></p>
+</dd>
+</dl>
+<section id="id47">
+<h3>Args<a class="headerlink" href="#id47" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>schema</cite>: the schema to convert.</p></li>
+</ul>
+</section>
+<section id="id48">
+<h3>Returns<a class="headerlink" href="#id48" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Dict[str, Any]</cite>: the converted schema as a dictionary for LangChain.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.translator.providers.to_mistral">
+<span class="sig-prename descclassname"><span class="pre">belso.translator.providers.</span></span><span class="sig-name descname"><span class="pre">to_mistral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/providers/mistral.html#to_mistral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.translator.providers.to_mistral" title="Link to this definition"></a></dt>
+<dd><p>Translate a standard schema to Mistral AI format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</span></p>
+</dd>
+</dl>
+<section id="id49">
+<h3>Args<a class="headerlink" href="#id49" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>schema</cite>: the schema to convert.</p></li>
+</ul>
+</section>
+<section id="id50">
+<h3>Returns<a class="headerlink" href="#id50" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Dict[str, Any]</cite>: the converted schema as a dictionary.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.translator.providers.to_ollama">
+<span class="sig-prename descclassname"><span class="pre">belso.translator.providers.</span></span><span class="sig-name descname"><span class="pre">to_ollama</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/providers/ollama.html#to_ollama"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.translator.providers.to_ollama" title="Link to this definition"></a></dt>
+<dd><p>Translate a standard schema to Ollama format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</span></p>
+</dd>
+</dl>
+<section id="id51">
+<h3>Args<a class="headerlink" href="#id51" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">param schema<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the schema to translate.</p>
+</dd>
+<dt class="field-even">type schema<span class="colon">:</span></dt>
+<dd class="field-even"><p>Type[Schema]</p>
+</dd>
+</dl>
+</section>
+<section id="id52">
+<h3>Returns:<a class="headerlink" href="#id52" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Dict[str, Any]</cite>: the translated schema in Ollama format.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.translator.providers.to_openai">
+<span class="sig-prename descclassname"><span class="pre">belso.translator.providers.</span></span><span class="sig-name descname"><span class="pre">to_openai</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/belso/translator/providers/openai.html#to_openai"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.translator.providers.to_openai" title="Link to this definition"></a></dt>
+<dd><p>Translate a standard schema to OpenAI GPT format (Pydantic model).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code></span></p>
+</dd>
+</dl>
+<section id="id53">
+<h3>Args<a class="headerlink" href="#id53" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>schema</cite>: the schema to translate.</p></li>
+</ul>
+</section>
+<section id="id54">
+<h3>Returns<a class="headerlink" href="#id54" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>Type</cite>: the translated schema as a Pydantic model.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="belso.translator.html" class="btn btn-neutral float-left" title="belso.translator package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="belso.translator.serialization.html" class="btn btn-neutral float-right" title="belso.translator.serialization package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Michele Ventimiglia.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
