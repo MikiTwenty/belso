@@ -4,6 +4,7 @@ from google.ai.generativelanguage_v1beta.types import content
 
 from belso.schemas import Schema, Field
 from belso.utils.logging import get_logger
+from belso.utils.schema_helpers import create_fallback_schema
 
 logger = get_logger(__name__)
 
@@ -120,8 +121,4 @@ def from_google(schema: content.Schema) -> Type[Schema]:
         logger.error(f"Error converting Google schema to Belso format: {e}")
         logger.debug("Conversion error details", exc_info=True)
         # Return a minimal schema if conversion fails
-        class FallbackSchema(Schema):
-            name = "FallbackSchema"
-            fields = [Field(name="text", type=str, description="Fallback field", required=True)]
-        logger.warning("Returning fallback schema due to conversion error.")
-        return FallbackSchema
+        return create_fallback_schema()

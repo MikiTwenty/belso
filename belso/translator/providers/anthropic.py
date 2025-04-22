@@ -2,6 +2,11 @@ from typing import Any, Dict, Type
 
 from belso.schemas import Schema, Field
 from belso.utils.logging import get_logger
+from belso.utils.schema_helpers import (
+    map_json_to_python_type,
+    build_properties_dict,
+    create_fallback_schema
+)
 
 # Replace standard logger with our custom logger
 logger = get_logger(__name__)
@@ -21,43 +26,10 @@ def to_anthropic(schema: Type[Schema]) -> Dict[str, Any]:
         schema_name = schema.__name__ if hasattr(schema, "__name__") else "unnamed"
         logger.debug(f"Starting translation of schema '{schema_name}' to Anthropic format...")
 
-        properties = {}
+        properties = build_properties_dict(schema)
         required_fields = schema.get_required_fields()
 
         logger.debug(f"Found {len(schema.fields)} fields, {len(required_fields)} required.")
-
-        # Build properties for each field
-        for field in schema.fields:
-            logger.debug(f"Processing field '{field.name}' of type '{field.type.__name__}'...")
-
-            # Map Python types to JSON Schema types
-            if field.type == str:
-                field_type = "string"
-            elif field.type == int:
-                field_type = "integer"
-            elif field.type == float:
-                field_type = "number"
-            elif field.type == bool:
-                field_type = "boolean"
-            elif field.type == list:
-                field_type = "array"
-            elif field.type == dict:
-                field_type = "object"
-            else:
-                field_type = "string"  # Default to string for unknown types
-                logger.debug(f"Unknown type for field '{field.name}', defaulting to 'string'.")
-
-            logger.debug(f"Mapped field '{field.name}' to JSON Schema type '{field_type}'.")
-
-            properties[field.name] = {
-                "type": field_type,
-                "description": field.description
-            }
-
-            # Add default value if provided
-            if not field.required and field.default is not None:
-                properties[field.name]["default"] = field.default
-                logger.debug(f"Added default value for field '{field.name}': {field.default}.")
 
         # Create the schema
         anthropic_schema = {
@@ -94,16 +66,6 @@ def from_anthropic(schema: Dict[str, Any]) -> Type[Schema]:
             name = "ConvertedFromAnthropic"
             fields = []
 
-        # Type mapping from JSON Schema to Python
-        type_mapping = {
-            "string": str,
-            "integer": int,
-            "number": float,
-            "boolean": bool,
-            "array": list,
-            "object": dict
-        }
-
         # Extract properties
         properties = schema.get("properties", {})
         required_fields = schema.get("required", [])
@@ -113,7 +75,7 @@ def from_anthropic(schema: Dict[str, Any]) -> Type[Schema]:
         # Convert each property
         for name, prop in properties.items():
             prop_type = prop.get("type", "string")
-            field_type = type_mapping.get(prop_type, str)
+            field_type = map_json_to_python_type(prop_type)
             description = prop.get("description", "")
             required = name in required_fields
             default = prop.get("default") if not required else None
@@ -141,8 +103,4 @@ def from_anthropic(schema: Dict[str, Any]) -> Type[Schema]:
         logger.error(f"Error converting Anthropic schema to Belso format: {e}")
         logger.debug("Conversion error details", exc_info=True)
         # Return a minimal schema if conversion fails
-        class FallbackSchema(Schema):
-            name = "FallbackSchema"
-            fields = [Field(name="text", type=str, description="Fallback field", required=True)]
-        logger.warning("Returning fallback schema due to conversion error.")
-        return FallbackSchema
+        return create_fallback_schema()
