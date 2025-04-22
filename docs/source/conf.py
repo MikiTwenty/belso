@@ -1,36 +1,33 @@
-# Configuration file for the Sphinx documentation builder.
-#
-# For the full list of built-in configuration values, see the documentation:
-# https://www.sphinx-doc.org/en/master/usage/configuration.html
-
-# -- Project information -----------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
-
 import os
 import sys
+
+# Set path to the root of the project
 sys.path.insert(0, os.path.abspath('../..'))
-sys.path.append(os.path.abspath('./_ext'))  # Add the _ext directory to the path
+sys.path.append(os.path.abspath('./_ext'))
+
+# -- Project information -----------------------------------------------------
 
 project = 'belso'
 copyright = '2025, Michele Ventimiglia'
 author = 'Michele Ventimiglia'
 
-# Read version directly from VERSION file
-with open(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'VERSION')) as f:
-    release = f.read().strip()
+# ✅ Import version from the package
+try:
+    from belso.version import __version__ as release
+except ImportError:
+    release = "unknown"
 
 # -- General configuration ---------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
     'sphinx.ext.napoleon',
     'sphinx_autodoc_typehints',
-    'custom_docstring',  # Your custom extension
+    'custom_docstring'
 ]
 
-# Configure napoleon extension to handle your custom format
+# Napoleon configuration
 napoleon_google_docstring = True
 napoleon_numpy_docstring = False
 napoleon_include_init_with_doc = True

@@ -2,9 +2,8 @@ include AUTHORS
 include CHANGES
 include LICENSE
 include README.md
-include VERSION
 include requirements.txt
 
-recursive-include docs *
+recursive-include belso *.py
 
 global-exclude __pycache__ *.pyc

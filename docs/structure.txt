@@ -38,8 +38,22 @@
 │       ├── __init__.py
 │       └── validator.py
 ├── docs/
+│   ├── Makefile
+│   ├── make.bat
 │   ├── source/
+│   │   ├── _ext/
+│   │   │   └── custom_docstring.py
+│   │   ├── belso.rst
+│   │   ├── belso.schemas.rst
+│   │   ├── belso.translator.providers.rst
+│   │   ├── belso.translator.rst
+│   │   ├── belso.translator.serialization.rst
+│   │   ├── belso.translator.utils.rst
+│   │   ├── belso.utils.rst
+│   │   ├── belso.validator.rst
 │   │   ├── conf.py
+│   │   ├── index.rst
+│   │   └── modules.rst
 │   └── structure.txt
 ├── examples/
 │   └── lights_control.py
