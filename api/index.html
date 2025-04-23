@@ -1,0 +1,195 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Reference &mdash; belso 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=324092f7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Schemas" href="schemas.html" />
+    <link rel="prev" title="Examples" href="../examples.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            belso
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="schemas.html">Schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="translator.html">Translator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validator.html">Validator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">Utilities</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">belso</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">API Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h1>
+<p>This section provides detailed API documentation for belso.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="schemas.html">Schemas</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="schemas.html#base-schema">Base Schema</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="schemas.html#belso.schemas.Schema"><code class="docutils literal notranslate"><span class="pre">Schema</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="schemas.html#belso.schemas.Field"><code class="docutils literal notranslate"><span class="pre">Field</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="schemas.html#nested-schema">Nested Schema</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="schemas.html#belso.schemas.ArrayField"><code class="docutils literal notranslate"><span class="pre">ArrayField</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="schemas.html#belso.schemas.NestedField"><code class="docutils literal notranslate"><span class="pre">NestedField</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="translator.html">Translator</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="translator.html#belso.translator.SchemaTranslator"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="translator.html#belso.translator.SchemaTranslator.detect_format"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator.detect_format()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="translator.html#belso.translator.SchemaTranslator.from_json"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator.from_json()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="translator.html#belso.translator.SchemaTranslator.from_xml"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator.from_xml()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="translator.html#belso.translator.SchemaTranslator.standardize"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator.standardize()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="translator.html#belso.translator.SchemaTranslator.to_json"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator.to_json()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="translator.html#belso.translator.SchemaTranslator.to_xml"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator.to_xml()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="translator.html#belso.translator.SchemaTranslator.translate"><code class="docutils literal notranslate"><span class="pre">SchemaTranslator.translate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="translator.html#providers">Providers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="translator.html#openai-provider">OpenAI Provider</a></li>
+<li class="toctree-l3"><a class="reference internal" href="translator.html#anthropic-provider">Anthropic Provider</a></li>
+<li class="toctree-l3"><a class="reference internal" href="translator.html#google-provider">Google Provider</a></li>
+<li class="toctree-l3"><a class="reference internal" href="translator.html#mistral-provider">Mistral Provider</a></li>
+<li class="toctree-l3"><a class="reference internal" href="translator.html#ollama-provider">Ollama Provider</a></li>
+<li class="toctree-l3"><a class="reference internal" href="translator.html#huggingface-provider">HuggingFace Provider</a></li>
+<li class="toctree-l3"><a class="reference internal" href="translator.html#langchain-provider">LangChain Provider</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="translator.html#serialization">Serialization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="translator.html#json-format">JSON Format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="translator.html#xml-format">XML Format</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="translator.html#utils">Utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="translator.html#belso.translator.utils.detect_schema_format"><code class="docutils literal notranslate"><span class="pre">detect_schema_format()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="validator.html">Validator</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="validator.html#belso.validator.SchemaValidator"><code class="docutils literal notranslate"><span class="pre">SchemaValidator</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="validator.html#belso.validator.SchemaValidator.validate"><code class="docutils literal notranslate"><span class="pre">SchemaValidator.validate()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#belso.utils.PROVIDERS"><code class="docutils literal notranslate"><span class="pre">PROVIDERS</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#schema-helpers">Schema Helpers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#belso.utils.schema_helpers.map_python_to_json_type"><code class="docutils literal notranslate"><span class="pre">map_python_to_json_type()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#belso.utils.schema_helpers.map_json_to_python_type"><code class="docutils literal notranslate"><span class="pre">map_json_to_python_type()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#belso.utils.schema_helpers.build_properties_dict"><code class="docutils literal notranslate"><span class="pre">build_properties_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#belso.utils.schema_helpers.is_schema_supported"><code class="docutils literal notranslate"><span class="pre">is_schema_supported()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#belso.utils.schema_helpers.create_fallback_schema"><code class="docutils literal notranslate"><span class="pre">create_fallback_schema()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../examples.html" class="btn btn-neutral float-left" title="Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="schemas.html" class="btn btn-neutral float-right" title="Schemas" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Michele Ventimiglia.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

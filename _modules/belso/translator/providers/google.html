@@ -8,6 +8,7 @@
   <title>belso.translator.providers.google &mdash; belso 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=324092f7" />
 
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
@@ -39,10 +40,16 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">belso</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../belso.html">belso package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">Quick Start Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/index.html">API Reference</a></li>
 </ul>
 
         </div>
@@ -81,16 +88,16 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <div class="viewcode-block" id="to_google">
-<a class="viewcode-back" href="../../../../belso.translator.providers.html#belso.translator.providers.google.to_google">[docs]</a>
+<a class="viewcode-back" href="../../../../api/translator.html#belso.translator.providers.to_google">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">to_google</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">Schema</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">content</span><span class="o">.</span><span class="n">Schema</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Translate a standard schema to Google Gemini format.\n</span>
+<span class="sd">    Convert a belso schema to Google Gemini format.\n</span>
 <span class="sd">    ---</span>
 <span class="sd">    ### Args</span>
-<span class="sd">    - `schema` (`Type[Schema]`) : the belso schema to translate.\n</span>
+<span class="sd">    - `schema` (`Type[belso.schemas.Schema]`) : the belso schema to convert.\n</span>
 <span class="sd">    ---</span>
 <span class="sd">    ### Returns</span>
-<span class="sd">    - `content.Schema`: a Google Gemini schema in dict format for use in the API.</span>
+<span class="sd">    - `google.ai.generativelanguage_v1beta.types.content.Schema`: the converted schema.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Starting translation of schema &#39;</span><span class="si">{</span><span class="n">schema</span><span class="o">.</span><span class="vm">__name__</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nb">hasattr</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;__name__&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;unnamed&#39;</span><span class="si">}</span><span class="s2">&#39; to Google format...&quot;</span><span class="p">)</span>
@@ -138,16 +145,16 @@
 
 
 <div class="viewcode-block" id="from_google">
-<a class="viewcode-back" href="../../../../belso.translator.providers.html#belso.translator.providers.google.from_google">[docs]</a>
+<a class="viewcode-back" href="../../../../api/translator.html#belso.translator.providers.from_google">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">from_google</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">content</span><span class="o">.</span><span class="n">Schema</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">[</span><span class="n">Schema</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Convert a Google Gemini schema to belso Schema format.\n</span>
+<span class="sd">    Convert a Google Gemini schema to belso format.\n</span>
 <span class="sd">    ---</span>
 <span class="sd">    ### Args</span>
-<span class="sd">    - `schema` (`content.Schema`) : the Google Gemini schema to convert.\n</span>
+<span class="sd">    - `schema` (`google.ai.generativelanguage_v1beta.types.content.Schema`) : the Google Gemini schema to convert.\n</span>
 <span class="sd">    ---</span>
 <span class="sd">    ### Returns</span>
-<span class="sd">    - `Type[Schema]`: a standard schema.</span>
+<span class="sd">    - `Type[belso.schemas.Schema]`: the converted belso schema.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Starting conversion from Google schema to belso format...&quot;</span><span class="p">)</span>

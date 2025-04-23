@@ -8,6 +8,7 @@
   <title>belso.translator.translator &mdash; belso 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=324092f7" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
@@ -39,10 +40,16 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">belso</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../belso.html">belso package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
 </ul>
 
         </div>
@@ -72,6 +79,9 @@
   <h1>Source code for belso.translator.translator</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">belso.schemas.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Schema</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">belso.translator.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">detect_schema_format</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">belso.translator.providers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">to_google</span><span class="p">,</span>
@@ -106,17 +116,17 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SchemaTranslator">
-<a class="viewcode-back" href="../../../belso.translator.html#belso.SchemaTranslator">[docs]</a>
+<a class="viewcode-back" href="../../../api/translator.html#belso.translator.SchemaTranslator">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SchemaTranslator</span><span class="p">:</span>
 <div class="viewcode-block" id="SchemaTranslator.detect_format">
-<a class="viewcode-back" href="../../../belso.translator.html#belso.SchemaTranslator.detect_format">[docs]</a>
+<a class="viewcode-back" href="../../../api/translator.html#belso.translator.SchemaTranslator.detect_format">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">detect_format</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Detect the format of a schema.\n</span>
 <span class="sd">        ---</span>
 <span class="sd">        ### Args</span>
-<span class="sd">        - `schema`: the schema to detect.\n</span>
+<span class="sd">        - `schema` (`Any`): the schema to detect.\n</span>
 <span class="sd">        ---</span>
 <span class="sd">        ### Returns</span>
 <span class="sd">        - `str`: the detected format as a string.</span>
@@ -128,13 +138,13 @@
 
 
 <div class="viewcode-block" id="SchemaTranslator.translate">
-<a class="viewcode-back" href="../../../belso.translator.html#belso.SchemaTranslator.translate">[docs]</a>
+<a class="viewcode-back" href="../../../api/translator.html#belso.translator.SchemaTranslator.translate">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">translate</span><span class="p">(</span>
             <span class="n">schema</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
             <span class="n">to</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
             <span class="n">from_format</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">Type</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseModel</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Translate a schema to a specific format.</span>
 <span class="sd">        This method can automatically detect the input schema format and convert it</span>
@@ -143,10 +153,10 @@
 <span class="sd">        ### Args</span>
 <span class="sd">        - `schema` (`Any`): the schema to translate.</span>
 <span class="sd">        - `to` (`str`): the target format. Can be a string or a `belso.utils.PROVIDERS` attribute.</span>
-<span class="sd">        - `from_format` (`Optional[str]`): optional format hint for the input schema, if `None`, the format will be auto-detected.\n</span>
+<span class="sd">        - `from_format` (`Optional[str]`): optional format hint for the input schema. If `None`, the format will be auto-detected. Defaults to `None`.\n</span>
 <span class="sd">        ---</span>
 <span class="sd">        ### Returns</span>
-<span class="sd">        - `Union[Dict[str, Any], Type, str]`: the translated schema in the target format.</span>
+<span class="sd">        - `Union[Dict[str, Any], Type[pydantic.BaseModel], str]`: the converted schema.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Starting schema translation to &#39;</span><span class="si">{</span><span class="n">to</span><span class="si">}</span><span class="s2">&#39; format...&quot;</span><span class="p">)</span>
@@ -205,21 +215,21 @@
 
 
 <div class="viewcode-block" id="SchemaTranslator.standardize">
-<a class="viewcode-back" href="../../../belso.translator.html#belso.SchemaTranslator.standardize">[docs]</a>
+<a class="viewcode-back" href="../../../api/translator.html#belso.translator.SchemaTranslator.standardize">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">standardize</span><span class="p">(</span>
             <span class="n">schema</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
             <span class="n">from_format</span><span class="p">:</span> <span class="nb">str</span>
-        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">:</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">[</span><span class="n">Schema</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Convert a schema from a specific format to our internal belso format.\n</span>
 <span class="sd">        ---</span>
 <span class="sd">        ### Args</span>
-<span class="sd">        - `schema`: the schema to convert.</span>
-<span class="sd">        - `from_format`: the format of the input schema (`&quot;google&quot;`, `&quot;ollama&quot;`, `&quot;openai&quot;`, `&quot;anthropic&quot;`, `&quot;json&quot;`, `&quot;xml&quot;`).\n</span>
+<span class="sd">        - `schema` (`Any`): the schema to convert.</span>
+<span class="sd">        - `from_format` (`str`): the format of the input schema (`&quot;google&quot;`, `&quot;ollama&quot;`, `&quot;openai&quot;`, `&quot;anthropic&quot;`, `&quot;json&quot;`, `&quot;xml&quot;`).\n</span>
 <span class="sd">        ---</span>
 <span class="sd">        ### Returns</span>
-<span class="sd">        - `Type`: the converted schema as a belso Schema subclass.</span>
+<span class="sd">        - `Type[belso.schemas.Schema]`: the converted belso schema.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Standardizing schema from &#39;</span><span class="si">{</span><span class="n">from_format</span><span class="si">}</span><span class="s2">&#39; format to belso format...&quot;</span><span class="p">)</span>
@@ -265,7 +275,7 @@
 
 
 <div class="viewcode-block" id="SchemaTranslator.to_json">
-<a class="viewcode-back" href="../../../belso.translator.html#belso.SchemaTranslator.to_json">[docs]</a>
+<a class="viewcode-back" href="../../../api/translator.html#belso.translator.SchemaTranslator.to_json">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">to_json</span><span class="p">(</span>
             <span class="n">schema</span><span class="p">:</span> <span class="n">Type</span><span class="p">,</span>
@@ -279,7 +289,7 @@
 <span class="sd">        - `file_path` (`Optional[str]`): optional path to save the JSON to a file.\n</span>
 <span class="sd">        ---</span>
 <span class="sd">        ### Returns</span>
-<span class="sd">        - `Dict[str, Any]`: the schema in JSON format.</span>
+<span class="sd">        - `Dict[str, Any]`: the converted schema.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Converting schema to JSON format...&quot;</span><span class="p">)</span>
@@ -309,9 +319,9 @@
 
 
 <div class="viewcode-block" id="SchemaTranslator.from_json">
-<a class="viewcode-back" href="../../../belso.translator.html#belso.SchemaTranslator.from_json">[docs]</a>
+<a class="viewcode-back" href="../../../api/translator.html#belso.translator.SchemaTranslator.from_json">[docs]</a>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">from_json</span><span class="p">(</span><span class="n">json_input</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_json</span><span class="p">(</span><span class="n">json_input</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">[</span><span class="n">Schema</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Convert JSON data or a JSON file to a belso schema.\n</span>
 <span class="sd">        ---</span>
@@ -319,7 +329,7 @@
 <span class="sd">        - `json_input` (`Union[Dict[str, Any], str]`): either a JSON dictionary or a file path to a JSON file.\n</span>
 <span class="sd">        ---</span>
 <span class="sd">        ### Returns</span>
-<span class="sd">        - `Type`: the converted schema as a belso Schema subclass.</span>
+<span class="sd">        - `Type[belso.schemas.Schema]`: the converted belso schema.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="c1"># Log different message based on input type</span>
@@ -339,7 +349,7 @@
 
 
 <div class="viewcode-block" id="SchemaTranslator.to_xml">
-<a class="viewcode-back" href="../../../belso.translator.html#belso.SchemaTranslator.to_xml">[docs]</a>
+<a class="viewcode-back" href="../../../api/translator.html#belso.translator.SchemaTranslator.to_xml">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">to_xml</span><span class="p">(</span>
             <span class="n">schema</span><span class="p">:</span> <span class="n">Type</span><span class="p">,</span>
@@ -349,11 +359,11 @@
 <span class="sd">        Convert a schema to XML format and optionally save to a file.\n</span>
 <span class="sd">        ---</span>
 <span class="sd">        ### Args</span>
-<span class="sd">        - `schema` (`Type`): the schema to convert.\n</span>
+<span class="sd">        - `schema` (`Type[belso.schemas.Schema]`): the schema to convert.\n</span>
 <span class="sd">        - `file_path` (`Optional[str]`): optional path to save the XML to a file.\n</span>
 <span class="sd">        ---</span>
 <span class="sd">        ### Returns</span>
-<span class="sd">        - `str`: the schema in XML format.</span>
+<span class="sd">        - `str`: the converted schema.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Converting schema to XML format...&quot;</span><span class="p">)</span>
@@ -383,9 +393,9 @@
 
 
 <div class="viewcode-block" id="SchemaTranslator.from_xml">
-<a class="viewcode-back" href="../../../belso.translator.html#belso.SchemaTranslator.from_xml">[docs]</a>
+<a class="viewcode-back" href="../../../api/translator.html#belso.translator.SchemaTranslator.from_xml">[docs]</a>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">from_xml</span><span class="p">(</span><span class="n">xml_input</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_xml</span><span class="p">(</span><span class="n">xml_input</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">[</span><span class="n">Schema</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Convert XML data or an XML file to a belso schema.\n</span>
 <span class="sd">        ---</span>
@@ -393,7 +403,7 @@
 <span class="sd">        - `xml_input` (`Union[str, Any]`): either an XML string, Element, or a file path to an XML file.\n</span>
 <span class="sd">        ---</span>
 <span class="sd">        ### Returns</span>
-<span class="sd">        - `Type`: the converted schema as a belso Schema subclass.</span>
+<span class="sd">        - `Type[belso.schemas.Schema]`: the converted belso schema.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="c1"># Log different message based on input type</span>

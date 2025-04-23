@@ -8,6 +8,7 @@
   <title>belso.utils.schema_helpers &mdash; belso 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=324092f7" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
@@ -39,10 +40,16 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">belso</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../belso.html">belso package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
 </ul>
 
         </div>
@@ -101,13 +108,13 @@
 <span class="p">]</span>
 
 <div class="viewcode-block" id="create_fallback_schema">
-<a class="viewcode-back" href="../../../belso.utils.html#belso.utils.schema_helpers.create_fallback_schema">[docs]</a>
+<a class="viewcode-back" href="../../../api/utils.html#belso.utils.schema_helpers.create_fallback_schema">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">create_fallback_schema</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">[</span><span class="n">Schema</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create a standard fallback schema when conversion fails.\n</span>
 <span class="sd">    ---</span>
 <span class="sd">    ### Returns</span>
-<span class="sd">    - `Type[Schema]`: the fallback schema.</span>
+<span class="sd">    - `Type[belso.schemas.Schema]`: the fallback schema.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">class</span><span class="w"> </span><span class="nc">FallbackSchema</span><span class="p">(</span><span class="n">Schema</span><span class="p">):</span>
         <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;FallbackSchema&quot;</span>
@@ -116,7 +123,7 @@
 
 
 <div class="viewcode-block" id="map_python_to_json_type">
-<a class="viewcode-back" href="../../../belso.utils.html#belso.utils.schema_helpers.map_python_to_json_type">[docs]</a>
+<a class="viewcode-back" href="../../../api/utils.html#belso.utils.schema_helpers.map_python_to_json_type">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">map_python_to_json_type</span><span class="p">(</span><span class="n">field_type</span><span class="p">:</span> <span class="n">Type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Map Python type to JSON Schema type.\n</span>
@@ -131,7 +138,7 @@
 
 
 <div class="viewcode-block" id="map_json_to_python_type">
-<a class="viewcode-back" href="../../../belso.utils.html#belso.utils.schema_helpers.map_json_to_python_type">[docs]</a>
+<a class="viewcode-back" href="../../../api/utils.html#belso.utils.schema_helpers.map_json_to_python_type">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">map_json_to_python_type</span><span class="p">(</span><span class="n">json_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Map JSON Schema type to Python type.\n</span>
@@ -146,13 +153,13 @@
 
 
 <div class="viewcode-block" id="build_properties_dict">
-<a class="viewcode-back" href="../../../belso.utils.html#belso.utils.schema_helpers.build_properties_dict">[docs]</a>
+<a class="viewcode-back" href="../../../api/utils.html#belso.utils.schema_helpers.build_properties_dict">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">build_properties_dict</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">Schema</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Build a properties dictionary from a schema for JSON Schema formats.\n</span>
 <span class="sd">    ---</span>
 <span class="sd">    ### Args</span>
-<span class="sd">    - `schema` (`Type[Schema]`): the schema to build the properties dictionary from.\n</span>
+<span class="sd">    - `schema` (`Type[belso.schemas.Schema]`): the schema to build the properties dictionary from.\n</span>
 <span class="sd">    ---</span>
 <span class="sd">    ### Returns</span>
 <span class="sd">    - `Dict[str, Dict[str, Any]]`: the properties dictionary.</span>
@@ -177,7 +184,7 @@
 
 
 <div class="viewcode-block" id="is_schema_supported">
-<a class="viewcode-back" href="../../../belso.utils.html#belso.utils.schema_helpers.is_schema_supported">[docs]</a>
+<a class="viewcode-back" href="../../../api/utils.html#belso.utils.schema_helpers.is_schema_supported">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">is_schema_supported</span><span class="p">(</span>
         <span class="n">schema</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">Schema</span><span class="p">],</span>
         <span class="n">provider</span><span class="p">:</span> <span class="nb">str</span>
@@ -186,7 +193,7 @@
 <span class="sd">    Check if a schema is supported by a provider.\n</span>
 <span class="sd">    ---</span>
 <span class="sd">    ### Args</span>
-<span class="sd">    - `schema` (`Type[Schema]`): the schema to check.</span>
+<span class="sd">    - `schema` (`Type[belso.schemas.Schema]`): the schema to check.</span>
 <span class="sd">    - `provider` (`str`): the provider to check against.\n</span>
 <span class="sd">    ---</span>
 <span class="sd">    ### Returns</span>

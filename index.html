@@ -9,6 +9,7 @@
   <title>Welcome to belso’s documentation! &mdash; belso 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=324092f7" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
@@ -19,7 +20,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="belso" href="modules.html" /> 
+    <link rel="next" title="Introduction" href="introduction.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -41,10 +42,16 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">belso</a></li>
-<li class="toctree-l1"><a class="reference internal" href="belso.html">belso package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
 </ul>
 
         </div>
@@ -91,9 +98,10 @@
 </section>
 <section id="quick-start">
 <h2>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading"></a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">belso.schemas</span><span class="w"> </span><span class="kn">import</span> <span class="n">Schema</span><span class="p">,</span> <span class="n">Field</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">belso.translator</span><span class="w"> </span><span class="kn">import</span> <span class="n">SchemaTranslator</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">belso.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">PROVIDERS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">belso.schemas</span><span class="w"> </span><span class="kn">import</span> <span class="n">Schema</span><span class="p">,</span> <span class="n">Field</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">belso.validator</span><span class="w"> </span><span class="kn">import</span> <span class="n">SchemaValidator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">belso.translator</span><span class="w"> </span><span class="kn">import</span> <span class="n">SchemaTranslator</span>
 
 <span class="c1"># Define your schema</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">UserSchema</span><span class="p">(</span><span class="n">Schema</span><span class="p">):</span>
@@ -104,7 +112,7 @@
     <span class="p">]</span>
 
 <span class="c1"># Translate to OpenAI format</span>
-<span class="n">openai_schema</span> <span class="o">=</span> <span class="n">SchemaTranslator</span><span class="o">.</span><span class="n">to_provider</span><span class="p">(</span><span class="n">UserSchema</span><span class="p">,</span> <span class="s2">&quot;openai&quot;</span><span class="p">)</span>
+<span class="n">openai_schema</span> <span class="o">=</span> <span class="n">SchemaTranslator</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">UserSchema</span><span class="p">,</span> <span class="n">PROVIDERS</span><span class="o">.</span><span class="n">OPENAI</span><span class="p">)</span>
 
 <span class="c1"># Validate data against schema</span>
 <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">}</span>
@@ -112,18 +120,26 @@
 </pre></div>
 </div>
 </section>
-<section id="api-documentation">
-<h2>API Documentation<a class="headerlink" href="#api-documentation" title="Link to this heading"></a></h2>
+<section id="contents">
+<h2>Contents<a class="headerlink" href="#contents" title="Link to this heading"></a></h2>
 <div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">belso</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="belso.html">belso package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#key-features">Key Features</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="belso.html">belso package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="belso.html#subpackages">Subpackages</a></li>
-<li class="toctree-l2"><a class="reference internal" href="belso.html#module-belso">Module contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#requirements">Requirements</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#basic-usage">Basic Usage</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#basic-schema-example">Basic Schema Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#nested-schema-example">Nested Schema Example</a></li>
 </ul>
 </li>
 </ul>
@@ -137,13 +153,36 @@
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
 <li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
+<section id="api-documentation">
+<h2>API Documentation<a class="headerlink" href="#api-documentation" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/schemas.html">Schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/translator.html">Translator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/validator.html">Validator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/utils.html">Utilities</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+<section id="id1">
+<h1>Indices and tables<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="modules.html" class="btn btn-neutral float-right" title="belso" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="introduction.html" class="btn btn-neutral float-right" title="Introduction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

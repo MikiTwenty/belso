@@ -8,6 +8,7 @@
   <title>belso.translator.serialization.json_format &mdash; belso 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=324092f7" />
 
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
@@ -39,10 +40,16 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">belso</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../belso.html">belso package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">Quick Start Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/index.html">API Reference</a></li>
 </ul>
 
         </div>
@@ -82,7 +89,7 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <div class="viewcode-block" id="schema_to_json">
-<a class="viewcode-back" href="../../../../belso.translator.serialization.html#belso.translator.serialization.json_format.schema_to_json">[docs]</a>
+<a class="viewcode-back" href="../../../../api/translator.html#belso.translator.serialization.schema_to_json">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">schema_to_json</span><span class="p">(</span>
         <span class="n">schema</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">Schema</span><span class="p">],</span>
         <span class="n">file_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">,</span> <span class="n">PathLike</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -91,11 +98,11 @@
 <span class="sd">    Convert a belso Schema to a standardized JSON format and optionally save to a file.\n</span>
 <span class="sd">    ---</span>
 <span class="sd">    ### Args</span>
-<span class="sd">    - `schema` (`Type[Schema]`): the schema to convert.\n</span>
+<span class="sd">    - `schema` (`Type[belso.schemas.Schema]`): the schema to convert.\n</span>
 <span class="sd">    - `file_path` (`Optional[Union[str, Path, PathLike]]`): path to save the JSON to a file.\n</span>
 <span class="sd">    ---</span>
 <span class="sd">    ### Returns</span>
-<span class="sd">    - `Dict[str, Any]`: the schema in JSON format.</span>
+<span class="sd">    - `Dict[str, Any]`: the converted schema.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">schema_name</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;unnamed&quot;</span>
@@ -149,16 +156,16 @@
 
 
 <div class="viewcode-block" id="json_to_schema">
-<a class="viewcode-back" href="../../../../belso.translator.serialization.html#belso.translator.serialization.json_format.json_to_schema">[docs]</a>
+<a class="viewcode-back" href="../../../../api/translator.html#belso.translator.serialization.json_to_schema">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">json_to_schema</span><span class="p">(</span><span class="n">json_input</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">[</span><span class="n">Schema</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert a standardized JSON format or JSON file to a belso Schema.\n</span>
 <span class="sd">    ---</span>
 <span class="sd">    ### Args</span>
-<span class="sd">    - `json_input`: either a JSON dictionary or a file path to a JSON file.\n</span>
+<span class="sd">    - `json_input` (`Union[Dict[str, Any], str]`): either a JSON dictionary or a file path to a JSON file.\n</span>
 <span class="sd">    ---</span>
 <span class="sd">    ### Returns</span>
-<span class="sd">    - `Type[Schema]`: the belso Schema.</span>
+<span class="sd">    - `Type[belso.schemas.Schema]`: the converted belso schema.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="c1"># Check if input is a file path</span>
