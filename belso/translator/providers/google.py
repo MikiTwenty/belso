@@ -10,13 +10,13 @@ logger = get_logger(__name__)
 
 def to_google(schema: Type[Schema]) -> content.Schema:
     """
-    Translate a standard schema to Google Gemini format.\n
+    Convert a belso schema to Google Gemini format.\n
     ---
     ### Args
-    - `schema` (`Type[Schema]`) : the belso schema to translate.\n
+    - `schema` (`Type[belso.schemas.Schema]`) : the belso schema to convert.\n
     ---
     ### Returns
-    - `content.Schema`: a Google Gemini schema in dict format for use in the API.
+    - `google.ai.generativelanguage_v1beta.types.content.Schema`: the converted schema.
     """
     try:
         logger.debug(f"Starting translation of schema '{schema.__name__ if hasattr(schema, '__name__') else 'unnamed'}' to Google format...")
@@ -64,13 +64,13 @@ def to_google(schema: Type[Schema]) -> content.Schema:
 
 def from_google(schema: content.Schema) -> Type[Schema]:
     """
-    Convert a Google Gemini schema to belso Schema format.\n
+    Convert a Google Gemini schema to belso format.\n
     ---
     ### Args
-    - `schema` (`content.Schema`) : the Google Gemini schema to convert.\n
+    - `schema` (`google.ai.generativelanguage_v1beta.types.content.Schema`) : the Google Gemini schema to convert.\n
     ---
     ### Returns
-    - `Type[Schema]`: a standard schema.
+    - `Type[belso.schemas.Schema]`: the converted belso schema.
     """
     try:
         logger.debug("Starting conversion from Google schema to belso format...")

@@ -13,11 +13,10 @@ logger = get_logger(__name__)
 
 def to_anthropic(schema: Type[Schema]) -> Dict[str, Any]:
     """
-    Translate a standard schema to Anthropic Claude format.
-    Anthropic Claude uses a JSON schema format similar to OpenAPI.\n
+    Convert a belso schema to Anthropic Claude format.\n
     ---
     ### Args
-    - `schema` (`Type[Schema]`): the schema to convert.\n
+    - `schema` (`Type[belso.schemas.Schema]`): the belso schema to convert.\n
     ---
     ### Returns
     - `Dict[str, Any]`: the converted schema.
@@ -50,13 +49,13 @@ def to_anthropic(schema: Type[Schema]) -> Dict[str, Any]:
 
 def from_anthropic(schema: Dict[str, Any]) -> Type[Schema]:
     """
-    Convert an Anthropic schema to belso Schema format.\n
+    Convert an Anthropic schema to belso format.\n
     ---
     ### Args
     - `schema` (`Dict[str, Any]`): the Anthropic schema to convert.\n
     ---
     ### Returns
-    - `Type[Schema]`: a standard schema subclass
+    - `Type[belso.schemas.Schema]`: the converted belso schema.
     """
     try:
         logger.debug("Starting conversion from Anthropic schema to belso format...")

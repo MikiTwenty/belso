@@ -38,11 +38,11 @@ def configure_logger(
     Configure the belso logger without affecting parent loggers.\n
     ---
     ### Args
-    - `level` (`int`): the logging level.
-    - `log_file` (`str`): the path to the log file.
-    - `log_format` (`str`): the log format.
-    - `propagate` (`bool`): whether to propagate logs to parent loggers.
-    - `handler_config` (`Dict[str, Any]`): additional configuration for handlers.\n
+    - `level` (`int`): the logging level. Defaults to `logging.INFO`.
+    - `log_file` (`Optional[str]`): the path to the log file. Defaults to `None`.
+    - `log_format` (`Optional[str]`): the log format. Defaults to `None`.
+    - `propagate` (`bool`): whether to propagate logs to parent loggers. Defaults to `true`.
+    - `handler_config` (`Optional[Dict[str, Any]]`): additional configuration for handlers. Defaults to `None`.\n
     """
     # Set propagation (whether logs should be passed to parent loggers)
     logger.propagate = propagate

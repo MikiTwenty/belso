@@ -19,11 +19,11 @@ def schema_to_xml(
     Convert a belso Schema to XML format and optionally save to a file.\n
     ---
     ### Args
-    - `schema` (`Type[Schema]`): the schema to convert.\n
+    - `schema` (`Type[belso.schemas.Schema]`): the schema to convert.\n
     - `file_path` (`Optional[Union[str, Path, PathLike]]`): path to save the XML to a file.\n
     ---
     ### Returns
-    - `str`: the schema in XML format.
+    - `str`: the converted schema.
     """
     try:
         schema_name = schema.name if hasattr(schema, "name") else "unnamed"
@@ -94,10 +94,10 @@ def xml_to_schema(xml_input: Union[str, ET.Element]) -> Type[Schema]:
     Convert XML data or an XML file to a belso Schema.\n
     ---
     ### Args
-    - `xml_input`: either an XML string, Element, or a file path to an XML file.\n
+    - `xml_input` (`Union[str, ET.Element]`): either an XML string, Element, or a file path to an XML file.\n
     ---
     ### Returns
-    - `Type[Schema]`: the belso Schema.
+    - `Type[belso.schemas.Schema]`: the converted belso schema.
     """
     try:
         logger.debug("Starting conversion from XML to belso Schema...")

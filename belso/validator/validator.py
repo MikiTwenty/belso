@@ -17,8 +17,8 @@ class SchemaValidator:
         Validate that the provided data conforms to the given schema.\n
         ---
         ### Args
-        - `data` (`Any`): the data to validate (either a dict or JSON string).
-        - `schema` (`Type[Schema]`): the schema to validate against.\n
+        - `data` (`Union[Dict[str, Any], str]`): the data to validate (either a dict or JSON string).
+        - `schema` (`Type[belso.schemas.Schema]`): the schema to validate against.\n
         ---
         ### Returns:
         - `Dict[str, Any]`: the validated data.

@@ -9,15 +9,15 @@ from belso.utils.schema_helpers import create_fallback_schema
 # Replace standard logger with our custom logger
 logger = get_logger(__name__)
 
-def to_openai(schema: Type[Schema]) -> Type:
+def to_openai(schema: Type[Schema]) -> Type[BaseModel]:
     """
-    Translate a standard schema to OpenAI GPT format (Pydantic model).\n
+    Convert a belso schema to OpenAI GPT format.\n
     ---
     ### Args
-    - `schema`: the schema to translate.\n
+    - `schema` (`Type[belso.schemas.Schema]`): the belso schema to convert.\n
     ---
     ### Returns
-    - `Type`: the translated schema as a Pydantic model.
+    - `Type[pydantic.BaseModel]`: the converted schema.
     """
     try:
         schema_name = schema.__name__ if hasattr(schema, "__name__") else "unnamed"
@@ -55,13 +55,13 @@ def to_openai(schema: Type[Schema]) -> Type:
 
 def from_openai(schema: Type[BaseModel]) -> Type[Schema]:
     """
-    Convert an OpenAI schema (Pydantic model) to belso Schema format.\n
+    Convert an OpenAI schema to belso format.\n
     ---
     ### Args
-    - `schema`: the schema to convert.\n
+    - `schema` (`Type[pydantic.BaseModel]`): the schema to convert.\n
     ---
     ### Returns
-    - `Type`: the converted schema as a standard Schema subclass.
+    - `Type[belso.schemas.Schema]`: the converted belso schema.
     """
     try:
         schema_name = schema.__name__ if hasattr(schema, "__name__") else "unnamed"

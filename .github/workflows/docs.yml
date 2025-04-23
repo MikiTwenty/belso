@@ -24,9 +24,10 @@ jobs:
           pip install sphinx sphinx-rtd-theme sphinx-autodoc-typehints
           pip install -e .
 
-      - name: Build docs
+      - name: Clean and build docs
         run: |
           cd docs
+          rm -rf _build
           make html
 
       - name: Debug check

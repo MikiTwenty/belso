@@ -1,0 +1,12 @@
+.rst-content .customtype {
+    color: #c7254e !important; /* rosso stile Sphinx */
+    font-family: monospace;
+    font-weight: bold;
+}
+
+.rst-content tt,
+.rst-content code {
+    color: inherit !important;
+    background-color: transparent !important;
+    font-weight: normal;
+}

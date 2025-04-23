@@ -1,5 +1,8 @@
 from typing import Any, Dict, Type, Union, Optional
 
+from pydantic import BaseModel
+
+from belso.schemas.base import Schema
 from belso.translator.utils import detect_schema_format
 from belso.translator.providers import (
     to_google,
@@ -40,7 +43,7 @@ class SchemaTranslator:
         Detect the format of a schema.\n
         ---
         ### Args
-        - `schema`: the schema to detect.\n
+        - `schema` (`Any`): the schema to detect.\n
         ---
         ### Returns
         - `str`: the detected format as a string.
@@ -55,7 +58,7 @@ class SchemaTranslator:
             schema: Any,
             to: str,
             from_format: Optional[str] = None
-        ) -> Union[Dict[str, Any], Type, str]:
+        ) -> Union[Dict[str, Any], Type[BaseModel], str]:
         """
         Translate a schema to a specific format.
         This method can automatically detect the input schema format and convert it
@@ -64,10 +67,10 @@ class SchemaTranslator:
         ### Args
         - `schema` (`Any`): the schema to translate.
         - `to` (`str`): the target format. Can be a string or a `belso.utils.PROVIDERS` attribute.
-        - `from_format` (`Optional[str]`): optional format hint for the input schema, if `None`, the format will be auto-detected.\n
+        - `from_format` (`Optional[str]`): optional format hint for the input schema. If `None`, the format will be auto-detected. Defaults to `None`.\n
         ---
         ### Returns
-        - `Union[Dict[str, Any], Type, str]`: the translated schema in the target format.
+        - `Union[Dict[str, Any], Type[pydantic.BaseModel], str]`: the converted schema.
         """
         try:
             logger.debug(f"Starting schema translation to '{to}' format...")
@@ -128,16 +131,16 @@ class SchemaTranslator:
     def standardize(
             schema: Any,
             from_format: str
-        ) -> Type:
+        ) -> Type[Schema]:
         """
         Convert a schema from a specific format to our internal belso format.\n
         ---
         ### Args
-        - `schema`: the schema to convert.
-        - `from_format`: the format of the input schema (`"google"`, `"ollama"`, `"openai"`, `"anthropic"`, `"json"`, `"xml"`).\n
+        - `schema` (`Any`): the schema to convert.
+        - `from_format` (`str`): the format of the input schema (`"google"`, `"ollama"`, `"openai"`, `"anthropic"`, `"json"`, `"xml"`).\n
         ---
         ### Returns
-        - `Type`: the converted schema as a belso Schema subclass.
+        - `Type[belso.schemas.Schema]`: the converted belso schema.
         """
         try:
             logger.debug(f"Standardizing schema from '{from_format}' format to belso format...")
@@ -194,7 +197,7 @@ class SchemaTranslator:
         - `file_path` (`Optional[str]`): optional path to save the JSON to a file.\n
         ---
         ### Returns
-        - `Dict[str, Any]`: the schema in JSON format.
+        - `Dict[str, Any]`: the converted schema.
         """
         try:
             logger.debug("Converting schema to JSON format...")
@@ -223,7 +226,7 @@ class SchemaTranslator:
             raise
 
     @staticmethod
-    def from_json(json_input: Union[Dict[str, Any], str]) -> Type:
+    def from_json(json_input: Union[Dict[str, Any], str]) -> Type[Schema]:
         """
         Convert JSON data or a JSON file to a belso schema.\n
         ---
@@ -231,7 +234,7 @@ class SchemaTranslator:
         - `json_input` (`Union[Dict[str, Any], str]`): either a JSON dictionary or a file path to a JSON file.\n
         ---
         ### Returns
-        - `Type`: the converted schema as a belso Schema subclass.
+        - `Type[belso.schemas.Schema]`: the converted belso schema.
         """
         try:
             # Log different message based on input type
@@ -258,11 +261,11 @@ class SchemaTranslator:
         Convert a schema to XML format and optionally save to a file.\n
         ---
         ### Args
-        - `schema` (`Type`): the schema to convert.\n
+        - `schema` (`Type[belso.schemas.Schema]`): the schema to convert.\n
         - `file_path` (`Optional[str]`): optional path to save the XML to a file.\n
         ---
         ### Returns
-        - `str`: the schema in XML format.
+        - `str`: the converted schema.
         """
         try:
             logger.debug("Converting schema to XML format...")
@@ -291,7 +294,7 @@ class SchemaTranslator:
             raise
 
     @staticmethod
-    def from_xml(xml_input: Union[str, Any]) -> Type:
+    def from_xml(xml_input: Union[str, Any]) -> Type[Schema]:
         """
         Convert XML data or an XML file to a belso schema.\n
         ---
@@ -299,7 +302,7 @@ class SchemaTranslator:
         - `xml_input` (`Union[str, Any]`): either an XML string, Element, or a file path to an XML file.\n
         ---
         ### Returns
-        - `Type`: the converted schema as a belso Schema subclass.
+        - `Type[belso.schemas.Schema]`: the converted belso schema.
         """
         try:
             # Log different message based on input type

@@ -28,9 +28,10 @@ Quick Start
 
 .. code-block:: python
 
+   from belso.utils import PROVIDERS
    from belso.schemas import Schema, Field
-   from belso.translator import SchemaTranslator
    from belso.validator import SchemaValidator
+   from belso.translator import SchemaTranslator
 
    # Define your schema
    class UserSchema(Schema):
@@ -41,21 +42,39 @@ Quick Start
        ]
 
    # Translate to OpenAI format
-   openai_schema = SchemaTranslator.to_provider(UserSchema, "openai")
+   openai_schema = SchemaTranslator.translate(UserSchema, PROVIDERS.OPENAI)
 
    # Validate data against schema
    data = {"name": "John", "age": 30}
    validated_data = SchemaValidator.validate(data, UserSchema)
+
+Contents
+--------
+
+.. toctree::
+   :maxdepth: 2
+   :caption: User Guide
+
+   introduction
+   installation
+   quickstart
+   examples
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
 
 API Documentation
 -----------------
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Documentation
 
-   modules
-   belso
+   api/index
 
 Indices and tables
 ==================

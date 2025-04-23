@@ -15,10 +15,10 @@ def detect_schema_format(schema: Any) -> str:
     Detect the format of the input schema.\n
     ---
     ### Args
-    - `schema`: the schema to detect.\n
+    - `schema` (`Any`): the schema to detect.\n
     ---
     ### Returns
-    - `str`: the detected format as a string.
+    - `str`: the detected format.
     """
     logger.debug("Detecting schema format...")
 

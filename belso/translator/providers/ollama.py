@@ -13,13 +13,13 @@ logger = get_logger(__name__)
 
 def to_ollama(schema: Type[Schema]) -> Dict[str, Any]:
     """
-    Translate a standard schema to Ollama format.\n
+    Convert a belso schema to Ollama format.\n
     ---
     ### Args
-    - `schema` (`Type[Schema]`): the schema to translate.\n
+    - `schema` (`Type[belso.schemas.Schema]`): the belso schema to convert.\n
     ---
     ### Returns:
-    - `Dict[str, Any]`: the translated schema in Ollama format.
+    - `Dict[str, Any]`: the converted schema.
     """
     try:
         schema_name = schema.__name__ if hasattr(schema, "__name__") else "unnamed"
@@ -48,13 +48,13 @@ def to_ollama(schema: Type[Schema]) -> Dict[str, Any]:
 
 def from_ollama(schema: Dict[str, Any]) -> Type[Schema]:
     """
-    Convert an Ollama schema to belso Schema format.\n
+    Convert an Ollama schema to belso format.\n
     ---
     ### Args
     - `schema` (`Dict[str, Any]`): the schema to convert.\n
     ---
-    ### Returns:
-    - `Type[Schema]`: the converted schema as a belso Schema subclass.
+    ### Returns
+    - `Type[belso.schemas.Schema]`: the converted belso schema.
     """
     try:
         logger.debug("Starting conversion from Ollama schema to belso format...")

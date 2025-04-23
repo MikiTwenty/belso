@@ -13,13 +13,13 @@ logger = get_logger(__name__)
 
 def to_langchain(schema: Type[Schema]) -> Dict[str, Any]:
     """
-    Translate a standard schema to LangChain format.\n
+    Convert a belso schema to LangChain format.\n
     ---
     ### Args
-    - `schema`: the schema to convert.\n
+    - `schema` (`Type[belso.schemas.Schema]`): the belso schema to convert.\n
     ---
     ### Returns
-    - `Dict[str, Any]`: the converted schema as a dictionary for LangChain.
+    - `Dict[str, Any]`: the converted schema.
     """
     try:
         schema_name = schema.__name__ if hasattr(schema, "__name__") else "unnamed"
@@ -48,13 +48,13 @@ def to_langchain(schema: Type[Schema]) -> Dict[str, Any]:
 
 def from_langchain(schema: Dict[str, Any]) -> Type[Schema]:
     """
-    Convert a LangChain schema to belso Schema format.\n
+    Convert a LangChain schema to belso format.\n
     ---
     ### Args
-    - `schema`: the schema to convert.\n
+    - `schema` (`Dict[str, Any]`): the schema to convert.\n
     ---
     ### Returns
-    - `Type`: the converted schema as a belso Schema subclass.
+    - `Type[belso.schemas.Schema]`: the converted belso schema.
     """
     try:
         logger.debug("Starting conversion from LangChain schema to belso format...")

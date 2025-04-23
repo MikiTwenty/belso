@@ -9,7 +9,6 @@ class PROVIDERS:
     # LLM providers
     GOOGLE = "google"
     OPENAI = "openai"
-    AZURE_OPENAI = "azure_openai"
     ANTHROPIC = "anthropic"
     OLLAMA = "ollama"
     HUGGINGFACE = "huggingface"
@@ -26,13 +25,12 @@ class PROVIDERS:
         Get a list of all supported providers.\n
         ---
         ### Returns
-        - `list`: A list of all provider constants.
+        - `list`: a list of all provider constants.
         """
         return [
             cls.BELSO,
             cls.GOOGLE,
             cls.OPENAI,
-            cls.AZURE_OPENAI,
             cls.ANTHROPIC,
             cls.OLLAMA,
             cls.HUGGINGFACE,

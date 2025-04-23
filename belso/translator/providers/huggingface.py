@@ -13,13 +13,13 @@ logger = get_logger(__name__)
 
 def to_huggingface(schema: Type[Schema]) -> Dict[str, Any]:
     """
-    Translate a standard schema to Hugging Face format.\n
+    Convert a belso schema to Hugging Face format.\n
     ---
     ### Args
-    - `schema`: the schema to convert.\n
+    - `schema` (`Type[belso.schemas.Schema]`): the belso schema to convert.\n
     ---
     ### Returns
-    - `Dict[str, Any]`: the converted schema as a dictionary.
+    - `Dict[str, Any]`: the converted schema.
     """
     try:
         schema_name = schema.__name__ if hasattr(schema, "__name__") else "unnamed"
@@ -47,13 +47,13 @@ def to_huggingface(schema: Type[Schema]) -> Dict[str, Any]:
 
 def from_huggingface(schema: Dict[str, Any]) -> Type[Schema]:
     """
-    Convert a Hugging Face schema to belso Schema format.\n
+    Convert a Hugging Face schema to belso format.\n
     ---
     ### Args
-    - `schema`: the schema to convert.\n
+    - `schema` (`Dict[str, Any]`): the schema to convert.\n
     ---
     ### Returns
-    - `Type`: the converted schema as a belso Schema subclass.
+    - `Type[belso.schemas.Schema]`: the converted belso schema.
     """
     try:
         logger.debug("Starting conversion from Hugging Face schema to belso format...")

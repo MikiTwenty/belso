@@ -13,13 +13,13 @@ logger = get_logger(__name__)
 
 def to_mistral(schema: Type[Schema]) -> Dict[str, Any]:
     """
-    Translate a standard schema to Mistral AI format.\n
+    Convert a belso schema to Mistral AI format.\n
     ---
     ### Args
-    - `schema`: the schema to convert.\n
+    - `schema` (`Type[belso.schemas.Schema]`): the belso schema to convert.\n
     ---
     ### Returns
-    - `Dict[str, Any]`: the converted schema as a dictionary.
+    - `Dict[str, Any]`: the converted schema.
     """
     try:
         schema_name = schema.__name__ if hasattr(schema, "__name__") else "unnamed"
@@ -48,13 +48,13 @@ def to_mistral(schema: Type[Schema]) -> Dict[str, Any]:
 
 def from_mistral(schema: Dict[str, Any]) -> Type[Schema]:
     """
-    Convert a Mistral AI schema to belso Schema format.\n
+    Convert a Mistral AI schema to belso format.\n
     ---
     ### Args
-    - `schema`: the schema to convert.\n
+    - `schema` (`Dict[str, Any]`): the schema to convert.\n
     ---
     ### Returns
-    - `Type`: the converted schema as a belso Schema subclass.
+    - `Type[belso.schemas.Schema]`: the converted belso schema.
     """
     try:
         logger.debug("Starting conversion from Mistral schema to belso format...")

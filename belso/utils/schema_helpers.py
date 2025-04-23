@@ -33,7 +33,7 @@ def create_fallback_schema() -> Type[Schema]:
     Create a standard fallback schema when conversion fails.\n
     ---
     ### Returns
-    - `Type[Schema]`: the fallback schema.
+    - `Type[belso.schemas.Schema]`: the fallback schema.
     """
     class FallbackSchema(Schema):
         name = "FallbackSchema"
@@ -69,7 +69,7 @@ def build_properties_dict(schema: Type[Schema]) -> Dict[str, Dict[str, Any]]:
     Build a properties dictionary from a schema for JSON Schema formats.\n
     ---
     ### Args
-    - `schema` (`Type[Schema]`): the schema to build the properties dictionary from.\n
+    - `schema` (`Type[belso.schemas.Schema]`): the schema to build the properties dictionary from.\n
     ---
     ### Returns
     - `Dict[str, Dict[str, Any]]`: the properties dictionary.
@@ -100,7 +100,7 @@ def is_schema_supported(
     Check if a schema is supported by a provider.\n
     ---
     ### Args
-    - `schema` (`Type[Schema]`): the schema to check.
+    - `schema` (`Type[belso.schemas.Schema]`): the schema to check.
     - `provider` (`str`): the provider to check against.\n
     ---
     ### Returns

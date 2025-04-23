@@ -22,26 +22,21 @@ except ImportError:
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
-    'sphinx.ext.napoleon',
     'sphinx_autodoc_typehints',
     'custom_docstring'
 ]
 
-# Napoleon configuration
-napoleon_google_docstring = True
-napoleon_numpy_docstring = False
-napoleon_include_init_with_doc = True
-napoleon_include_private_with_doc = False
-napoleon_include_special_with_doc = True
-napoleon_use_admonition_for_examples = False
-napoleon_use_admonition_for_notes = False
-napoleon_use_admonition_for_references = False
-napoleon_use_ivar = False
-napoleon_use_param = True
-napoleon_use_rtype = True
-napoleon_preprocess_types = False
-napoleon_type_aliases = None
-napoleon_attr_annotations = True
+# Add this setting to prevent duplicate warnings
+autodoc_default_options = {
+    'members': True,
+    'undoc-members': True,
+    'show-inheritance': True,
+    'imported-members': False,  # Don't document imported members
+}
+
+typehints_use_signature = False
+typehints_use_rtype = False
 
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
+html_css_files = ['custom.css']
