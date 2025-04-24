@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>belso.schemas.base &mdash; belso 0.0.1 documentation</title>
+  <title>belso.schemas.base &mdash; belso 0.0.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=324092f7" />
@@ -13,7 +13,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../../_static/documentation_options.js?v=e3a6060d"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -77,11 +77,13 @@
            <div itemprop="articleBody">
              
   <h1>Source code for belso.schemas.base</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">ClassVar</span>
+<span></span><span class="c1"># belso.schemas.base</span>
 
-<div class="viewcode-block" id="Field">
-<a class="viewcode-back" href="../../../api/schemas.html#belso.schemas.Field">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">Field</span><span class="p">:</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">ClassVar</span>
+
+<div class="viewcode-block" id="BaseField">
+<a class="viewcode-back" href="../../../api/schemas.html#belso.schemas.BaseField">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BaseField</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -90,6 +92,16 @@
             <span class="n">required</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
             <span class="n">default</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a new BaseField instance.\n</span>
+<span class="sd">        ---</span>
+<span class="sd">        ### Args</span>
+<span class="sd">        - `name` (`str`): the name of the field.</span>
+<span class="sd">        - `type` (`Type`): the type of the field.</span>
+<span class="sd">        - `description` (`str`): a description of the field.</span>
+<span class="sd">        - `required` (`bool`): whether the field is required. Defaults to `True`.</span>
+<span class="sd">        - `default` (`Optional[Any]`): the default value of the field. Defaults to `None`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
@@ -100,13 +112,22 @@
 <div class="viewcode-block" id="Schema">
 <a class="viewcode-back" href="../../../api/schemas.html#belso.schemas.Schema">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Schema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A base class for defining schemas.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">name</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-    <span class="n">fields</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Field</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">fields</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">BaseField</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
 
 <div class="viewcode-block" id="Schema.get_required_fields">
 <a class="viewcode-back" href="../../../api/schemas.html#belso.schemas.Schema.get_required_fields">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_required_fields</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the names of all required fields in the schema.\n</span>
+<span class="sd">        ---</span>
+<span class="sd">        ### Returns</span>
+<span class="sd">        - `List[str]`: a list of required field names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">fields</span> <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">required</span><span class="p">]</span></div>
 
 
@@ -116,7 +137,16 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">get_field_by_name</span><span class="p">(</span>
             <span class="bp">cls</span><span class="p">,</span>
             <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
-        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Field</span><span class="p">]:</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BaseField</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get a field by its name.\n</span>
+<span class="sd">        ---</span>
+<span class="sd">        ### Args</span>
+<span class="sd">        - `name` (`str`): the name of the field.</span>
+<span class="sd">        ---</span>
+<span class="sd">        ### Returns</span>
+<span class="sd">        - `Optional[BaseField]`: the field with the given name, or `None` if not found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">fields</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">field</span>

@@ -9,7 +9,7 @@ Base Schema
    :show-inheritance:
    :undoc-members:
 
-.. autoclass:: belso.schemas.Field
+.. autoclass:: belso.schemas.BaseField
    :members:
    :show-inheritance:
    :undoc-members:

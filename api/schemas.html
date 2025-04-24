@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Schemas &mdash; belso 0.0.1 documentation</title>
+  <title>Schemas &mdash; belso 0.0.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=324092f7" />
@@ -14,7 +14,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../_static/documentation_options.js?v=e3a6060d"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -56,7 +56,7 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Schemas</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#base-schema">Base Schema</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#belso.schemas.Schema"><code class="docutils literal notranslate"><span class="pre">Schema</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#belso.schemas.Field"><code class="docutils literal notranslate"><span class="pre">Field</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#belso.schemas.BaseField"><code class="docutils literal notranslate"><span class="pre">BaseField</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#nested-schema">Nested Schema</a><ul>
@@ -106,20 +106,35 @@
 <dt class="sig sig-object py" id="belso.schemas.Schema">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">belso.schemas.</span></span><span class="sig-name descname"><span class="pre">Schema</span></span><a class="reference internal" href="../_modules/belso/schemas/base.html#Schema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.schemas.Schema" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A base class for defining schemas.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="belso.schemas.Schema.fields">
-<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">ClassVar</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code><span class="pre">[</span><a class="reference internal" href="#belso.schemas.Field" title="belso.schemas.base.Field"><code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code></a><span class="pre">]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#belso.schemas.Schema.fields" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">ClassVar</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code><span class="pre">[</span><a class="reference internal" href="#belso.schemas.BaseField" title="belso.schemas.base.BaseField"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseField</span></code></a><span class="pre">]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#belso.schemas.Schema.fields" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="belso.schemas.Schema.get_field_by_name">
 <em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_field_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/schemas/base.html#Schema.get_field_by_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.schemas.Schema.get_field_by_name" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Get a field by its name.</p>
+<p class="rubric">Args</p>
+<ul class="simple">
+<li><p><strong>name</strong> (<code class="customtype docutils literal notranslate"><span class="pre">str</span></code>): the name of the field.</p></li>
+</ul>
+<p class="rubric">Returns</p>
+<ul class="simple">
+<li><p><code class="customtype docutils literal notranslate"><span class="pre">Optional[BaseField]</span></code>: the field with the given name, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if not found.</p></li>
+</ul>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="belso.schemas.Schema.get_required_fields">
 <em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_required_fields</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/schemas/base.html#Schema.get_required_fields"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.schemas.Schema.get_required_fields" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Get the names of all required fields in the schema.</p>
+<p class="rubric">Returns</p>
+<ul class="simple">
+<li><p><code class="customtype docutils literal notranslate"><span class="pre">List[str]</span></code>: a list of required field names.</p></li>
+</ul>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="belso.schemas.Schema.name">
@@ -129,8 +144,8 @@
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="belso.schemas.Field">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">belso.schemas.</span></span><span class="sig-name descname"><span class="pre">Field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/schemas/base.html#Field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.schemas.Field" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="belso.schemas.BaseField">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">belso.schemas.</span></span><span class="sig-name descname"><span class="pre">BaseField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/schemas/base.html#BaseField"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.schemas.BaseField" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 </dd></dl>
 
@@ -140,15 +155,15 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="belso.schemas.ArrayField">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">belso.schemas.</span></span><span class="sig-name descname"><span class="pre">ArrayField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">items_type=&lt;class</span> <span class="pre">'str'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">items_schema=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description=''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required=True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/schemas/nested.html#ArrayField"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.schemas.ArrayField" title="Link to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#belso.schemas.Field" title="belso.schemas.base.Field"><code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code></a></p>
-<p>Field class for arrays of items.</p>
+<dd><p>Bases: <a class="reference internal" href="#belso.schemas.BaseField" title="belso.schemas.base.BaseField"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseField</span></code></a></p>
+<p>BaseField class for arrays of items.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="belso.schemas.NestedField">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">belso.schemas.</span></span><span class="sig-name descname"><span class="pre">NestedField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/schemas/nested.html#NestedField"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.schemas.NestedField" title="Link to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#belso.schemas.Field" title="belso.schemas.base.Field"><code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code></a></p>
-<p>Field class for nested schemas.</p>
+<dd><p>Bases: <a class="reference internal" href="#belso.schemas.BaseField" title="belso.schemas.base.BaseField"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseField</span></code></a></p>
+<p>BaseField class for nested schemas.</p>
 </dd></dl>
 
 </section>
