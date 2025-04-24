@@ -27,25 +27,6 @@ def to_ollama(schema: Type[Schema]) -> Dict[str, Any]:
         logger.debug(f"Starting translation of schema '{schema_name}' to Ollama format...")
 
         def convert_field_to_property(field: BaseField) -> Dict[str, Any]:
-            # Only supported fields in Ollama as per current API
-            supported_fields = [
-                "type",
-                "description",
-                "enum",
-                "default",
-                "minimum",
-                "maximum",
-                "exclusiveMinimum",
-                "exclusiveMaximum",
-                "minLength",
-                "maxLength",
-                "minItems",
-                "maxItems",
-                "pattern",
-                "multipleOf",
-                "format"
-            ]
-
             def _range_props():
                 props = {}
                 if field.range_:
@@ -98,12 +79,6 @@ def to_ollama(schema: Type[Schema]) -> Dict[str, Any]:
             base.update(_length_props())
             base.update(_items_props())
             base.update(_properties_props())
-
-            # Reject unsupported fields in Ollama
-            unsupported = ["not_", "any_of", "one_of", "all_of"]
-            for attr in unsupported:
-                if getattr(field, attr, None):
-                    logger.warning(f"Ollama does not support field attribute '{attr}' — ignoring.")
 
             return base
 

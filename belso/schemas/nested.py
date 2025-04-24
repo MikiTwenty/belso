@@ -33,11 +33,7 @@ class NestedField(BaseField):
             properties_range: Optional[tuple] = None,
             regex: Optional[str] = None,
             multiple_of: Optional[float] = None,
-            format_: Optional[str] = None,
-            not_: Optional[Dict] = None,
-            any_of: Optional[List[Dict]] = None,
-            one_of: Optional[List[Dict]] = None,
-            all_of: Optional[List[Dict]] = None
+            format_: Optional[str] = None
         ) -> None:
         super().__init__(
             name=name,
@@ -53,10 +49,7 @@ class NestedField(BaseField):
             properties_range=properties_range,
             regex=regex,
             multiple_of=multiple_of,
-            format_=format_,
-            not_=not_,
-            any_of=any_of,
-            one_of=one_of
+            format_=format_
         )
         self.schema = schema
 
@@ -89,10 +82,7 @@ class ArrayField(BaseField):
             regex: Optional[str] = None,
             multiple_of: Optional[float] = None,
             format_: Optional[str] = None,
-            not_: Optional[Dict] = None,
-            any_of: Optional[List[Dict]] = None,
-            one_of: Optional[List[Dict]] = None,
-            all_of: Optional[List[Dict]] = None
+            not_: Optional[Dict] = None
         ) -> None:
         super().__init__(
             name=name,
@@ -108,9 +98,6 @@ class ArrayField(BaseField):
             properties_range=properties_range,
             regex=regex,
             multiple_of=multiple_of,
-            format_=format_,
-            not_=not_,
-            any_of=any_of,
-            one_of=one_of
+            format_=format_
         )
         self.items_type = items_type

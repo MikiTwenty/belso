@@ -23,11 +23,7 @@ class Field:
             properties_range: Optional[tuple] = None,
             regex: Optional[str] = None,
             multiple_of: Optional[float] = None,
-            format_: Optional[str] = None,
-            not_: Optional[Dict] = None,
-            any_of: Optional[List[Dict]] = None,
-            one_of: Optional[List[Dict]] = None,
-            all_of: Optional[List[Dict]] = None
+            format_: Optional[str] = None
         ) -> Union['belso.schemas.BaseField', 'belso.schemas.NestedField', 'belso.schemas.ArrayField']:
         """
         Create a new Field instance based on the provided type hint.\n
@@ -46,8 +42,7 @@ class Field:
         - `properties_range` (`Optional[Tuple[int, int]]`): number of keys for objects.
         - `regex` (`Optional[str]`): regex the value must match.
         - `multiple_of` (`Optional[float]`): value must be a multiple of this number.
-        - `format_` (`Optional[str]`): semantic hints (e.g., 'email', 'date-time').
-        - `not_`, `any_of`, `one_of`, `all_of`: schema composition constructs (used mainly by OpenAI, partially by Mistral and LangChain).
+        - `format_` (`Optional[str]`): semantic hints (e.g., 'email', 'date-time').\n
         ---
         ### Returns
         - `belso.schemas.BaseField` | `belso.schemas.NestedField` | `belso.schemas.ArrayField`: the created field instance.
@@ -71,10 +66,7 @@ class Field:
             properties_range=properties_range,
             regex=regex,
             multiple_of=multiple_of,
-            format_=format_,
-            not_=not_,
-            any_of=any_of,
-            one_of=one_of
+            format_=format_
         )
 
         # Handle list types (e.g., List[str], List[MySchema])

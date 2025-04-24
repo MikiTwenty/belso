@@ -19,32 +19,8 @@ class BaseField:
             properties_range: Optional[Tuple[int, int]] = None,
             regex: Optional[str] = None,
             multiple_of: Optional[float] = None,
-            format_: Optional[str] = None,
-            not_: Optional[dict] = None,
-            any_of: Optional[List[dict]] = None,
-            one_of: Optional[List[dict]] = None,
-            all_of: Optional[List[dict]] = None
+            format_: Optional[str] = None
         ) -> None:
-        """
-        Initialize a new BaseField instance.\n
-        ---
-        ### Args
-        - `name` (`str`): the name of the field.
-        - `type_` (`Type`): the expected Python type.
-        - `description` (`str`): a user-facing description of the field.
-        - `required` (`bool`): marks the field as required. Defaults to `True`.
-        - `default` (`Optional[Any]`): the default value, if any.
-        - `enum` (`Optional[List[Any]]`): enumeration of accepted values.
-        - `range_` (`Optional[Tuple]`): min and max for numbers or comparable types (inclusive).
-        - `exclusive_range` (`Optional[Tuple[bool, bool]]`): exclusivity of min and max bounds.
-        - `length_range` (`Optional[Tuple[int, int]]`): valid length for strings/arrays.
-        - `items_range` (`Optional[Tuple[int, int]]`): number of elements for arrays.
-        - `properties_range` (`Optional[Tuple[int, int]]`): number of keys for objects.
-        - `regex` (`Optional[str]`): regex the value must match.
-        - `multiple_of` (`Optional[float]`): value must be a multiple of this number.
-        - `format_` (`Optional[str]`): semantic hints (e.g., 'email', 'date-time').
-        - `not_`, `any_of`, `one_of`, `all_of`: schema composition constructs (used mainly by OpenAI, partially by Mistral and LangChain).
-        """
         self.name = name
         self.type_ = type_
         self.description = description
@@ -59,10 +35,6 @@ class BaseField:
         self.regex = regex
         self.multiple_of = multiple_of
         self.format_ = format_
-        self.not_ = not_
-        self.any_of = any_of
-        self.one_of = one_of
-        self.all_of = all_of
 
 class Schema:
     """
