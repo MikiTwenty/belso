@@ -145,7 +145,7 @@ def json_to_schema(json_input: Union[Dict[str, Any], str]) -> Type[Schema]:
 
             field = BaseField(
                 name=field_name,
-                type=field_type,
+                type_hint=field_type,
                 description=field_data.get("description", ""),
                 required=required,
                 default=default
@@ -163,5 +163,12 @@ def json_to_schema(json_input: Union[Dict[str, Any], str]) -> Type[Schema]:
         logger.warning("Returning fallback schema due to conversion error.")
         class FallbackSchema(Schema):
             name = "FallbackSchema"
-            fields = [BaseField(name="text", type=str, description="Fallback field", required=True)]
+            fields = [
+                BaseField(
+                    name="text",
+                    type_hint=str,
+                    description="Fallback field",
+                    required=True
+                )
+            ]
         return FallbackSchema

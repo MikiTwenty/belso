@@ -193,7 +193,7 @@ def xml_to_schema(xml_input: Union[str, ET.Element]) -> Type[Schema]:
 
                 field = BaseField(
                     name=name,
-                    type=field_type,
+                    type_hint=field_type,
                     description=description,
                     required=required,
                     default=default
@@ -211,5 +211,12 @@ def xml_to_schema(xml_input: Union[str, ET.Element]) -> Type[Schema]:
         logger.warning("Returning fallback schema due to conversion error.")
         class FallbackSchema(Schema):
             name = "FallbackSchema"
-            fields = [BaseField(name="text", type=str, description="Fallback field", required=True)]
+            fields = [
+                BaseField(
+                    name="text",
+                    type_hint=str,
+                    description="Fallback field",
+                    required=True
+                )
+            ]
         return FallbackSchema

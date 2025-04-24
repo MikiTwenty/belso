@@ -39,7 +39,14 @@ def create_fallback_schema() -> Type[Schema]:
     """
     class FallbackSchema(Schema):
         name = "FallbackSchema"
-        fields = [BaseField(name="text", type=str, description="Fallback field", required=True)]
+        fields = [
+            BaseField(
+                name="text",
+                type_hint=str,
+                description="Fallback field",
+                required=True
+            )
+        ]
     return FallbackSchema
 
 def map_python_to_json_type(field_type: Type) -> str:

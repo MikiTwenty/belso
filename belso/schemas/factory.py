@@ -45,7 +45,6 @@ class Field:
                 return ArrayField(
                     name=name,
                     items_type=dict,
-                    items_schema=item_type,
                     description=description,
                     required=required
                 )
@@ -72,7 +71,7 @@ class Field:
         logger.debug(f"[Field] -> BaseField<{type_hint}>")
         return BaseField(
             name=name,
-            type=type_hint,
+            type_hint=type_hint,
             description=description,
             required=required,
             default=default

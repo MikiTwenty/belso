@@ -88,7 +88,7 @@ def from_ollama(schema: Dict[str, Any]) -> Type[Schema]:
             ConvertedSchema.fields.append(
                 BaseField(
                     name=name,
-                    type=field_type,
+                    type_hint=field_type,
                     description=description,
                     required=required,
                     default=default

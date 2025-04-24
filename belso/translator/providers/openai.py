@@ -121,7 +121,7 @@ def from_openai(schema: Type[BaseModel]) -> Type[Schema]:
             ConvertedSchema.fields.append(
                 BaseField(
                     name=name,
-                    type=field_type,
+                    type_hint=field_type,
                     description=description,
                     required=required,
                     default=default

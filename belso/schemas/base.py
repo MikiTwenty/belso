@@ -9,7 +9,7 @@ class BaseField:
     def __init__(
             self,
             name: str,
-            type: Type,
+            type_hint: Type,
             description: str,
             required: bool = True,
             default: Optional[Any] = None
@@ -19,13 +19,13 @@ class BaseField:
         ---
         ### Args
         - `name` (`str`): the name of the field.
-        - `type` (`Type`): the type of the field.
+        - `type_hint` (`Type`): the type_hint of the field.
         - `description` (`str`): a description of the field.
         - `required` (`bool`): whether the field is required. Defaults to `True`.
         - `default` (`Optional[Any]`): the default value of the field. Defaults to `None`.
         """
         self.name = name
-        self.type = type
+        self.type_hint = type_hint
         self.description = description
         self.required = required
         self.default = default
