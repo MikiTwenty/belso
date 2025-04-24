@@ -1,5 +1,5 @@
 # belso.validator.__init__
 
-from belso.validator.validator import SchemaValidator
+from belso.validator.validator import Validator
 
-__all__ = ["SchemaValidator"]
+__all__ = ["Validator"]

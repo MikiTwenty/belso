@@ -1,5 +1,5 @@
 # belso.translator.__init__
 
-from belso.translator.translator import SchemaTranslator
+from belso.translator.translator import Translator
 
-__all__ = ["SchemaTranslator"]
+__all__ = ["Translator"]

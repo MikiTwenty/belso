@@ -1,7 +1,7 @@
 Validator
 =========
 
-.. autoclass:: belso.validator.SchemaValidator
+.. autoclass:: belso.validator.Validator
    :members:
    :show-inheritance:
    :undoc-members:

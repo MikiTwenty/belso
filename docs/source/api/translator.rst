@@ -1,7 +1,7 @@
 Translator
 ==========
 
-.. autoclass:: belso.translator.SchemaTranslator
+.. autoclass:: belso.translator.Translator
    :members:
    :show-inheritance:
    :undoc-members:

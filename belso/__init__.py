@@ -11,14 +11,14 @@ logger = get_logger()
 logger.info(f"belso v{__version__} initialized.")
 
 # Import and expose main components
+from belso.validator import Validator
+from belso.translator import Translator
 from belso.schemas import Schema, Field
-from belso.validator import SchemaValidator
-from belso.translator import SchemaTranslator
 
 __all__ = [
     "__version__",
     "Field",
     "Schema",
-    "SchemaValidator",
-    "SchemaTranslator"
+    "Validator",
+    "Translator"
 ]

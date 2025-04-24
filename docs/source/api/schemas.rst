@@ -26,3 +26,11 @@ Nested Schema
    :members:
    :show-inheritance:
    :undoc-members:
+
+Factory
+-------
+
+.. autoclass:: belso.schemas.Field
+   :members:
+   :show-inheritance:
+   :undoc-members:

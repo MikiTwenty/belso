@@ -29,24 +29,22 @@ Quick Start
 .. code-block:: python
 
    from belso.utils import PROVIDERS
-   from belso.schemas import Schema, BaseField
-   from belso.validator import SchemaValidator
-   from belso.translator import SchemaTranslator
+   from belso import Schema, Field, Validator, Translator
 
    # Define your schema
    class UserSchema(Schema):
        name = "UserSchema"
        fields = [
-           BaseField(name="name", type=str, description="User's name", required=True),
-           BaseField(name="age", type=int, description="User's age", required=True)
+           Field(name="name", type_hint=str, description="User's name", required=True),
+           Field(name="age", type_hint=int, description="User's age", required=True)
        ]
 
    # Translate to OpenAI format
-   openai_schema = SchemaTranslator.translate(UserSchema, PROVIDERS.OPENAI)
+   openai_schema = Translator.translate(UserSchema, PROVIDERS.OPENAI)
 
    # Validate data against schema
    data = {"name": "John", "age": 30}
-   validated_data = SchemaValidator.validate(data, UserSchema)
+   validated_data = Validator.validate(data, UserSchema)
 
 Contents
 --------

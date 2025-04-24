@@ -9,7 +9,7 @@ from belso.utils.logging import get_logger
 # Get a module-specific logger
 logger = get_logger(__name__)
 
-class SchemaValidator:
+class Validator:
     @staticmethod
     def validate(
             data: Union[Dict[str, Any], str],

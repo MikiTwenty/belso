@@ -38,7 +38,7 @@ from belso.utils.schema_helpers import (
 # Get a module-specific logger
 logger = get_logger(__name__)
 
-class SchemaTranslator:
+class Translator:
     @staticmethod
     def detect_format(schema: Any) -> str:
         """
@@ -88,7 +88,7 @@ class SchemaTranslator:
             # Convert to our internal format if needed
             if from_format != PROVIDERS.BELSO:
                 logger.debug(f"Converting from '{from_format}' to internal belso format...")
-                belso_schema = SchemaTranslator.standardize(schema, from_format)
+                belso_schema = Translator.standardize(schema, from_format)
                 logger.info("Successfully converted to belso format.")
             else:
                 logger.debug("Schema is already in belso format, no conversion needed.")
@@ -205,10 +205,10 @@ class SchemaTranslator:
             logger.debug("Converting schema to JSON format...")
 
             # First ensure we have a belso schema
-            format_type = SchemaTranslator.detect_format(schema)
+            format_type = Translator.detect_format(schema)
             if format_type != "belso":
                 logger.debug(f"Schema is in '{format_type}' format, converting to belso format first...")
-                belso_schema = SchemaTranslator.standardize(schema, format_type)
+                belso_schema = Translator.standardize(schema, format_type)
                 logger.info("Successfully converted JSON to belso format.")
             else:
                 logger.debug("Schema is already in belso format, no conversion needed.")
@@ -273,10 +273,10 @@ class SchemaTranslator:
             logger.debug("Converting schema to XML format...")
 
             # First ensure we have a belso schema
-            format_type = SchemaTranslator.detect_format(schema)
+            format_type = Translator.detect_format(schema)
             if format_type != "belso":
                 logger.debug(f"Schema is in '{format_type}' format, converting to belso format first...")
-                belso_schema = SchemaTranslator.standardize(schema, format_type)
+                belso_schema = Translator.standardize(schema, format_type)
                 logger.info("Successfully converted to belso format.")
             else:
                 logger.debug("Schema is already in belso format, no conversion needed.")
