@@ -6,7 +6,6 @@ from belso import Schema, Field, Translator
 
 # Define a simple schema for light control
 class LightsControlSchema(Schema):
-    name = "LightControl"
     fields = [
         Field(
             name="lights_on",

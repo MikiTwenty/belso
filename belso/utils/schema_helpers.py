@@ -86,7 +86,7 @@ def build_properties_dict(schema: Type[Schema]) -> Dict[str, Dict[str, Any]]:
     properties = {}
 
     for field in schema.fields:
-        json_type = map_python_to_json_type(field.type)
+        json_type = map_python_to_json_type(field.type_hint)
 
         property_def = {
             "type": json_type,
@@ -122,7 +122,7 @@ def is_schema_supported(
     # Verifica se lo schema è annidato
     has_nested_schema = False
     for field in schema.fields:
-        if issubclass(field.type, Schema):
+        if issubclass(field.type_hint, Schema):
             has_nested_schema = True
             break
 

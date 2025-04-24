@@ -26,7 +26,7 @@ class Validator:
         - `Dict[str, Any]`: the validated data.
         """
         try:
-            schema_name = schema.name if hasattr(schema, "name") else "unnamed"
+            schema_name = schema.__name__ if hasattr(schema, "__name__") else "unnamed"
             logger.debug(f"Starting validation against schema '{schema_name}'...")
 
             # Convert string to dict if needed
@@ -57,7 +57,7 @@ class Validator:
             for field in schema.fields:
                 if field.name in data:
                     value = data[field.name]
-                    field_type = field.type.__name__ if hasattr(field.type, "__name__") else str(field.type)
+                    field_type = field.type_hint.__name__ if hasattr(field.type_hint, "__name__") else str(field.type_hint)
 
                     # Skip None values for non-required fields
                     if value is None and not field.required:
@@ -68,9 +68,9 @@ class Validator:
                     logger.debug(f"Validating field '{field.name}' with value '{value}' against type '{field_type}'...")
 
                     # Type validation
-                    if not isinstance(value, field.type):
+                    if not isinstance(value, field.type_hint):
                         # Special case for int/float compatibility
-                        if field.type == float and isinstance(value, int):
+                        if field.type_hint == float and isinstance(value, int):
                             logger.debug(f"Converting integer value {value} to float for field '{field.name}'...")
                             data[field.name] = float(value)
                         else:

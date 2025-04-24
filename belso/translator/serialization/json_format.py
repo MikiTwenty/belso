@@ -26,7 +26,7 @@ def schema_to_json(
     - `Dict[str, Any]`: the converted schema.
     """
     try:
-        schema_name = schema.name if hasattr(schema, "name") else "unnamed"
+        schema_name = schema.__name__ if hasattr(schema, "__name__") else "unnamed"
         logger.debug(f"Starting conversion of schema '{schema_name}' to JSON format...")
 
         fields_json = []
@@ -34,11 +34,11 @@ def schema_to_json(
 
         for field in schema.fields:
             # Convert Python type to string representation
-            type_str = field.type.__name__ if hasattr(field.type, "__name__") else str(field.type)
+            type_str = field.type_hint.__name__ if hasattr(field.type_hint, "__name__") else str(field.type_hint)
             logger.debug(f"Processing field '{field.name}' of type '{type_str}'...")
 
             field_json = {
-                "name": field.name,
+                "name": field.__name__,
                 "type": type_str,
                 "description": field.description,
                 "required": field.required
@@ -52,7 +52,7 @@ def schema_to_json(
             fields_json.append(field_json)
 
         schema_json = {
-            "name": schema.name,
+            "name": schema.__name__,
             "fields": fields_json
         }
 
@@ -108,7 +108,6 @@ def json_to_schema(json_input: Union[Dict[str, Any], str]) -> Type[Schema]:
         logger.debug(f"Creating new Schema class with name: {schema_name}.")
 
         class LoadedSchema(Schema):
-            name = schema_name
             fields = []
 
         # Type mapping from string to Python types

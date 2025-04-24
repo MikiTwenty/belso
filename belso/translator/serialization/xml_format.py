@@ -28,13 +28,13 @@ def schema_to_xml(
     - `str`: the converted schema.
     """
     try:
-        schema_name = schema.name if hasattr(schema, "name") else "unnamed"
+        schema_name = schema.__name__ if hasattr(schema, "__name__") else "unnamed"
         logger.debug(f"Starting conversion of schema '{schema_name}' to XML format...")
 
         # Create root element
         root = ET.Element("schema")
-        root.set("name", schema.name)
-        logger.debug(f"Created root element with name: {schema.name}.")
+        root.set("name", schema.__name__)
+        logger.debug(f"Created root element with name: {schema.__name__}.")
 
         # Add fields
         fields_elem = ET.SubElement(root, "fields")
@@ -46,7 +46,7 @@ def schema_to_xml(
             field_elem.set("name", field.name)
 
             # Convert Python type to string representation
-            type_str = field.type.__name__ if hasattr(field.type, "__name__") else str(field.type)
+            type_str = field.type_hint.__name__ if hasattr(field.type_hint, "__name__") else str(field.type_hint)
             field_elem.set("type", type_str)
             logger.debug(f"BaseField '{field.name}' has type: {type_str}.")
 
@@ -137,7 +137,6 @@ def xml_to_schema(xml_input: Union[str, ET.Element]) -> Type[Schema]:
         logger.debug(f"Creating new Schema class with name: {schema_name}.")
 
         class LoadedSchema(Schema):
-            name = schema_name
             fields = []
 
         # Type mapping from string to Python types
