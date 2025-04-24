@@ -35,7 +35,7 @@ def create_fallback_schema() -> Type[Schema]:
         fields = [
             BaseField(
                 name="text",
-                type_hint=str,
+                type_=str,
                 description="Fallback field",
                 required=True
             )
@@ -79,7 +79,7 @@ def build_properties_dict(schema: Type[Schema]) -> Dict[str, Dict[str, Any]]:
     properties = {}
 
     for field in schema.fields:
-        json_type = map_python_to_json_type(field.type_hint)
+        json_type = map_python_to_json_type(field.type_)
 
         property_def = {
             "type": json_type,

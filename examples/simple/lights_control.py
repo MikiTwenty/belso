@@ -9,7 +9,7 @@ class LightsControlSchema(Schema):
     fields = [
         Field(
             name="lights_on",
-            type_hint=bool,
+            type_=bool,
             description="Whether the lights should be on or off",
             required=True
         )

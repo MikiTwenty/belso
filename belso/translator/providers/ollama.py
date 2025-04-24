@@ -56,7 +56,7 @@ def to_ollama(schema: Type[Schema]) -> Dict[str, Any]:
                 }
             else:
                 prop = {
-                    "type": map_python_to_json_type(field.type_hint),
+                    "type": map_python_to_json_type(field.type_),
                     "description": field.description
                 }
                 if not field.required and field.default is not None:
@@ -160,7 +160,7 @@ def from_ollama(schema: Dict[str, Any]) -> Type[Schema]:
                 ConvertedSchema.fields.append(
                     BaseField(
                         name=name,
-                        type_hint=field_type,
+                        type_=field_type,
                         description=description,
                         required=required,
                         default=default

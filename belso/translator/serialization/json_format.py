@@ -34,7 +34,7 @@ def schema_to_json(
 
         for field in schema.fields:
             # Convert Python type to string representation
-            type_str = field.type_hint.__name__ if hasattr(field.type_hint, "__name__") else str(field.type_hint)
+            type_str = field.type_.__name__ if hasattr(field.type_, "__name__") else str(field.type_)
             logger.debug(f"Processing field '{field.name}' of type '{type_str}'...")
 
             field_json = {
@@ -144,7 +144,7 @@ def json_to_schema(json_input: Union[Dict[str, Any], str]) -> Type[Schema]:
 
             field = BaseField(
                 name=field_name,
-                type_hint=field_type,
+                type_=field_type,
                 description=field_data.get("description", ""),
                 required=required,
                 default=default
@@ -165,7 +165,7 @@ def json_to_schema(json_input: Union[Dict[str, Any], str]) -> Type[Schema]:
             fields = [
                 BaseField(
                     name="text",
-                    type_hint=str,
+                    type_=str,
                     description="Fallback field",
                     required=True
                 )

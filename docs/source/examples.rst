@@ -13,9 +13,9 @@ Basic Schema Example
    class WeatherSchema(Schema):
        name = "WeatherSchema"
        fields = [
-           Field(name="temperature", type_hint=float, description="Temperature in Celsius"),
-           Field(name="humidity", type_hint=float, description="Humidity percentage"),
-           Field(name="conditions", type_hint=str, description="Weather conditions")
+           Field(name="temperature", type_=float, description="Temperature in Celsius"),
+           Field(name="humidity", type_=float, description="Humidity percentage"),
+           Field(name="conditions", type_=str, description="Weather conditions")
        ]
 
 Nested Schema Example
@@ -28,15 +28,15 @@ Nested Schema Example
    class AddressSchema(Schema):
        name = "AddressSchema"
        fields = [
-           Field(name="street", type_hint=str, description="Street address"),
-           Field(name="city", type_hint=str, description="City name"),
-           Field(name="zip_code", type_hint=str, description="Postal code")
+           Field(name="street", type_=str, description="Street address"),
+           Field(name="city", type_=str, description="City name"),
+           Field(name="zip_code", type_=str, description="Postal code")
        ]
 
    class PersonSchema(Schema):
        name = "PersonSchema"
        fields = [
-           Field(name="name", type_hint=str, description="Person's name"),
-           Field(name="age", type_hint=int, description="Person's age"),
-           Field(name="address", type_hint=AddressSchema, description="Person's address")
+           Field(name="name", type_=str, description="Person's name"),
+           Field(name="age", type_=int, description="Person's age"),
+           Field(name="address", type_=AddressSchema, description="Person's address")
        ]

@@ -46,7 +46,7 @@ def schema_to_xml(
             field_elem.set("name", field.name)
 
             # Convert Python type to string representation
-            type_str = field.type_hint.__name__ if hasattr(field.type_hint, "__name__") else str(field.type_hint)
+            type_str = field.type_.__name__ if hasattr(field.type_, "__name__") else str(field.type_)
             field_elem.set("type", type_str)
             logger.debug(f"BaseField '{field.name}' has type: {type_str}.")
 
@@ -192,7 +192,7 @@ def xml_to_schema(xml_input: Union[str, ET.Element]) -> Type[Schema]:
 
                 field = BaseField(
                     name=name,
-                    type_hint=field_type,
+                    type_=field_type,
                     description=description,
                     required=required,
                     default=default
@@ -213,7 +213,7 @@ def xml_to_schema(xml_input: Union[str, ET.Element]) -> Type[Schema]:
             fields = [
                 BaseField(
                     name="text",
-                    type_hint=str,
+                    type_=str,
                     description="Fallback field",
                     required=True
                 )

@@ -1,6 +1,4 @@
-# belso.schemas.factory
-
-from typing import Any, Optional, Union, List, get_origin, get_args
+from typing import Any, Optional, Union, List, get_origin, get_args, Dict
 from belso.utils.logging import get_logger
 
 logger = get_logger(__name__)
@@ -13,20 +11,43 @@ class Field:
     def __new__(
             cls,
             name: str,
-            type_hint: Any,
+            type_: Any,
             description: str = "",
             required: bool = True,
-            default: Optional[Any] = None
+            default: Optional[Any] = None,
+            enum: Optional[List[Any]] = None,
+            range_: Optional[tuple] = None,
+            exclusive_range: Optional[tuple] = None,
+            length_range: Optional[tuple] = None,
+            items_range: Optional[tuple] = None,
+            properties_range: Optional[tuple] = None,
+            regex: Optional[str] = None,
+            multiple_of: Optional[float] = None,
+            format_: Optional[str] = None,
+            not_: Optional[Dict] = None,
+            any_of: Optional[List[Dict]] = None,
+            one_of: Optional[List[Dict]] = None,
+            all_of: Optional[List[Dict]] = None
         ) -> Union['belso.schemas.BaseField', 'belso.schemas.NestedField', 'belso.schemas.ArrayField']:
         """
         Create a new Field instance based on the provided type hint.\n
         ---
         ### Args
         - `name` (`str`): the name of the field.
-        - `type_hint` (`Any`): the type hint for the field.
-        - `description` (`str`): the description of the field. Defaults to an empty string.
-        - `required` (`bool`): whether the field is required. Defaults to `True`.
-        - `default` (`Optional[Any]`): the default value of the field. Defaults to `None`.
+        - `type_` (`Type`): the expected Python type.
+        - `description` (`str`): a user-facing description of the field.
+        - `required` (`bool`): marks the field as required. Defaults to `True`.
+        - `default` (`Optional[Any]`): the default value, if any.
+        - `enum` (`Optional[List[Any]]`): enumeration of accepted values.
+        - `range_` (`Optional[Tuple]`): min and max for numbers or comparable types (inclusive).
+        - `exclusive_range` (`Optional[Tuple[bool, bool]]`): exclusivity of min and max bounds.
+        - `length_range` (`Optional[Tuple[int, int]]`): valid length for strings/arrays.
+        - `items_range` (`Optional[Tuple[int, int]]`): number of elements for arrays.
+        - `properties_range` (`Optional[Tuple[int, int]]`): number of keys for objects.
+        - `regex` (`Optional[str]`): regex the value must match.
+        - `multiple_of` (`Optional[float]`): value must be a multiple of this number.
+        - `format_` (`Optional[str]`): semantic hints (e.g., 'email', 'date-time').
+        - `not_`, `any_of`, `one_of`, `all_of`: schema composition constructs (used mainly by OpenAI, partially by Mistral and LangChain).
         ---
         ### Returns
         - `belso.schemas.BaseField` | `belso.schemas.NestedField` | `belso.schemas.ArrayField`: the created field instance.
@@ -34,45 +55,37 @@ class Field:
         from belso.schemas.base import BaseField, Schema
         from belso.schemas.nested import NestedField, ArrayField
 
-        origin = get_origin(type_hint)
-        args = get_args(type_hint)
+        origin = get_origin(type_)
+        args = get_args(type_)
+
+        kwargs = dict(
+            name=name,
+            description=description,
+            required=required,
+            default=default,
+            enum=enum,
+            range_=range_,
+            exclusive_range=exclusive_range,
+            length_range=length_range,
+            items_range=items_range,
+            properties_range=properties_range,
+            regex=regex,
+            multiple_of=multiple_of,
+            format_=format_
+        )
 
         # Handle list types (e.g., List[str], List[MySchema])
         if origin is list or origin is List:
             item_type = args[0] if args else str
-            if isinstance(item_type, type) and issubclass(item_type, Schema):
-                logger.debug(f"[Field] -> ArrayField<{item_type.__name__}> (schema)")
-                return ArrayField(
-                    name=name,
-                    items_type=dict,
-                    description=description,
-                    required=required
-                )
-            else:
-                logger.debug(f"[Field] -> ArrayField<{item_type}>")
-                return ArrayField(
-                    name=name,
-                    items_type=item_type,
-                    description=description,
-                    required=required
-                )
+            kwargs['items_type'] = dict if isinstance(item_type, type) and issubclass(item_type, Schema) else item_type
+            logger.debug(f"[Field] -> ArrayField<{item_type}>")
+            return ArrayField(**kwargs)
 
         # Handle nested schemas
-        if isinstance(type_hint, type) and issubclass(type_hint, Schema):
-            logger.debug(f"[Field] -> NestedField<{type_hint.__name__}>")
-            return NestedField(
-                name=name,
-                schema=type_hint,
-                description=description,
-                required=required
-            )
+        if isinstance(type_, type) and issubclass(type_, Schema):
+            logger.debug(f"[Field] -> NestedField<{type_.__name__}>")
+            return NestedField(schema=type_, **kwargs)
 
         # Default: primitive type field
-        logger.debug(f"[Field] -> BaseField<{type_hint}>")
-        return BaseField(
-            name=name,
-            type_hint=type_hint,
-            description=description,
-            required=required,
-            default=default
-        )
+        logger.debug(f"[Field] -> BaseField<{type_}>")
+        return BaseField(type_=type_, **kwargs)

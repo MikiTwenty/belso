@@ -41,8 +41,8 @@ def to_google(schema: Type[Schema]) -> content.Schema:
 
         # Build properties for each field
         for field in schema.fields:
-            field_type = type_mapping.get(field.type_hint, content.Type.TYPE_UNSPECIFIED)
-            logger.debug(f"Mapping field '{field.name}' of type '{field.type_hint.__name__}' to Google type '{field_type}'...")
+            field_type = type_mapping.get(field.type_, content.Type.TYPE_UNSPECIFIED)
+            logger.debug(f"Mapping field '{field.name}' of type '{field.type_.__name__}' to Google type '{field_type}'...")
 
             properties[field.name] = content.Schema(
                 type=field_type,
@@ -110,7 +110,7 @@ def from_google(schema: content.Schema) -> Type[Schema]:
             ConvertedSchema.fields.append(
                 BaseField(
                     name=name,
-                    type_hint=field_type,
+                    type_=field_type,
                     description=description,
                     required=required
                 )

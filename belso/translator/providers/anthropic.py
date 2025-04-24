@@ -90,7 +90,7 @@ def from_anthropic(schema: Dict[str, Any]) -> Type[Schema]:
             ConvertedSchema.fields.append(
                 BaseField(
                     name=name,
-                    type_hint=field_type,
+                    type_=field_type,
                     description=description,
                     required=required,
                     default=default

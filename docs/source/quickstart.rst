@@ -18,8 +18,8 @@ First, define your schema using belso's Schema and Field classes:
    class UserSchema(Schema):
        name = "UserSchema"
        fields = [
-           Field(name="name", type_hint=str, description="User's name", required=True),
-           Field(name="age", type_hint=int, description="User's age", required=True)
+           Field(name="name", type_=str, description="User's name", required=True),
+           Field(name="age", type_=int, description="User's age", required=True)
        ]
 
 2. Translate to Provider Format

@@ -30,7 +30,7 @@ def to_openai(schema: Type[Schema]) -> Type[BaseModel]:
 
         # Build field definitions for Pydantic model
         for field in schema.fields:
-            field_type = field.type_hint
+            field_type = field.type_
             logger.debug(f"Processing field '{field.name}' of type '{field_type.__name__}'...")
 
             if not field.required and field.default is not None:
@@ -120,7 +120,7 @@ def from_openai(schema: Type[BaseModel]) -> Type[Schema]:
             ConvertedSchema.fields.append(
                 BaseField(
                     name=name,
-                    type_hint=field_type,
+                    type_=field_type,
                     description=description,
                     required=required,
                     default=default
