@@ -17,7 +17,7 @@ def to_openai(schema: Type[Schema]) -> Type[BaseModel]:
     Convert a belso schema to OpenAI GPT format.\n
     ---
     ### Args
-    - `schema` (`Type[belso.schemas.Schema]`): the belso schema to convert.\n
+    - `schema` (`Type[belso.Schema]`): the belso schema to convert.\n
     ---
     ### Returns
     - `Type[pydantic.BaseModel]`: the converted schema.
@@ -64,7 +64,7 @@ def from_openai(schema: Type[BaseModel]) -> Type[Schema]:
     - `schema` (`Type[pydantic.BaseModel]`): the schema to convert.\n
     ---
     ### Returns
-    - `Type[belso.schemas.Schema]`: the converted belso schema.
+    - `Type[belso.Schema]`: the converted belso schema.
     """
     try:
         schema_name = schema.__name__ if hasattr(schema, "__name__") else "unnamed"

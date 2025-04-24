@@ -23,7 +23,7 @@ class NestedField(BaseField):
         ---
         ### Args
         - `name` (`str`): the name of the field.
-        - `schema` (`Type[Schema]`): the nested schema.
+        - `schema` (`Type[belso.Schema]`): the nested schema.
         - `description` (`str`): the description of the field. Defaults to an empty string.
         - `required` (`bool`): whether the field is required. Defaults to `True`.
         """
@@ -48,7 +48,7 @@ class ArrayField(BaseField):
         ### Args
         - `name` (`str`): the name of the field.
         - `items_type` (`Type`): the type of items in the array. Defaults to `str`.
-        - `items_schema` (`Type[Schema]`): the schema of items in the array. Defaults to `None`.
+        - `items_schema` (`Type[belso.Schema]`): the schema of items in the array. Defaults to `None`.
         - `description` (`str`): the description of the field. Defaults to an empty string.
         - `required` (`bool`): whether the field is required. Defaults to `True`.
         """

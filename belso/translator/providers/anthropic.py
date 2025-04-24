@@ -18,7 +18,7 @@ def to_anthropic(schema: Type[Schema]) -> Dict[str, Any]:
     Convert a belso schema to Anthropic Claude format.\n
     ---
     ### Args
-    - `schema` (`Type[belso.schemas.Schema]`): the belso schema to convert.\n
+    - `schema` (`Type[belso.Schema]`): the belso schema to convert.\n
     ---
     ### Returns
     - `Dict[str, Any]`: the converted schema.
@@ -57,7 +57,7 @@ def from_anthropic(schema: Dict[str, Any]) -> Type[Schema]:
     - `schema` (`Dict[str, Any]`): the Anthropic schema to convert.\n
     ---
     ### Returns
-    - `Type[belso.schemas.Schema]`: the converted belso schema.
+    - `Type[belso.Schema]`: the converted belso schema.
     """
     try:
         logger.debug("Starting conversion from Anthropic schema to belso format...")

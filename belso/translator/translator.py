@@ -142,7 +142,7 @@ class SchemaTranslator:
         - `from_format` (`str`): the format of the input schema (`"google"`, `"ollama"`, `"openai"`, `"anthropic"`, `"json"`, `"xml"`).\n
         ---
         ### Returns
-        - `Type[belso.schemas.Schema]`: the converted belso schema.
+        - `Type[belso.Schema]`: the converted belso schema.
         """
         try:
             logger.debug(f"Standardizing schema from '{from_format}' format to belso format...")
@@ -236,7 +236,7 @@ class SchemaTranslator:
         - `json_input` (`Union[Dict[str, Any], str]`): either a JSON dictionary or a file path to a JSON file.\n
         ---
         ### Returns
-        - `Type[belso.schemas.Schema]`: the converted belso schema.
+        - `Type[belso.Schema]`: the converted belso schema.
         """
         try:
             # Log different message based on input type
@@ -263,7 +263,7 @@ class SchemaTranslator:
         Convert a schema to XML format and optionally save to a file.\n
         ---
         ### Args
-        - `schema` (`Type[belso.schemas.Schema]`): the schema to convert.\n
+        - `schema` (`Type[belso.Schema]`): the schema to convert.\n
         - `file_path` (`Optional[str]`): optional path to save the XML to a file.\n
         ---
         ### Returns
@@ -304,7 +304,7 @@ class SchemaTranslator:
         - `xml_input` (`Union[str, Any]`): either an XML string, Element, or a file path to an XML file.\n
         ---
         ### Returns
-        - `Type[belso.schemas.Schema]`: the converted belso schema.
+        - `Type[belso.Schema]`: the converted belso schema.
         """
         try:
             # Log different message based on input type

@@ -17,7 +17,7 @@ class Field:
             description: str = "",
             required: bool = True,
             default: Optional[Any] = None
-        ) -> Union['BaseField', 'NestedField', 'ArrayField']:
+        ) -> Union['belso.schemas.BaseField', 'belso.schemas.NestedField', 'belso.schemas.ArrayField']:
         """
         Create a new Field instance based on the provided type hint.\n
         ---
@@ -29,7 +29,7 @@ class Field:
         - `default` (`Optional[Any]`): the default value of the field. Defaults to `None`.
         ---
         ### Returns
-        - `BaseField` | `NestedField` | `ArrayField`: the created field instance.
+        - `belso.schemas.BaseField` | `belso.schemas.NestedField` | `belso.schemas.ArrayField`: the created field instance.
         """
         from belso.schemas.base import BaseField, Schema
         from belso.schemas.nested import NestedField, ArrayField

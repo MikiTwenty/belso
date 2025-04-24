@@ -18,7 +18,7 @@ def to_ollama(schema: Type[Schema]) -> Dict[str, Any]:
     Convert a belso schema to Ollama format.\n
     ---
     ### Args
-    - `schema` (`Type[belso.schemas.Schema]`): the belso schema to convert.\n
+    - `schema` (`Type[belso.Schema]`): the belso schema to convert.\n
     ---
     ### Returns:
     - `Dict[str, Any]`: the converted schema.
@@ -56,7 +56,7 @@ def from_ollama(schema: Dict[str, Any]) -> Type[Schema]:
     - `schema` (`Dict[str, Any]`): the schema to convert.\n
     ---
     ### Returns
-    - `Type[belso.schemas.Schema]`: the converted belso schema.
+    - `Type[belso.Schema]`: the converted belso schema.
     """
     try:
         logger.debug("Starting conversion from Ollama schema to belso format...")

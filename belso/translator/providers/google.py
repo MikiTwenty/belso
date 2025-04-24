@@ -15,7 +15,7 @@ def to_google(schema: Type[Schema]) -> content.Schema:
     Convert a belso schema to Google Gemini format.\n
     ---
     ### Args
-    - `schema` (`Type[belso.schemas.Schema]`) : the belso schema to convert.\n
+    - `schema` (`Type[belso.Schema]`) : the belso schema to convert.\n
     ---
     ### Returns
     - `google.ai.generativelanguage_v1beta.types.content.Schema`: the converted schema.
@@ -72,7 +72,7 @@ def from_google(schema: content.Schema) -> Type[Schema]:
     - `schema` (`google.ai.generativelanguage_v1beta.types.content.Schema`) : the Google Gemini schema to convert.\n
     ---
     ### Returns
-    - `Type[belso.schemas.Schema]`: the converted belso schema.
+    - `Type[belso.Schema]`: the converted belso schema.
     """
     try:
         logger.debug("Starting conversion from Google schema to belso format...")

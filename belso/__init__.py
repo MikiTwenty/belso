@@ -19,7 +19,6 @@ __all__ = [
     "__version__",
     "Field",
     "Schema",
-    "auto_field",
     "SchemaValidator",
     "SchemaTranslator"
 ]

@@ -1,6 +1,9 @@
 # belso.schemas.base
 
 from typing import Any, List, Optional, Type, ClassVar
+from belso.utils.logging import get_logger
+
+logger = get_logger(__name__)
 
 class BaseField:
     def __init__(
@@ -42,6 +45,7 @@ class Schema:
         ### Returns
         - `List[str]`: a list of required field names.
         """
+        logger.debug(f'Getting required fields for {cls.name}')
         return [field.name for field in cls.fields if field.required]
 
     @classmethod
@@ -56,9 +60,12 @@ class Schema:
         - `name` (`str`): the name of the field.
         ---
         ### Returns
-        - `Optional[BaseField]`: the field with the given name, or `None` if not found.
+        - `Optional[belso.schemas.BaseField]`: the field with the given name, or `None` if not found.
         """
+        logger.debug(f'Getting field {name} for {cls.name}')
         for field in cls.fields:
             if field.name == name:
+                logger.debug(f'Found field {name} for {cls.name}')
                 return field
+        logger.debug(f'Field {name} not found for {cls.name}')
         return None
