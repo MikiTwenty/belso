@@ -25,7 +25,9 @@ def main():
     try:
         # Define the prompt that asks to turn off the lights
         default_prompt = "Turn off the lights"
-        user_prompt = input(f"\n>> Type a prompt (press Enter for default: \"{default_prompt}\"): ")
+        print(f"\nDefault prompt:\n\"{default_prompt}\"")
+
+        user_prompt = input(f"\n>> Type a prompt (press Enter to use default prompt): ")
         prompt = user_prompt or default_prompt
 
         # Make the actual request to Ollama with our schema
@@ -38,7 +40,7 @@ def main():
         # Process the structured response
         result: dict = response['message']['content']
         print("\nReceived response from Ollama:")
-        print(result)
+        print(json.dumps(json.loads(result), indent=4))
 
     except Exception as e:
         print(f"\nAn error occurred: {e}")

@@ -10,74 +10,147 @@ from belso.utils.schema_helpers import (
     create_fallback_schema
 )
 
-# Get a module-specific logger
 logger = get_logger(__name__)
 
 def to_ollama(schema: Type[Schema]) -> Dict[str, Any]:
     """
-    Convert a belso schema to Ollama format.
+    Convert a belso schema to Ollama-compatible JSON Schema format.
     ---
     ### Args
-    - `schema` (`Type[belso.Schema]`): the belso schema to convert.
+    - `schema` (`Type[Schema]`): the belso schema to convert.
     ---
-    ### Returns:
-    - `Dict[str, Any]`: the converted schema.
+    ### Returns
+    - `Dict[str, Any]`: the converted JSON schema dictionary.
     """
     try:
-        schema_name = schema.__name__ if hasattr(schema, "__name__") else "unnamed"
+        schema_name = getattr(schema, "__name__", "unnamed")
         logger.debug(f"Starting translation of schema '{schema_name}' to Ollama format...")
 
-        if not hasattr(schema, "fields") or not schema.fields:
-            raise ValueError(f"Schema '{schema_name}' has no fields defined")
-
         def convert_field_to_property(field: BaseField) -> Dict[str, Any]:
-            if isinstance(field, NestedField):
-                nested_schema = to_ollama(field.schema)
-                return {
+            # Only supported fields in Ollama as per current API
+            supported_fields = [
+                "type",
+                "description",
+                "enum",
+                "default",
+                "minimum",
+                "maximum",
+                "exclusiveMinimum",
+                "exclusiveMaximum",
+                "minLength",
+                "maxLength",
+                "minItems",
+                "maxItems",
+                "pattern",
+                "multipleOf",
+                "format"
+            ]
+
+            def _range_props():
+                props = {}
+                if field.range_:
+                    props["minimum"] = field.range_[0]
+                    props["maximum"] = field.range_[1]
+                if field.exclusive_range:
+                    if field.exclusive_range[0]:
+                        props["exclusiveMinimum"] = field.range_[0]
+                    if field.exclusive_range[1]:
+                        props["exclusiveMaximum"] = field.range_[1]
+                return props
+
+            def _length_props():
+                props = {}
+                if field.length_range:
+                    props["minLength"] = field.length_range[0]
+                    props["maxLength"] = field.length_range[1]
+                return props
+
+            def _items_props():
+                props = {}
+                if field.items_range:
+                    props["minItems"] = field.items_range[0]
+                    props["maxItems"] = field.items_range[1]
+                return props
+
+            def _properties_props():
+                props = {}
+                if field.properties_range:
+                    props["minProperties"] = field.properties_range[0]
+                    props["maxProperties"] = field.properties_range[1]
+                return props
+
+            base = {
+                "type": map_python_to_json_type(getattr(field, "type_", str)),
+                "description": field.description
+            }
+            if field.default is not None:
+                base["default"] = field.default
+            if field.enum:
+                base["enum"] = field.enum
+            if field.regex:
+                base["pattern"] = field.regex
+            if field.multiple_of:
+                base["multipleOf"] = field.multiple_of
+            if field.format_:
+                base["format"] = field.format_
+
+            base.update(_range_props())
+            base.update(_length_props())
+            base.update(_items_props())
+            base.update(_properties_props())
+
+            # Reject unsupported fields in Ollama
+            unsupported = ["not_", "any_of", "one_of", "all_of"]
+            for attr in unsupported:
+                if getattr(field, attr, None):
+                    logger.warning(f"Ollama does not support field attribute '{attr}' — ignoring.")
+
+            return base
+
+        def convert_nested(field: NestedField) -> Dict[str, Any]:
+            nested = to_ollama(field.schema)
+            return {
+                "type": "object",
+                "description": field.description,
+                "properties": nested.get("properties", {}),
+                "required": nested.get("required", [])
+            }
+
+        def convert_array(field: ArrayField) -> Dict[str, Any]:
+            if hasattr(field, 'items_schema') and field.items_schema:
+                items_schema_dict = to_ollama(field.items_schema)
+                items_schema = {
                     "type": "object",
-                    "description": field.description,
-                    "properties": nested_schema.get("properties", {}),
-                    "required": nested_schema.get("required", [])
-                }
-            elif isinstance(field, ArrayField):
-                if hasattr(field, 'items_schema') and field.items_schema:
-                    items_schema_dict = to_ollama(field.items_schema)
-                    items_schema = {
-                        "type": "object",
-                        "properties": items_schema_dict.get("properties", {}),
-                        "required": items_schema_dict.get("required", [])
-                    }
-                else:
-                    items_schema = {"type": map_python_to_json_type(field.items_type)}
-                return {
-                    "type": "array",
-                    "description": field.description,
-                    "items": items_schema
+                    "properties": items_schema_dict.get("properties", {}),
+                    "required": items_schema_dict.get("required", [])
                 }
             else:
-                prop = {
-                    "type": map_python_to_json_type(field.type_),
-                    "description": field.description
-                }
-                if not field.required and field.default is not None:
-                    prop["default"] = field.default
-                return prop
+                items_schema = {"type": map_python_to_json_type(field.items_type)}
 
-        properties = {
-            field.name: convert_field_to_property(field)
-            for field in schema.fields
-        }
+            result = {
+                "type": "array",
+                "description": field.description,
+                "items": items_schema
+            }
+            if field.items_range:
+                result["minItems"] = field.items_range[0]
+                result["maxItems"] = field.items_range[1]
+            return result
 
-        required_fields = schema.get_required_fields()
+        properties = {}
+        for field in schema.fields:
+            if isinstance(field, NestedField):
+                properties[field.name] = convert_nested(field)
+            elif isinstance(field, ArrayField):
+                properties[field.name] = convert_array(field)
+            else:
+                properties[field.name] = convert_field_to_property(field)
 
-        ollama_schema = {
+        return {
             "type": "object",
             "properties": properties,
-            "required": required_fields
+            "required": schema.get_required_fields()
         }
-
-        logger.debug("Successfully created Ollama schema.")
-        return ollama_schema
 
     except Exception as e:
         logger.error(f"Error translating schema to Ollama format: {e}")
@@ -86,13 +159,13 @@ def to_ollama(schema: Type[Schema]) -> Dict[str, Any]:
 
 def from_ollama(schema: Dict[str, Any]) -> Type[Schema]:
     """
-    Convert an Ollama JSON schema to belso Schema format, including nested objects and arrays.
+    Convert an Ollama-compatible JSON schema into a belso Schema.
     ---
     ### Args
-    - `schema` (`Dict[str, Any]`): the JSON schema to convert.
+    - `schema` (`Dict[str, Any]`): the JSON schema dictionary.
     ---
     ### Returns
-    - `Type[Schema]`: a new belso Schema class.
+    - `Type[Schema]`: the converted belso Schema.
     """
     try:
         logger.debug("Starting conversion from Ollama schema to belso format...")
@@ -121,12 +194,7 @@ def from_ollama(schema: Dict[str, Any]) -> Type[Schema]:
                 }
                 nested_schema = from_ollama(nested_schema_dict)
                 ConvertedSchema.fields.append(
-                    NestedField(
-                        name=name,
-                        schema=nested_schema,
-                        description=description,
-                        required=required
-                    )
+                    NestedField(name=name, schema=nested_schema, description=description, required=required)
                 )
             elif prop_type == "array" and "items" in prop:
                 items = prop["items"]
@@ -138,33 +206,17 @@ def from_ollama(schema: Dict[str, Any]) -> Type[Schema]:
                     }
                     item_schema = from_ollama(item_schema_dict)
                     ConvertedSchema.fields.append(
-                        ArrayField(
-                            name=name,
-                            items_type=dict,
-                            description=description,
-                            required=required
-                        )
+                        ArrayField(name=name, items_type=dict, description=description, required=required)
                     )
                 else:
                     item_type = map_json_to_python_type(items.get("type", "string"))
                     ConvertedSchema.fields.append(
-                        ArrayField(
-                            name=name,
-                            items_type=item_type,
-                            description=description,
-                            required=required
-                        )
+                        ArrayField(name=name, items_type=item_type, description=description, required=required)
                     )
             else:
                 field_type = map_json_to_python_type(prop_type)
                 ConvertedSchema.fields.append(
-                    BaseField(
-                        name=name,
-                        type_=field_type,
-                        description=description,
-                        required=required,
-                        default=default
-                    )
+                    BaseField(name=name, type_=field_type, description=description, required=required, default=default)
                 )
 
         logger.debug("Successfully converted Ollama schema to belso schema.")

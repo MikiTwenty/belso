@@ -1,4 +1,4 @@
-from typing import Type, Optional, Any
+from typing import Type, Optional, Any, List, Dict
 
 from belso.schemas import Schema, BaseField
 from belso.utils.logging import get_logger
@@ -24,14 +24,39 @@ class NestedField(BaseField):
             schema: Type[Schema],
             description: str = "",
             required: bool = True,
-            **kwargs: Any
+            default: Optional[Any] = None,
+            enum: Optional[List[Any]] = None,
+            range_: Optional[tuple] = None,
+            exclusive_range: Optional[tuple] = None,
+            length_range: Optional[tuple] = None,
+            items_range: Optional[tuple] = None,
+            properties_range: Optional[tuple] = None,
+            regex: Optional[str] = None,
+            multiple_of: Optional[float] = None,
+            format_: Optional[str] = None,
+            not_: Optional[Dict] = None,
+            any_of: Optional[List[Dict]] = None,
+            one_of: Optional[List[Dict]] = None,
+            all_of: Optional[List[Dict]] = None
         ) -> None:
         super().__init__(
             name=name,
             type_=dict,
             description=description,
             required=required,
-            **kwargs
+            default=default,
+            enum=enum,
+            range_=range_,
+            exclusive_range=exclusive_range,
+            length_range=length_range,
+            items_range=items_range,
+            properties_range=properties_range,
+            regex=regex,
+            multiple_of=multiple_of,
+            format_=format_,
+            not_=not_,
+            any_of=any_of,
+            one_of=one_of
         )
         self.schema = schema
 
@@ -54,13 +79,38 @@ class ArrayField(BaseField):
             items_type: Type = str,
             description: str = "",
             required: bool = True,
-            **kwargs: Any
+            default: Optional[Any] = None,
+            enum: Optional[List[Any]] = None,
+            range_: Optional[tuple] = None,
+            exclusive_range: Optional[tuple] = None,
+            length_range: Optional[tuple] = None,
+            items_range: Optional[tuple] = None,
+            properties_range: Optional[tuple] = None,
+            regex: Optional[str] = None,
+            multiple_of: Optional[float] = None,
+            format_: Optional[str] = None,
+            not_: Optional[Dict] = None,
+            any_of: Optional[List[Dict]] = None,
+            one_of: Optional[List[Dict]] = None,
+            all_of: Optional[List[Dict]] = None
         ) -> None:
         super().__init__(
             name=name,
             type_=list,
             description=description,
             required=required,
-            **kwargs
+            default=default,
+            enum=enum,
+            range_=range_,
+            exclusive_range=exclusive_range,
+            length_range=length_range,
+            items_range=items_range,
+            properties_range=properties_range,
+            regex=regex,
+            multiple_of=multiple_of,
+            format_=format_,
+            not_=not_,
+            any_of=any_of,
+            one_of=one_of
         )
         self.items_type = items_type

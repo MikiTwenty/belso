@@ -20,7 +20,8 @@ class LightSchema(Schema):
         ),
         Field(
             name="temperature",
-            type_=list['warm', 'neutral', 'cold'],
+            type_=str,
+            enum=['warm', 'neutral', 'cold'],
             description="The temperature of the light, from warm to cold",
             required=True
         ),
@@ -67,8 +68,12 @@ def main():
 
     try:
         # Define the prompt that asks to turn off the lights
-        default_prompt = "Turn off all the lights in all the rooms in the house"
-        user_prompt = input(f"\n>> Type a prompt (press Enter for default: \"{default_prompt}\"): ")
+        default_prompt = (
+            "Turn on all the lights in all the room of the house,"
+            " set the brightness at 50% and the temperature to warm."
+        )
+        print(f"\nDefault prompt:\n\"{default_prompt}\"")
+        user_prompt = input(f"\n>> Type a prompt (press Enter to use default prompt): ")
         prompt = user_prompt or default_prompt
 
         # Make the actual request to Ollama with our schema
@@ -81,7 +86,7 @@ def main():
         # Process the structured response
         result: dict = response['message']['content']
         print("\nReceived response from Ollama:")
-        print(result)
+        print(json.dumps(json.loads(result), indent=4))
 
     except Exception as e:
         print(f"\nAn error occurred: {e}")

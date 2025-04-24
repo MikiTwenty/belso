@@ -71,7 +71,10 @@ class Field:
             properties_range=properties_range,
             regex=regex,
             multiple_of=multiple_of,
-            format_=format_
+            format_=format_,
+            not_=not_,
+            any_of=any_of,
+            one_of=one_of
         )
 
         # Handle list types (e.g., List[str], List[MySchema])
