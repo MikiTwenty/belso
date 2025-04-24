@@ -1,7 +1,9 @@
+# belso.translator.providers.anthropic
+
 from typing import Any, Dict, Type
 
-from belso.schemas import Schema, Field
 from belso.utils.logging import get_logger
+from belso.schemas import Schema, BaseField
 from belso.utils.schema_helpers import (
     map_json_to_python_type,
     build_properties_dict,
@@ -86,7 +88,7 @@ def from_anthropic(schema: Dict[str, Any]) -> Type[Schema]:
                 logger.debug(f"Property '{name}' has default value: {default}.")
 
             ConvertedSchema.fields.append(
-                Field(
+                BaseField(
                     name=name,
                     type=field_type,
                     description=description,

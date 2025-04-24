@@ -1,9 +1,11 @@
+# belso.translator.serialization.json_format
+
 import json
 from os import PathLike
 from pathlib import Path
 from typing import Dict, Any, Optional, Type, Union
 
-from belso.schemas import Schema, Field
+from belso.schemas import Schema, BaseField
 from belso.utils.logging import get_logger
 
 # Get a module-specific logger
@@ -45,7 +47,7 @@ def schema_to_json(
             # Only include default if it exists
             if field.default is not None:
                 field_json["default"] = field.default
-                logger.debug(f"Field '{field.name}' has default value: {field.default}.")
+                logger.debug(f"BaseField '{field.name}' has default value: {field.default}.")
 
             fields_json.append(field_json)
 
@@ -134,14 +136,14 @@ def json_to_schema(json_input: Union[Dict[str, Any], str]) -> Type[Schema]:
             # Get required status
             required = field_data.get("required", True)
             required_status = "required" if required else "optional"
-            logger.debug(f"Field '{field_name}' is {required_status}")
+            logger.debug(f"BaseField '{field_name}' is {required_status}")
 
             # Get default value if present
             default = field_data.get("default")
             if default is not None:
-                logger.debug(f"Field '{field_name}' has default value: {default}")
+                logger.debug(f"BaseField '{field_name}' has default value: {default}")
 
-            field = Field(
+            field = BaseField(
                 name=field_name,
                 type=field_type,
                 description=field_data.get("description", ""),
@@ -161,5 +163,5 @@ def json_to_schema(json_input: Union[Dict[str, Any], str]) -> Type[Schema]:
         logger.warning("Returning fallback schema due to conversion error.")
         class FallbackSchema(Schema):
             name = "FallbackSchema"
-            fields = [Field(name="text", type=str, description="Fallback field", required=True)]
+            fields = [BaseField(name="text", type=str, description="Fallback field", required=True)]
         return FallbackSchema

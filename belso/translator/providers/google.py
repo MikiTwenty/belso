@@ -1,9 +1,11 @@
+# belso.translator.providers.google
+
 from typing import Any, Type
 
 from google.ai.generativelanguage_v1beta.types import content
 
-from belso.schemas import Schema, Field
 from belso.utils.logging import get_logger
+from belso.schemas import Schema, BaseField
 from belso.utils.schema_helpers import create_fallback_schema
 
 logger = get_logger(__name__)
@@ -106,7 +108,7 @@ def from_google(schema: content.Schema) -> Type[Schema]:
             logger.debug(f"Converting property '{name}' of Google type '{prop.type}' to Python type '{field_type.__name__}'...")
 
             ConvertedSchema.fields.append(
-                Field(
+                BaseField(
                     name=name,
                     type=field_type,
                     description=description,

@@ -1,3 +1,5 @@
+# belso.validator.validator
+
 import json
 from typing import Any, Dict, Type, Union
 
@@ -59,7 +61,7 @@ class SchemaValidator:
 
                     # Skip None values for non-required fields
                     if value is None and not field.required:
-                        logger.debug(f"Field '{field.name}' has None value, which is allowed for optional fields.")
+                        logger.debug(f"BaseField '{field.name}' has None value, which is allowed for optional fields.")
                         continue
 
                     # Log the field being validated
@@ -74,9 +76,9 @@ class SchemaValidator:
                         else:
                             value_type = type(value).__name__
                             logger.error(f"Type mismatch for field '{field.name}': expected '{field_type}', got '{value_type}'.")
-                            raise TypeError(f"Field '{field.name}' expected type {field_type}, got {value_type}.")
+                            raise TypeError(f"BaseField '{field.name}' expected type {field_type}, got {value_type}.")
                     else:
-                        logger.debug(f"Field '{field.name}' passed type validation.")
+                        logger.debug(f"BaseField '{field.name}' passed type validation.")
 
             logger.debug("All fields passed validation.")
             return data

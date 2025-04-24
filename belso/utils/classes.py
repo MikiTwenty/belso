@@ -1,3 +1,5 @@
+# belso.utils.classes
+
 class PROVIDERS:
     """
     A class that provides constants for supported schema providers.

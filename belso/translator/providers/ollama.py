@@ -1,7 +1,9 @@
+# belso.translator.providers.ollama
+
 from typing import Any, Dict, Type
 
-from belso.schemas import Schema, Field
 from belso.utils.logging import get_logger
+from belso.schemas import Schema, BaseField
 from belso.utils.schema_helpers import (
     map_json_to_python_type,
     build_properties_dict,
@@ -84,7 +86,7 @@ def from_ollama(schema: Dict[str, Any]) -> Type[Schema]:
             logger.debug(f"Converting property '{name}' of JSON Schema type '{prop_type}' to Python type '{field_type.__name__}'...")
 
             ConvertedSchema.fields.append(
-                Field(
+                BaseField(
                     name=name,
                     type=field_type,
                     description=description,

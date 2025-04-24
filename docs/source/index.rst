@@ -29,7 +29,7 @@ Quick Start
 .. code-block:: python
 
    from belso.utils import PROVIDERS
-   from belso.schemas import Schema, Field
+   from belso.schemas import Schema, BaseField
    from belso.validator import SchemaValidator
    from belso.translator import SchemaTranslator
 
@@ -37,8 +37,8 @@ Quick Start
    class UserSchema(Schema):
        name = "UserSchema"
        fields = [
-           Field(name="name", type=str, description="User's name", required=True),
-           Field(name="age", type=int, description="User's age", required=True)
+           BaseField(name="name", type=str, description="User's name", required=True),
+           BaseField(name="age", type=int, description="User's age", required=True)
        ]
 
    # Translate to OpenAI format

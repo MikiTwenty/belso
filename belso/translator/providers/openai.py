@@ -1,9 +1,12 @@
+# belso.translator.providers.openai
+
 from typing import Type
 
 from pydantic import create_model, Field as PydanticField, BaseModel
 
-from belso.schemas import Schema, Field
+
 from belso.utils.logging import get_logger
+from belso.schemas import Schema, BaseField
 from belso.utils.schema_helpers import create_fallback_schema
 
 # Replace standard logger with our custom logger
@@ -31,11 +34,11 @@ def to_openai(schema: Type[Schema]) -> Type[BaseModel]:
             logger.debug(f"Processing field '{field.name}' of type '{field_type.__name__}'...")
 
             if not field.required and field.default is not None:
-                logger.debug(f"Field '{field.name}' is optional with default value: {field.default}.")
+                logger.debug(f"BaseField '{field.name}' is optional with default value: {field.default}.")
                 field_definitions[field.name] = (field_type, PydanticField(default=field.default, description=field.description))
             else:
                 required_status = "required" if field.required else "optional without default"
-                logger.debug(f"Field '{field.name}' is {required_status}.")
+                logger.debug(f"BaseField '{field.name}' is {required_status}.")
                 field_definitions[field.name] = (field_type, PydanticField(description=field.description))
 
         # Create a Pydantic model dynamically
@@ -89,34 +92,34 @@ def from_openai(schema: Type[BaseModel]) -> Type[Schema]:
             # Extract field type
             if hasattr(field_info, "annotation"):
                 field_type = field_info.annotation
-                logger.debug(f"Field '{name}' has type annotation: {field_type}")
+                logger.debug(f"BaseField '{name}' has type annotation: {field_type}")
             elif hasattr(field_info, "type_"):
                 field_type = field_info.type_
-                logger.debug(f"Field '{name}' has type_: {field_type}")
+                logger.debug(f"BaseField '{name}' has type_: {field_type}")
             else:
                 field_type = str  # Default to string
-                logger.debug(f"Field '{name}' has no type information, defaulting to str.")
+                logger.debug(f"BaseField '{name}' has no type information, defaulting to str.")
 
             # Extract description
             description = ""
             if hasattr(field_info, "description"):
                 description = field_info.description
-                logger.debug(f"Field '{name}' has description: '{description}'.")
+                logger.debug(f"BaseField '{name}' has description: '{description}'.")
 
             # Extract required status
             required = True
             if hasattr(field_info, "default") and field_info.default is not None:
                 required = False
-                logger.debug(f"Field '{name}' is optional with default value.")
+                logger.debug(f"BaseField '{name}' is optional with default value.")
 
             # Extract default value
             default = None
             if hasattr(field_info, "default") and field_info.default is not None:
                 default = field_info.default
-                logger.debug(f"Field '{name}' has default value: {default}.")
+                logger.debug(f"BaseField '{name}' has default value: {default}.")
 
             ConvertedSchema.fields.append(
-                Field(
+                BaseField(
                     name=name,
                     type=field_type,
                     description=description,

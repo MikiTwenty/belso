@@ -1,1 +1,3 @@
-__version__ = "0.0.1"
+# belso.version
+
+__version__ = "0.0.2"

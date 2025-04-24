@@ -1,3 +1,5 @@
+# belso.translator.serialization.__init__
+
 from belso.translator.serialization.json_format import (
     schema_to_json,
     json_to_schema

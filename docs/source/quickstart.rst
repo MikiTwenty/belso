@@ -9,17 +9,17 @@ Basic Usage
 1. Define a Schema
 ~~~~~~~~~~~~~~~~~~
 
-First, define your schema using belso's Schema and Field classes:
+First, define your schema using belso's Schema and BaseField classes:
 
 .. code-block:: python
 
-   from belso.schemas import Schema, Field
+   from belso.schemas import Schema, BaseField
 
    class UserSchema(Schema):
        name = "UserSchema"
        fields = [
-           Field(name="name", type=str, description="User's name", required=True),
-           Field(name="age", type=int, description="User's age", required=True)
+           BaseField(name="name", type=str, description="User's name", required=True),
+           BaseField(name="age", type=int, description="User's age", required=True)
        ]
 
 2. Translate to Provider Format

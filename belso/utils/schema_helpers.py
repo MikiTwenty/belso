@@ -1,6 +1,8 @@
+# belso.utils.schema_helpers
+
 from typing import Dict, Type, Any
 
-from belso.schemas import Schema, Field
+from belso.schemas import Schema, BaseField
 
 # Common type mappings
 PYTHON_TO_JSON_TYPE_MAPPING = {
@@ -37,7 +39,7 @@ def create_fallback_schema() -> Type[Schema]:
     """
     class FallbackSchema(Schema):
         name = "FallbackSchema"
-        fields = [Field(name="text", type=str, description="Fallback field", required=True)]
+        fields = [BaseField(name="text", type=str, description="Fallback field", required=True)]
     return FallbackSchema
 
 def map_python_to_json_type(field_type: Type) -> str:

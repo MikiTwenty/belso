@@ -1,3 +1,5 @@
+# belso.tranlator.serialization.xml_format
+
 from os import PathLike
 from pathlib import Path
 from typing import Optional
@@ -5,7 +7,7 @@ import xml.dom.minidom as minidom
 import xml.etree.ElementTree as ET
 from typing import Any, Type, Union
 
-from belso.schemas import Schema, Field
+from belso.schemas import Schema, BaseField
 from belso.utils.logging import get_logger
 
 # Get a module-specific logger
@@ -46,23 +48,23 @@ def schema_to_xml(
             # Convert Python type to string representation
             type_str = field.type.__name__ if hasattr(field.type, "__name__") else str(field.type)
             field_elem.set("type", type_str)
-            logger.debug(f"Field '{field.name}' has type: {type_str}.")
+            logger.debug(f"BaseField '{field.name}' has type: {type_str}.")
 
             field_elem.set("required", str(field.required).lower())
             required_status = "required" if field.required else "optional"
-            logger.debug(f"Field '{field.name}' is {required_status}")
+            logger.debug(f"BaseField '{field.name}' is {required_status}")
 
             # Add description as a child element
             if field.description:
                 desc_elem = ET.SubElement(field_elem, "description")
                 desc_elem.text = field.description
-                logger.debug(f"Field '{field.name}' has description: '{field.description}'.")
+                logger.debug(f"BaseField '{field.name}' has description: '{field.description}'.")
 
             # Add default value if it exists
             if field.default is not None:
                 default_elem = ET.SubElement(field_elem, "default")
                 default_elem.text = str(field.default)
-                logger.debug(f"Field '{field.name}' has default value: {field.default}.")
+                logger.debug(f"BaseField '{field.name}' has default value: {field.default}.")
 
         # Convert to string with pretty formatting
         logger.debug("Converting XML to string with pretty formatting...")
@@ -166,13 +168,13 @@ def xml_to_schema(xml_input: Union[str, ET.Element]) -> Type[Schema]:
                 required_str = field_elem.get("required", "true")
                 required = required_str.lower() == "true"
                 required_status = "required" if required else "optional"
-                logger.debug(f"Field '{name}' is {required_status}.")
+                logger.debug(f"BaseField '{name}' is {required_status}.")
 
                 # Get description
                 desc_elem = field_elem.find("description")
                 description = desc_elem.text if desc_elem is not None and desc_elem.text else ""
                 if description:
-                    logger.debug(f"Field '{name}' has description: '{description}'.")
+                    logger.debug(f"BaseField '{name}' has description: '{description}'.")
 
                 # Get default value
                 default = None
@@ -187,9 +189,9 @@ def xml_to_schema(xml_input: Union[str, ET.Element]) -> Type[Schema]:
                         default = float(default_elem.text)
                     else:
                         default = default_elem.text
-                    logger.debug(f"Field '{name}' has default value: {default}.")
+                    logger.debug(f"BaseField '{name}' has default value: {default}.")
 
-                field = Field(
+                field = BaseField(
                     name=name,
                     type=field_type,
                     description=description,
@@ -209,5 +211,5 @@ def xml_to_schema(xml_input: Union[str, ET.Element]) -> Type[Schema]:
         logger.warning("Returning fallback schema due to conversion error.")
         class FallbackSchema(Schema):
             name = "FallbackSchema"
-            fields = [Field(name="text", type=str, description="Fallback field", required=True)]
+            fields = [BaseField(name="text", type=str, description="Fallback field", required=True)]
         return FallbackSchema

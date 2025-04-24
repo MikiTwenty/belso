@@ -1,13 +1,15 @@
+# belso.schemas.nested
+
 from typing import Type, Optional
 
-from belso.schemas import Schema, Field
+from belso.schemas import Schema, BaseField
 from belso.utils.logging import get_logger
 
 logger = get_logger(__name__)
 
-class NestedField(Field):
+class NestedField(BaseField):
     """
-    Field class for nested schemas.
+    BaseField class for nested schemas.
     """
     def __init__(
             self,
@@ -22,15 +24,15 @@ class NestedField(Field):
         ### Args
         - `name` (`str`): the name of the field.
         - `schema` (`Type[Schema]`): the nested schema.
-        - `description` (`Optional[str]`): the description of the field. Defaults to an empty string.
-        - `required` (`Optional[bool]`): whether the field is required. Defaults to `True`.
+        - `description` (`str`): the description of the field. Defaults to an empty string.
+        - `required` (`bool`): whether the field is required. Defaults to `True`.
         """
         super().__init__(name=name, type=dict, description=description, required=required)
         self.schema = schema
 
-class ArrayField(Field):
+class ArrayField(BaseField):
     """
-    Field class for arrays of items.
+    BaseField class for arrays of items.
     """
     def __init__(
             self,
@@ -45,10 +47,10 @@ class ArrayField(Field):
         ---
         ### Args
         - `name` (`str`): the name of the field.
-        - `items_type` (`Type`, optional): the type of items in the array. Defaults to `str`.
-        - `items_schema` (`Type[Schema]`, optional): the schema of items in the array. Defaults to `None`.
-        - `description` (`str`, optional): the description of the field. Defaults to an empty string.
-        - `required` (`bool`, optional): whether the field is required. Defaults to `True`.
+        - `items_type` (`Type`): the type of items in the array. Defaults to `str`.
+        - `items_schema` (`Type[Schema]`): the schema of items in the array. Defaults to `None`.
+        - `description` (`str`): the description of the field. Defaults to an empty string.
+        - `required` (`bool`): whether the field is required. Defaults to `True`.
         """
         super().__init__(name=name, type=list, description=description, required=required)
         self.items_type = items_type
