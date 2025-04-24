@@ -27,7 +27,7 @@ class NestedField(BaseField):
         - `description` (`str`): the description of the field. Defaults to an empty string.
         - `required` (`bool`): whether the field is required. Defaults to `True`.
         """
-        super().__init__(name=name, type=dict, description=description, required=required)
+        super().__init__(name=name, type_hint=dict, description=description, required=required)
         self.schema = schema
 
 class ArrayField(BaseField):
@@ -50,5 +50,5 @@ class ArrayField(BaseField):
         - `description` (`str`): the description of the field. Defaults to an empty string.
         - `required` (`bool`): whether the field is required. Defaults to `True`.
         """
-        super().__init__(name=name, type=list, description=description, required=required)
+        super().__init__(name=name, type_hint=list, description=description, required=required)
         self.items_type = items_type

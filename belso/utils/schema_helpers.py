@@ -23,13 +23,6 @@ JSON_TO_PYTHON_TYPE_MAPPING = {
     "object": dict
 }
 
-SUPPORT_NESTED_SCHEMA = [
-    "openai",
-    "google",
-    "anthropic",
-    "mistral"
-]
-
 def create_fallback_schema() -> Type[Schema]:
     """
     Create a standard fallback schema when conversion fails.\n
@@ -100,35 +93,3 @@ def build_properties_dict(schema: Type[Schema]) -> Dict[str, Dict[str, Any]]:
         properties[field.name] = property_def
 
     return properties
-
-def is_schema_supported(
-        schema: Type[Schema],
-        provider: str
-    ) -> bool:
-    """
-    Check if a schema is supported by a provider.\n
-    ---
-    ### Args
-    - `schema` (`Type[belso.Schema]`): the schema to check.
-    - `provider` (`str`): the provider to check against.\n
-    ---
-    ### Returns
-    - `bool`: `True` if the schema is supported, `False` otherwise.
-    """
-    # Basic support check - can be extended with provider-specific logic
-    if not hasattr(schema, "fields") or not schema.fields:
-        return False
-
-    # Verifica se lo schema è annidato
-    has_nested_schema = False
-    for field in schema.fields:
-        if issubclass(field.type_hint, Schema):
-            has_nested_schema = True
-            break
-
-    # Se lo schema è annidato, verifica se il provider lo supporta
-    if has_nested_schema:
-        return provider.lower() in SUPPORT_NESTED_SCHEMA
-
-    # Se lo schema non è annidato, tutti i provider lo supportano
-    return True

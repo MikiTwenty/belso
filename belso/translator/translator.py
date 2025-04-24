@@ -30,10 +30,7 @@ from belso.translator.serialization import (
 )
 from belso.utils import PROVIDERS
 from belso.utils.logging import get_logger
-from belso.utils.schema_helpers import (
-    is_schema_supported,
-    create_fallback_schema
-)
+from belso.utils.schema_helpers import create_fallback_schema
 
 # Get a module-specific logger
 logger = get_logger(__name__)
@@ -72,7 +69,7 @@ class Translator:
         - `from_format` (`Optional[str]`): optional format hint for the input schema. If `None`, the format will be auto-detected. Defaults to `None`.\n
         ---
         ### Returns
-        - `Union[Dict[str, Any], Type[pydantic.BaseModel], str]`: the converted schema.
+        - `Dict[str, Any]` | `Type[pydantic.BaseModel]` | `str`: the converted schema.
         """
         try:
             logger.debug(f"Starting schema translation to '{to}' format...")
@@ -93,9 +90,6 @@ class Translator:
             else:
                 logger.debug("Schema is already in belso format, no conversion needed.")
                 belso_schema = schema
-
-            if not is_schema_supported(belso_schema, to):
-                return create_fallback_schema(belso_schema)
 
             # Translate to target format
             logger.debug(f"Translating from belso format to '{to}' format...")
