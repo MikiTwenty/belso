@@ -1,5 +1,3 @@
-import json
-
 from belso.utils import PROVIDERS
 from belso import Schema, Field, SchemaProcessor
 
@@ -14,9 +12,9 @@ class CustomSchema(Schema):
     ]
 SchemaProcessor.display(CustomSchema)
 
-ollama_schema = SchemaProcessor.translate(CustomSchema, to=PROVIDERS.OLLAMA)
-openai_schema = SchemaProcessor.translate(ollama_schema, to=PROVIDERS.OPENAI)
-belso_schema = SchemaProcessor.standardize(openai_schema)
+schema = SchemaProcessor.translate(CustomSchema, to=PROVIDERS.OLLAMA)
+schema = SchemaProcessor.translate(schema, to=PROVIDERS.OPENAI)
+schema = SchemaProcessor.translate(schema, to=PROVIDERS.GOOGLE)
+schema = SchemaProcessor.standardize(schema)
 
-SchemaProcessor.display(CustomSchema)
-
+SchemaProcessor.display(schema)

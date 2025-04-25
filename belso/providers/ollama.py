@@ -154,12 +154,16 @@ def to_ollama(schema: Type[Schema]) -> Dict[str, Any]:
         return {}
 
 
-def from_ollama(schema: Dict[str, Any]) -> Type[Schema]:
+def from_ollama(
+        schema: Dict[str, Any],
+        name_prefix: str = "Converted"
+    ) -> Type[Schema]:
     """
     Convert a Ollama schema to belso format.\n
     ---
     ### Args
-    - `schema` (`Dict[str, Any]`): the schema to convert.\n
+    - `schema` (`Dict[str, Any]`): the schema to convert.
+    - `name_prefix` (`str`, optional): the prefix to add to the schema name. Defaults to "Converted".\n
     ---
     ### Returns
     - `Type[belso.Schema]`: the converted belso schema.
@@ -170,9 +174,8 @@ def from_ollama(schema: Dict[str, Any]) -> Type[Schema]:
         if not isinstance(schema, dict) or "properties" not in schema:
             raise ValueError("Invalid Ollama schema format: missing 'properties'")
 
-        class ConvertedSchema(Schema):
-            name = "ConvertedFromOllama"
-            fields = []
+        schema_class_name = f"{name_prefix}Schema"
+        ConvertedSchema = type(schema_class_name, (Schema,), {"fields": []})
 
         properties = schema.get("properties", {})
         required_fields = set(schema.get("required", []))
@@ -190,7 +193,7 @@ def from_ollama(schema: Dict[str, Any]) -> Type[Schema]:
                     "properties": prop.get("properties", {}),
                     "required": prop.get("required", [])
                 }
-                nested_schema = from_ollama(nested_schema_dict)
+                nested_schema = from_ollama(nested_schema_dict, name_prefix=f"{name_prefix}_{name}")
                 ConvertedSchema.fields.append(
                     NestedField(
                         name=name,
@@ -209,7 +212,7 @@ def from_ollama(schema: Dict[str, Any]) -> Type[Schema]:
                         "properties": items.get("properties", {}),
                         "required": items.get("required", [])
                     }
-                    item_schema = from_ollama(item_schema_dict)
+                    item_schema = from_ollama(item_schema_dict, name_prefix=f"{name_prefix}_{name}")
                     ConvertedSchema.fields.append(
                         ArrayField(
                             name=name,
