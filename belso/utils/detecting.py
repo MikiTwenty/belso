@@ -57,19 +57,13 @@ def detect_schema_format(schema: Any) -> str:
 
         # Check if it's a JSON Schema-based format (Anthropic, Ollama, Mistral, etc.)
         if isinstance(schema, dict):
-            # Check for JSON Schema identifier
-            if "$schema" in schema and "http://json-schema.org" in schema["$schema"]:
-                # Differentiate between providers that use JSON Schema
-                if "title" in schema and isinstance(schema["title"], str):
-                    _logger.debug("Detected LangChain schema format.")
-                    return "langchain"
-                else:
-                    # Both Anthropic and Mistral use JSON Schema, try to differentiate
-                    # This is a simplistic approach - in practice you might need more specific checks
-                    _logger.debug("Detected JSON Schema format (Anthropic/Mistral).")
-                    return "anthropic"  # Default to Anthropic if can't differentiate
-            elif "type" in schema and schema["type"] == "object" and "properties" in schema:
-                # Basic check for Ollama/Hugging Face schema
+            # Check for Anthropic-style $schema
+            if "$schema" in schema and "json-schema.org" in schema["$schema"]:
+                _logger.debug("Detected JSON Schema format (Anthropic/Mistral).")
+                return "anthropic"
+
+            # Check for Ollama-like structure
+            if "type" in schema and schema["type"] == "object" and "properties" in schema:
                 if "title" in schema:
                     _logger.debug("Detected LangChain schema format.")
                     return "langchain"
@@ -79,14 +73,9 @@ def detect_schema_format(schema: Any) -> str:
                 else:
                     _logger.debug("Detected Ollama schema format.")
                     return "ollama"
-            elif "name" in schema and "fields" in schema and isinstance(schema["fields"], list):
-                # Check for our JSON format
-                _logger.debug("Detected belso JSON schema format.")
-                return "json"
-            _logger.debug("Dictionary input detected, but not recognized as a known schema format.")
 
-        _logger.warning("Unable to detect schema format. Returning 'unknown'.")
-        return "unknown"
+                _logger.warning("Unable to detect schema format. Returning 'unknown'.")
+                return "unknown"
 
     except Exception as e:
         _logger.error(f"Error during schema format detection: {e}")
