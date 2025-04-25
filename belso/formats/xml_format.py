@@ -1,4 +1,4 @@
-# belso.tranlator.serialization.xml_format
+# belso.formats.xml_format
 
 from os import PathLike
 from pathlib import Path
@@ -7,8 +7,9 @@ import xml.dom.minidom as minidom
 import xml.etree.ElementTree as ET
 from typing import Any, Type, Union
 
-from belso.schemas import Schema, BaseField
-from belso.utils.logging import get_logger
+from belso.utils import get_logger
+from belso.core import Schema, BaseField
+from belso.utils.helpers import create_fallback_schema
 
 # Get a module-specific logger
 logger = get_logger(__name__)
@@ -208,14 +209,4 @@ def xml_to_schema(xml_input: Union[str, ET.Element]) -> Type[Schema]:
         logger.debug("Conversion error details", exc_info=True)
         # Return a minimal schema if conversion fails
         logger.warning("Returning fallback schema due to conversion error.")
-        class FallbackSchema(Schema):
-            name = "FallbackSchema"
-            fields = [
-                BaseField(
-                    name="text",
-                    type_=str,
-                    description="Fallback field",
-                    required=True
-                )
-            ]
-        return FallbackSchema
+        return create_fallback_schema()

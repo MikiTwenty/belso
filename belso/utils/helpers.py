@@ -1,8 +1,8 @@
-# belso.utils.schema_helpers
+# belso.utils.helpers
 
 from typing import Dict, Type, Any
 
-from belso.schemas import Schema, BaseField
+from belso.core import Schema, BaseField
 
 # Common type mappings
 PYTHON_TO_JSON_TYPE_MAPPING = {

@@ -29,23 +29,11 @@ Convert your schema to a specific provider format:
 
 .. code-block:: python
 
-    from belso import Translator
+    from belso import SchemaProcessor
     from belso.utils import PROVIDERS
 
     # Convert to OpenAI format
-    openai_schema = Translator.translate(UserSchema, to=PROVIDERS.OPENAI)
+    openai_schema = SchemaProcessor.translate(UserSchema, to=PROVIDERS.OPENAI)
 
     # Convert to Anthropic format
-    anthropic_schema = Translator.translate(UserSchema, to=PROVIDERS.ANTHROPIC)
-
-3. Validate Data
-~~~~~~~~~~~~~~~~
-
-Validate data against your schema:
-
-.. code-block:: python
-
-   from belso import Validator
-
-   data = {"name": "John", "age": 30}
-   validated_data = Validator.validate(data, UserSchema)
+    anthropic_schema = SchemaProcessor.translate(UserSchema, to=PROVIDERS.ANTHROPIC)

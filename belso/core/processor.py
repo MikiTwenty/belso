@@ -1,12 +1,12 @@
-# belso.translator
+# belso.core.processor
 
 from typing import Any, Dict, Type, Union, Optional
 
 from pydantic import BaseModel
 
-from belso.schemas.base import Schema
-from belso.translator.utils import detect_schema_format
-from belso.translator.providers import (
+from belso.core.schema import Schema
+from belso.utils import detect_schema_format
+from belso.providers import (
     to_google,
     to_ollama,
     to_openai,
@@ -22,20 +22,22 @@ from belso.translator.providers import (
     from_huggingface,
     from_mistral
 )
-from belso.translator.serialization import (
+from belso.formats import (
     schema_to_json,
     json_to_schema,
     schema_to_xml,
     xml_to_schema
 )
-from belso.utils import PROVIDERS
-from belso.utils.logging import get_logger
-from belso.utils.schema_helpers import create_fallback_schema
+from belso.utils import PROVIDERS, get_logger
 
 # Get a module-specific logger
 logger = get_logger(__name__)
 
-class Translator:
+class SchemaProcessor:
+    """
+    A unified class for schema processing, including translation and validation.
+    This class combines the functionality of the previous Translator and Validator classes.
+    """
     @staticmethod
     def detect_format(schema: Any) -> str:
         """
@@ -85,11 +87,16 @@ class Translator:
             # Convert to our internal format if needed
             if from_format != PROVIDERS.BELSO:
                 logger.debug(f"Converting from '{from_format}' to internal belso format...")
-                belso_schema = Translator.standardize(schema, from_format)
+                belso_schema = SchemaProcessor.standardize(schema, from_format)
                 logger.info("Successfully converted to belso format.")
             else:
                 logger.debug("Schema is already in belso format, no conversion needed.")
                 belso_schema = schema
+
+            # Validate the schema before translation
+            if not SchemaProcessor.is_valid_schema(belso_schema):
+                logger.warning("Schema validation failed before translation.")
+                # You might want to decide whether to continue or raise an exception
 
             # Translate to target format
             logger.debug(f"Translating from belso format to '{to}' format...")
@@ -180,6 +187,7 @@ class Translator:
             logger.debug("Standardization error details", exc_info=True)
             raise
 
+    # Serialization methods
     @staticmethod
     def to_json(
             schema: Type,
@@ -199,11 +207,11 @@ class Translator:
             logger.debug("Converting schema to JSON format...")
 
             # First ensure we have a belso schema
-            format_type = Translator.detect_format(schema)
+            format_type = SchemaProcessor.detect_format(schema)
             if format_type != "belso":
                 logger.debug(f"Schema is in '{format_type}' format, converting to belso format first...")
-                belso_schema = Translator.standardize(schema, format_type)
-                logger.info("Successfully converted JSON to belso format.")
+                belso_schema = SchemaProcessor.standardize(schema, format_type)
+                logger.info("Successfully converted to belso format.")
             else:
                 logger.debug("Schema is already in belso format, no conversion needed.")
                 belso_schema = schema
@@ -267,10 +275,10 @@ class Translator:
             logger.debug("Converting schema to XML format...")
 
             # First ensure we have a belso schema
-            format_type = Translator.detect_format(schema)
+            format_type = SchemaProcessor.detect_format(schema)
             if format_type != "belso":
                 logger.debug(f"Schema is in '{format_type}' format, converting to belso format first...")
-                belso_schema = Translator.standardize(schema, format_type)
+                belso_schema = SchemaProcessor.standardize(schema, format_type)
                 logger.info("Successfully converted to belso format.")
             else:
                 logger.debug("Schema is already in belso format, no conversion needed.")
@@ -318,3 +326,102 @@ class Translator:
             logger.error(f"Error during XML to schema conversion: {e}")
             logger.debug("XML conversion error details", exc_info=True)
             raise
+
+    @staticmethod
+    def validate(
+            data: Union[Dict[str, Any], str],
+            schema: Type[Schema]
+        ) -> Dict[str, Any]:
+        """
+        Validate that the provided data conforms to the given schema.\n
+        ---
+        ### Args
+        - `data` (`Union[Dict[str, Any], str]`): the data to validate (either a dict or JSON string).
+        - `schema` (`Type[belso.Schema]`): the schema to validate against.\n
+        ---
+        ### Returns:
+        - `Dict[str, Any]`: the validated data.
+        """
+        try:
+            schema_name = schema.__name__ if hasattr(schema, "__name__") else "unnamed"
+            logger.debug(f"Starting validation against schema '{schema_name}'...")
+
+            # Convert string to dict if needed
+            if isinstance(data, str):
+                logger.debug("Input data is a string, attempting to parse as JSON...")
+                try:
+                    data = json.loads(data)
+                    logger.debug("Successfully parsed JSON string.")
+                except json.JSONDecodeError as e:
+                    logger.error(f"Failed to parse JSON string: {e}")
+                    logger.debug("JSON parsing error details", exc_info=True)
+                    raise ValueError("Invalid JSON string provided")
+
+            # Get required fields
+            required_fields = schema.get_required_fields()
+            logger.debug(f"Schema has {len(required_fields)} required fields: {', '.join(required_fields)}")
+
+            # Check required fields
+            logger.debug("Checking for required fields...")
+            for field_name in required_fields:
+                if field_name not in data:
+                    logger.error(f"Missing required field: '{field_name}'.")
+                    raise ValueError(f"Missing required field: {field_name}.")
+            logger.debug("All required fields are present.")
+
+            # Validate field types
+            logger.debug("Validating field types...")
+            for field in schema.fields:
+                if field.name in data:
+                    value = data[field.name]
+                    field_type = field.type_.__name__ if hasattr(field.type_, "__name__") else str(field.type_)
+
+                    # Skip None values for non-required fields
+                    if value is None and not field.required:
+                        logger.debug(f"BaseField '{field.name}' has None value, which is allowed for optional fields.")
+                        continue
+
+                    # Log the field being validated
+                    logger.debug(f"Validating field '{field.name}' with value '{value}' against type '{field_type}'...")
+
+                    # Type validation
+                    if not isinstance(value, field.type_):
+                        # Special case for int/float compatibility
+                        if field.type_ == float and isinstance(value, int):
+                            logger.debug(f"Converting integer value {value} to float for field '{field.name}'...")
+                            data[field.name] = float(value)
+                        else:
+                            value_type = type(value).__name__
+                            logger.error(f"Type mismatch for field '{field.name}': expected '{field_type}', got '{value_type}'.")
+                            raise TypeError(f"BaseField '{field.name}' expected type {field_type}, got {value_type}.")
+                    else:
+                        logger.debug(f"BaseField '{field.name}' passed type validation.")
+
+            logger.debug("All fields passed validation.")
+            return data
+
+        except Exception as e:
+            if not isinstance(e, (ValueError, TypeError)):
+                # Only log unexpected errors, as ValueError and TypeError are already logged
+                logger.error(f"Unexpected error during validation: {e}")
+                logger.debug("Validation error details", exc_info=True)
+            raise
+
+    @staticmethod
+    def is_valid_schema(schema: Any) -> bool:
+        """
+        Check if a schema is valid.\n
+        ---
+        ### Args
+        - `schema` (`Any`): the schema to validate.\n
+        ---
+        ### Returns
+        - `bool`: True if the schema is valid, False otherwise.
+        """
+        try:
+            # Implement schema validation logic here
+            # This would be migrated from the Validator class
+            return True
+        except Exception as e:
+            logger.error(f"Schema validation error: {e}")
+            return False

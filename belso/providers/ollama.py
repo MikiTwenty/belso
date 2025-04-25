@@ -1,9 +1,9 @@
 from typing import Any, Dict, Type
 
-from belso.utils.logging import get_logger
-from belso.schemas import Schema, BaseField
-from belso.schemas.nested import NestedField, ArrayField
-from belso.utils.schema_helpers import (
+from belso.utils import get_logger
+from belso.core import Schema, BaseField
+from belso.core.field import NestedField, ArrayField
+from belso.utils.helpers import (
     map_json_to_python_type,
     map_python_to_json_type,
     create_fallback_schema

@@ -1,12 +1,12 @@
-# belso.translator.providers.openai
+# belso.providers.openai
 
 from typing import Type, Optional, List
 from pydantic import create_model, Field as PydanticField, BaseModel
 
-from belso.utils.logging import get_logger
-from belso.schemas import Schema, BaseField
-from belso.schemas.nested import NestedField, ArrayField
-from belso.utils.schema_helpers import create_fallback_schema
+from belso.utils import get_logger
+from belso.core import Schema, BaseField
+from belso.core.field import NestedField, ArrayField
+from belso.utils.helpers import create_fallback_schema
 
 logger = get_logger(__name__)
 

@@ -1,5 +1,7 @@
-from typing import Any, List, Optional, Type, ClassVar, Tuple, Union
-from belso.utils.logging import get_logger
+# belso.core.schema
+
+from belso.utils import get_logger
+from typing import Any, List, Optional, Type, ClassVar, Tuple
 
 logger = get_logger(__name__)
 

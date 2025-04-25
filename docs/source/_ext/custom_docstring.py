@@ -2,8 +2,9 @@ import re
 from sphinx.application import Sphinx
 
 class CustomDocstringProcessor:
-    """Process custom docstring format to make it compatible with Sphinx."""
-
+    """
+    Process custom docstring format to make it compatible with Sphinx.
+    """
     def __init__(self):
         self.docstring = []
 
@@ -12,10 +13,10 @@ class CustomDocstringProcessor:
         Process the docstring to convert custom format to bullet-list reST with fallback logic.\n
         ---
         ### Args
-        - `docstring` (`list[str]`): The docstring to process.\n
+        - `docstring` (`list[str]`): the docstring to process.\n
         ---
         ### Returns
-        - `list[str]`: The processed docstring lines.
+        - `list[str]`: the processed docstring lines.
         """
         if not docstring:
             return []
@@ -104,10 +105,10 @@ class CustomDocstringProcessor:
         Replace markdown-style `inline code` with reST ``inline code``.\n
         ---
         ### Args
-        - `text` (`str`): The text to process.
+        - `text` (`str`): the text to process.\n
         ---
         ### Returns
-        - `str`: Text with inline code blocks rendered in reST.
+        - `str`: text with inline code blocks rendered in reST.
         """
         return re.sub(r'`([^`]+)`', r'``\1``', text)
 

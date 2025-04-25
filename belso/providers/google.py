@@ -1,12 +1,12 @@
-# belso.translator.providers.google
+# belso.providers.google
 
 from typing import Any, Type
 
 from google.ai.generativelanguage_v1beta.types import content
 
-from belso.utils.logging import get_logger
-from belso.schemas import Schema, BaseField
-from belso.utils.schema_helpers import create_fallback_schema
+from belso.utils import get_logger
+from belso.core import Schema, BaseField
+from belso.utils.helpers import create_fallback_schema
 
 logger = get_logger(__name__)
 

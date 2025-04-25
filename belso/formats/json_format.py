@@ -1,12 +1,13 @@
-# belso.translator.serialization.json_format
+# belso.formats.json_format
 
 import json
 from os import PathLike
 from pathlib import Path
 from typing import Dict, Any, Optional, Type, Union
 
-from belso.schemas import Schema, BaseField
-from belso.utils.logging import get_logger
+from belso.utils import get_logger
+from belso.core import Schema, BaseField
+from belso.utils.helpers import create_fallback_schema
 
 # Get a module-specific logger
 logger = get_logger(__name__)
@@ -160,14 +161,4 @@ def json_to_schema(json_input: Union[Dict[str, Any], str]) -> Type[Schema]:
         logger.debug("Conversion error details", exc_info=True)
         # Return a minimal schema if conversion fails
         logger.warning("Returning fallback schema due to conversion error.")
-        class FallbackSchema(Schema):
-            name = "FallbackSchema"
-            fields = [
-                BaseField(
-                    name="text",
-                    type_=str,
-                    description="Fallback field",
-                    required=True
-                )
-            ]
-        return FallbackSchema
+        return create_fallback_schema()

@@ -1,21 +1,21 @@
-# belso.translator.providers.anthropic
+# belso.providers.huggingface
 
 from typing import Any, Dict, Type
 
-from belso.utils.logging import get_logger
-from belso.schemas import Schema, BaseField
-from belso.utils.schema_helpers import (
+from belso.utils import get_logger
+from belso.core import Schema, BaseField
+from belso.utils.helpers import (
     map_json_to_python_type,
     build_properties_dict,
     create_fallback_schema
 )
 
-# Replace standard logger with our custom logger
+# Get a module-specific logger
 logger = get_logger(__name__)
 
-def to_anthropic(schema: Type[Schema]) -> Dict[str, Any]:
+def to_huggingface(schema: Type[Schema]) -> Dict[str, Any]:
     """
-    Convert a belso schema to Anthropic Claude format.\n
+    Convert a belso schema to Hugging Face format.\n
     ---
     ### Args
     - `schema` (`Type[belso.Schema]`): the belso schema to convert.\n
@@ -25,7 +25,7 @@ def to_anthropic(schema: Type[Schema]) -> Dict[str, Any]:
     """
     try:
         schema_name = schema.__name__ if hasattr(schema, "__name__") else "unnamed"
-        logger.debug(f"Starting translation of schema '{schema_name}' to Anthropic format...")
+        logger.debug(f"Starting translation of schema '{schema_name}' to Hugging Face format...")
 
         properties = build_properties_dict(schema)
         required_fields = schema.get_required_fields()
@@ -33,38 +33,36 @@ def to_anthropic(schema: Type[Schema]) -> Dict[str, Any]:
         logger.debug(f"Found {len(schema.fields)} fields, {len(required_fields)} required.")
 
         # Create the schema
-        anthropic_schema = {
-            "$schema": "http://json-schema.org/draft-07/schema#",
+        huggingface_schema = {
             "type": "object",
             "properties": properties,
             "required": required_fields
         }
 
-        logger.debug("Successfully created Anthropic schema.")
-        return anthropic_schema
+        logger.debug("Successfully created Hugging Face schema.")
+        return huggingface_schema
 
     except Exception as e:
-        logger.error(f"Error translating schema to Anthropic format: {e}")
+        logger.error(f"Error translating schema to Hugging Face format: {e}")
         logger.debug("Translation error details", exc_info=True)
         return {}
 
-
-def from_anthropic(schema: Dict[str, Any]) -> Type[Schema]:
+def from_huggingface(schema: Dict[str, Any]) -> Type[Schema]:
     """
-    Convert an Anthropic schema to belso format.\n
+    Convert a Hugging Face schema to belso format.\n
     ---
     ### Args
-    - `schema` (`Dict[str, Any]`): the Anthropic schema to convert.\n
+    - `schema` (`Dict[str, Any]`): the schema to convert.\n
     ---
     ### Returns
     - `Type[belso.Schema]`: the converted belso schema.
     """
     try:
-        logger.debug("Starting conversion from Anthropic schema to belso format...")
+        logger.debug("Starting conversion from Hugging Face schema to belso format...")
 
         # Create a new Schema class
         class ConvertedSchema(Schema):
-            name = "ConvertedFromAnthropic"
+            name = "ConvertedFromHuggingFace"
             fields = []
 
         # Extract properties
@@ -97,11 +95,11 @@ def from_anthropic(schema: Dict[str, Any]) -> Type[Schema]:
                 )
             )
 
-        logger.debug(f"Successfully converted Anthropic schema to belso schema with {len(ConvertedSchema.fields)} fields.")
+        logger.debug(f"Successfully converted Hugging Face schema to belso schema with {len(ConvertedSchema.fields)} fields.")
         return ConvertedSchema
 
     except Exception as e:
-        logger.error(f"Error converting Anthropic schema to belso format: {e}")
+        logger.error(f"Error converting Hugging Face schema to belso format: {e}")
         logger.debug("Conversion error details", exc_info=True)
         # Return a minimal schema if conversion fails
         return create_fallback_schema()

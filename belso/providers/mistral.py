@@ -1,10 +1,10 @@
-# belso.translator.providers.mistral
+# belso.providers.mistral
 
 from typing import Any, Dict, Type
 
-from belso.utils.logging import get_logger
-from belso.schemas import Schema, BaseField
-from belso.utils.schema_helpers import (
+from belso.utils import get_logger
+from belso.core import Schema, BaseField
+from belso.utils.helpers import (
     map_json_to_python_type,
     build_properties_dict,
     create_fallback_schema

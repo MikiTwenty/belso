@@ -1,4 +1,4 @@
-# belso.translator.utils.detecting
+# belso.utils.detecting
 
 from typing import Any
 import xml.etree.ElementTree as ET
@@ -6,8 +6,7 @@ import xml.etree.ElementTree as ET
 from pydantic import BaseModel
 from google.ai.generativelanguage_v1beta.types import content
 
-from belso.schemas import Schema
-from belso.utils.logging import get_logger
+from belso.utils import get_logger
 
 # Get a module-specific logger
 logger = get_logger(__name__)
@@ -25,6 +24,9 @@ def detect_schema_format(schema: Any) -> str:
     logger.debug("Detecting schema format...")
 
     try:
+        # Import Schema locally to avoid circular imports
+        from belso.core import Schema
+
         # Check if it's our custom Schema format
         if isinstance(schema, type) and issubclass(schema, Schema):
             logger.debug("Detected belso schema format.")

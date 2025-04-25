@@ -1,4 +1,4 @@
-# belso.utils.classes
+# belso.utils.constants
 
 class PROVIDERS:
     """
