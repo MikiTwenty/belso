@@ -5,7 +5,7 @@ from typing import Dict, Type, Any
 from belso.core import Schema, BaseField
 
 # Common type mappings
-PYTHON_TO_JSON_TYPE_MAPPING = {
+__PYTHON_TO_JSON_TYPE_MAPPING = {
     str: "string",
     int: "integer",
     float: "number",
@@ -14,7 +14,7 @@ PYTHON_TO_JSON_TYPE_MAPPING = {
     dict: "object"
 }
 
-JSON_TO_PYTHON_TYPE_MAPPING = {
+__JSON_TO_PYTHON_TYPE_MAPPING = {
     "string": str,
     "integer": int,
     "number": float,
@@ -52,7 +52,7 @@ def map_python_to_json_type(field_type: Type) -> str:
     ### Returns
     - `str`: the JSON Schema type.
     """
-    return PYTHON_TO_JSON_TYPE_MAPPING.get(field_type, "string")
+    return __PYTHON_TO_JSON_TYPE_MAPPING.get(field_type, "string")
 
 def map_json_to_python_type(json_type: str) -> Type:
     """
@@ -64,7 +64,7 @@ def map_json_to_python_type(json_type: str) -> Type:
     ### Returns
     - `Type`: the Python type.
     """
-    return JSON_TO_PYTHON_TYPE_MAPPING.get(json_type, str)
+    return __JSON_TO_PYTHON_TYPE_MAPPING.get(json_type, str)
 
 def build_properties_dict(schema: Type[Schema]) -> Dict[str, Dict[str, Any]]:
     """

@@ -417,25 +417,6 @@ class SchemaProcessor:
             raise
 
     @staticmethod
-    def is_valid_schema(schema: Any) -> bool:
-        """
-        Check if a schema is valid.\n
-        ---
-        ### Args
-        - `schema` (`Any`): the schema to validate.\n
-        ---
-        ### Returns
-        - `bool`: True if the schema is valid, False otherwise.
-        """
-        try:
-            # Implement schema validation logic here
-            # This would be migrated from the Validator class
-            return True
-        except Exception as e:
-            logger.error(f"Schema validation error: {e}")
-            return False
-
-    @staticmethod
     def display(
             schema: Any,
             format_type: Optional[str] = None
