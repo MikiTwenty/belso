@@ -133,19 +133,28 @@ class SchemaProcessor:
     @staticmethod
     def standardize(
             schema: Any,
-            from_format: str
+            from_format: Optional[str] = None
         ) -> Type[Schema]:
         """
-        Convert a schema from a specific format to our internal belso format.\n
+        Convert a schema from a specific format to our internal belso format.
+        If from_format is not specified, it will be auto-detected.\n
         ---
         ### Args
         - `schema` (`Any`): the schema to convert.
-        - `from_format` (`str`): the format of the input schema (`"google"`, `"ollama"`, `"openai"`, `"anthropic"`, `"json"`, `"xml"`).\n
+        - `from_format` (`Optional[str]`): the format of the input schema. If `None`, the format will be auto-detected. Defaults to `None`.\n
         ---
         ### Returns
         - `Type[belso.Schema]`: the converted belso schema.
         """
         try:
+            # Detect input format if not specified
+            if from_format is None:
+                logger.debug("No source format specified, auto-detecting...")
+                from_format = detect_schema_format(schema)
+                logger.info(f"Auto-detected source format: '{from_format}'.")
+            else:
+                logger.debug(f"Using provided source format: '{from_format}'.")
+
             logger.debug(f"Standardizing schema from '{from_format}' format to belso format...")
 
             if from_format == "google":
@@ -425,3 +434,52 @@ class SchemaProcessor:
         except Exception as e:
             logger.error(f"Schema validation error: {e}")
             return False
+
+    @staticmethod
+    def display(
+            schema: Any,
+            format_type: Optional[str] = None
+        ) -> None:
+        """
+        Print a schema in a readable format.
+        This is useful for debugging and documentation purposes.\n
+        ---
+        ### Args
+        - `schema` (`Any`): the schema to print.
+        - `format_type` (`Optional[str]`): the format of the schema. If `None`, the format will be auto-detected. Defaults to `None`.
+        """
+        try:
+            # Detect format if not specified
+            if format_type is None:
+                format_type = SchemaProcessor.detect_format(schema)
+                logger.debug(f"Auto-detected schema format: '{format_type}'.")
+
+            # Convert to belso format if needed
+            if format_type != "belso":
+                logger.debug(f"Converting from '{format_type}' to belso format for printing...")
+                belso_schema = SchemaProcessor.standardize(schema, format_type)
+            else:
+                belso_schema = schema
+
+            # Print schema information
+            print(f"Schema: {belso_schema.__name__}")
+            print(f"Fields: {len(belso_schema.fields)}")
+            print("-" * 40)
+
+            # Print each field
+            for field in belso_schema.fields:
+                field_type = field.type_.__name__ if hasattr(field.type_, "__name__") else str(field.type_)
+                required_str = "Required" if field.required else "Optional"
+                default_str = f", Default: {field.default}" if field.default is not None else ""
+
+                print(f"Field: {field.name}")
+                print(f"  Type: {field_type}")
+                print(f"  {required_str}{default_str}")
+                if field.description:
+                    print(f"  Description: {field.description}")
+                print()
+
+        except Exception as e:
+            logger.error(f"Error printing schema: {e}")
+            logger.debug("Schema printing error details", exc_info=True)
+            print(f"Error printing schema: {e}")
