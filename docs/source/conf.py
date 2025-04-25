@@ -23,7 +23,8 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
     'sphinx_autodoc_typehints',
-    'custom_docstring'
+    'custom_docstring',
+    'myst_parser'
 ]
 
 # Add this setting to prevent duplicate warnings
@@ -40,3 +41,8 @@ typehints_use_rtype = False
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
 html_css_files = ['custom.css']
+
+source_suffix = {
+    ".rst": "restructuredtext",
+    ".md": "markdown"
+}
