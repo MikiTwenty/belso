@@ -3,7 +3,7 @@
 from belso.utils import get_logger
 from typing import Any, List, Optional, Type, ClassVar, Tuple
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 class BaseField:
     def __init__(
@@ -52,7 +52,7 @@ class Schema:
         ### Returns
         - `List[str]`: a list of required field names.
         """
-        logger.debug(f'Getting required fields for {cls.__name__}')
+        _logger.debug(f'Getting required fields for {cls.__name__}')
         return [field.name for field in cls.fields if field.required]
 
     @classmethod
@@ -69,10 +69,10 @@ class Schema:
         ### Returns
         - `Optional[belso.core.BaseField]`: the field with the given name, or `None` if not found.
         """
-        logger.debug(f'Getting field {name} for {cls.__name__}')
+        _logger.debug(f'Getting field {name} for {cls.__name__}')
         for field in cls.fields:
             if field.name == name:
-                logger.debug(f'Found field {name} for {cls.__name__}')
+                _logger.debug(f'Found field {name} for {cls.__name__}')
                 return field
-        logger.debug(f'Field {name} not found for {cls.__name__}')
+        _logger.debug(f'Field {name} not found for {cls.__name__}')
         return None

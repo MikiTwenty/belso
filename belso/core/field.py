@@ -5,7 +5,7 @@ from typing import Type, Optional, Any, List, Dict, Union, get_origin, get_args
 from belso.utils import get_logger
 from belso.core.schema import Schema, BaseField
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 class NestedField(BaseField):
     """
@@ -171,14 +171,14 @@ class Field:
         if origin is list or origin is List:
             item_type = args[0] if args else str
             kwargs['items_type'] = dict if isinstance(item_type, type) and issubclass(item_type, Schema) else item_type
-            logger.debug(f"[Field] -> ArrayField<{item_type}>")
+            _logger.debug(f"[Field] -> ArrayField<{item_type}>")
             return ArrayField(**kwargs)
 
         # Handle nested schemas
         if isinstance(type_, type) and issubclass(type_, Schema):
-            logger.debug(f"[Field] -> NestedField<{type_.__name__}>")
+            _logger.debug(f"[Field] -> NestedField<{type_.__name__}>")
             return NestedField(schema=type_, **kwargs)
 
         # Default: primitive type field
-        logger.debug(f"[Field] -> BaseField<{type_}>")
+        _logger.debug(f"[Field] -> BaseField<{type_}>")
         return BaseField(type_=type_, **kwargs)

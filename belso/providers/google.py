@@ -8,7 +8,7 @@ from belso.utils import get_logger
 from belso.core import Schema, BaseField
 from belso.utils.helpers import create_fallback_schema
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 def to_google(schema: Type[Schema]) -> content.Schema:
     """
@@ -21,7 +21,7 @@ def to_google(schema: Type[Schema]) -> content.Schema:
     - `google.ai.generativelanguage_v1beta.types.content.Schema`: the converted schema.
     """
     try:
-        logger.debug(f"Starting translation of schema '{schema.__name__ if hasattr(schema, '__name__') else 'unnamed'}' to Google format...")
+        _logger.debug(f"Starting translation of schema '{schema.__name__ if hasattr(schema, '__name__') else 'unnamed'}' to Google format...")
 
         # Type mapping for Gemini
         type_mapping = {
@@ -37,12 +37,12 @@ def to_google(schema: Type[Schema]) -> content.Schema:
         properties = {}
         required_fields = schema.get_required_fields()
 
-        logger.debug(f"Found {len(schema.fields)} fields, {len(required_fields)} required.")
+        _logger.debug(f"Found {len(schema.fields)} fields, {len(required_fields)} required.")
 
         # Build properties for each field
         for field in schema.fields:
             field_type = type_mapping.get(field.type_, content.Type.TYPE_UNSPECIFIED)
-            logger.debug(f"Mapping field '{field.name}' of type '{field.type_.__name__}' to Google type '{field_type}'...")
+            _logger.debug(f"Mapping field '{field.name}' of type '{field.type_.__name__}' to Google type '{field_type}'...")
 
             properties[field.name] = content.Schema(
                 type=field_type,
@@ -56,12 +56,12 @@ def to_google(schema: Type[Schema]) -> content.Schema:
             required=required_fields
         )
 
-        logger.debug("Successfully created Google schema.")
+        _logger.debug("Successfully created Google schema.")
         return gemini_schema
 
     except Exception as e:
-        logger.error(f"Error translating schema to Gemini format: {e}")
-        logger.debug("Translation error details", exc_info=True)
+        _logger.error(f"Error translating schema to Gemini format: {e}")
+        _logger.debug("Translation error details", exc_info=True)
         return {}
 
 def from_google(schema: content.Schema) -> Type[Schema]:
@@ -75,7 +75,7 @@ def from_google(schema: content.Schema) -> Type[Schema]:
     - `Type[belso.Schema]`: the converted belso schema.
     """
     try:
-        logger.debug("Starting conversion from Google schema to belso format...")
+        _logger.debug("Starting conversion from Google schema to belso format...")
 
         # Create a new Schema class
         class ConvertedSchema(Schema):
@@ -97,7 +97,7 @@ def from_google(schema: content.Schema) -> Type[Schema]:
         properties = schema.properties if hasattr(schema, "properties") else {}
         required_fields = schema.required if hasattr(schema, "required") else []
 
-        logger.debug(f"Found {len(properties)} properties, {len(required_fields)} required fields.")
+        _logger.debug(f"Found {len(properties)} properties, {len(required_fields)} required fields.")
 
         # Convert each property
         for name, prop in properties.items():
@@ -105,7 +105,7 @@ def from_google(schema: content.Schema) -> Type[Schema]:
             description = prop.description if hasattr(prop, "description") else ""
             required = name in required_fields
 
-            logger.debug(f"Converting property '{name}' of Google type '{prop.type}' to Python type '{field_type.__name__}'...")
+            _logger.debug(f"Converting property '{name}' of Google type '{prop.type}' to Python type '{field_type.__name__}'...")
 
             ConvertedSchema.fields.append(
                 BaseField(
@@ -116,11 +116,11 @@ def from_google(schema: content.Schema) -> Type[Schema]:
                 )
             )
 
-        logger.debug(f"Successfully converted Google schema to belso schema with {len(ConvertedSchema.fields)} fields.")
+        _logger.debug(f"Successfully converted Google schema to belso schema with {len(ConvertedSchema.fields)} fields.")
         return ConvertedSchema
 
     except Exception as e:
-        logger.error(f"Error converting Google schema to belso format: {e}")
-        logger.debug("Conversion error details", exc_info=True)
+        _logger.error(f"Error converting Google schema to belso format: {e}")
+        _logger.debug("Conversion error details", exc_info=True)
         # Return a minimal schema if conversion fails
         return create_fallback_schema()

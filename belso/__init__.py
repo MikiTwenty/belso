@@ -7,8 +7,8 @@ from belso.utils.logging import configure_logger, get_logger
 configure_logger()
 
 # Get the main logger for the package
-logger = get_logger()
-logger.info(f"belso v{__version__} initialized.")
+_logger = get_logger()
+_logger.info(f"belso v{__version__} initialized.")
 
 # Import and expose main components
 from belso.core import SchemaProcessor, Schema, Field

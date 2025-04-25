@@ -11,9 +11,9 @@ from belso.utils.helpers import (
     create_fallback_schema
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
-__OLLAMA_FIELD_TO_PROPERTY_MAPPING = {
+_OLLAMA_FIELD_TO_PROPERTY_MAPPING = {
     "default": ("default", None),
     "enum": ("enum", None),
     "regex": ("pattern", None),
@@ -36,7 +36,7 @@ def _convert_field_to_property(field: BaseField) -> Dict[str, Any]:
     ### Returns
     - `Dict[str, Any]`: the corresponding JSON schema property.
     """
-    logger.debug(f"Converting field '{field.name}' to property...")
+    _logger.debug(f"Converting field '{field.name}' to property...")
 
     # Base property structure
     base_property = {
@@ -44,17 +44,17 @@ def _convert_field_to_property(field: BaseField) -> Dict[str, Any]:
         "description": field.description
     }
 
-    for attr, mappings in __OLLAMA_FIELD_TO_PROPERTY_MAPPING.items():
+    for attr, mappings in _OLLAMA_FIELD_TO_PROPERTY_MAPPING.items():
         value = getattr(field, attr, None)
         if value is not None:
             if isinstance(mappings, list):
                 for key, func in mappings:
                     base_property[key] = func(value)
-                    logger.debug(f"Field '{field.name}' set {key} to {func(value)}.")
+                    _logger.debug(f"Field '{field.name}' set {key} to {func(value)}.")
             else:
                 key, func = mappings
                 base_property[key] = func(value) if func else value
-                logger.debug(f"Field '{field.name}' set {key} to {base_property[key]}.")
+                _logger.debug(f"Field '{field.name}' set {key} to {base_property[key]}.")
 
     return base_property
 
@@ -68,7 +68,7 @@ def _convert_nested_field(field: NestedField) -> Dict[str, Any]:
     ### Returns
     - `Dict[str, Any]`: hte JSON schema property.
     """
-    logger.debug(f"Converting nested field '{field.name}'...")
+    _logger.debug(f"Converting nested field '{field.name}'...")
     nested_schema = to_ollama(field.schema)
     return {
         "type": "object",
@@ -88,7 +88,7 @@ def _convert_array_field(field: ArrayField) -> Dict[str, Any]:
     ### Returns
     - `Dict[str, Any]`: the JSON schema property.
     """
-    logger.debug(f"Converting array field '{field.name}'...")
+    _logger.debug(f"Converting array field '{field.name}'...")
 
     # Gestisci gli array di oggetti annidati
     if hasattr(field, 'items_schema') and field.items_schema:
@@ -128,7 +128,7 @@ def to_ollama(schema: Type[Schema]) -> Dict[str, Any]:
     """
     try:
         schema_name = getattr(schema, "__name__", "unnamed")
-        logger.debug(f"Starting translation of schema '{schema_name}' to Ollama format...")
+        _logger.debug(f"Starting translation of schema '{schema_name}' to Ollama format...")
 
         properties = {}
         for field in schema.fields:
@@ -145,12 +145,12 @@ def to_ollama(schema: Type[Schema]) -> Dict[str, Any]:
             "required": schema.get_required_fields()
         }
 
-        logger.debug("Successfully created Ollama schema.")
+        _logger.debug("Successfully created Ollama schema.")
         return ollama_schema
 
     except Exception as e:
-        logger.error(f"Error translating schema to Ollama format: {e}")
-        logger.debug("Translation error details", exc_info=True)
+        _logger.error(f"Error translating schema to Ollama format: {e}")
+        _logger.debug("Translation error details", exc_info=True)
         return {}
 
 
@@ -165,7 +165,7 @@ def from_ollama(schema: Dict[str, Any]) -> Type[Schema]:
     - `Type[belso.Schema]`: the converted belso schema.
     """
     try:
-        logger.debug("Starting conversion from Ollama schema to belso format...")
+        _logger.debug("Starting conversion from Ollama schema to belso format...")
 
         if not isinstance(schema, dict) or "properties" not in schema:
             raise ValueError("Invalid Ollama schema format: missing 'properties'")
@@ -242,10 +242,10 @@ def from_ollama(schema: Dict[str, Any]) -> Type[Schema]:
                     )
                 )
 
-        logger.debug("Successfully converted Ollama schema to belso schema.")
+        _logger.debug("Successfully converted Ollama schema to belso schema.")
         return ConvertedSchema
 
     except Exception as e:
-        logger.error(f"Error converting Ollama schema to belso format: {e}")
-        logger.debug("Conversion error details", exc_info=True)
+        _logger.error(f"Error converting Ollama schema to belso format: {e}")
+        _logger.debug("Conversion error details", exc_info=True)
         return create_fallback_schema()

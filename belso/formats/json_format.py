@@ -9,8 +9,8 @@ from belso.utils import get_logger
 from belso.core import Schema, BaseField
 from belso.utils.helpers import create_fallback_schema
 
-# Get a module-specific logger
-logger = get_logger(__name__)
+# Get a module-specific _logger
+_logger = get_logger(__name__)
 
 def schema_to_json(
         schema: Type[Schema],
@@ -28,15 +28,15 @@ def schema_to_json(
     """
     try:
         schema_name = schema.__name__ if hasattr(schema, "__name__") else "unnamed"
-        logger.debug(f"Starting conversion of schema '{schema_name}' to JSON format...")
+        _logger.debug(f"Starting conversion of schema '{schema_name}' to JSON format...")
 
         fields_json = []
-        logger.debug(f"Processing {len(schema.fields)} fields...")
+        _logger.debug(f"Processing {len(schema.fields)} fields...")
 
         for field in schema.fields:
             # Convert Python type to string representation
             type_str = field.type_.__name__ if hasattr(field.type_, "__name__") else str(field.type_)
-            logger.debug(f"Processing field '{field.name}' of type '{type_str}'...")
+            _logger.debug(f"Processing field '{field.name}' of type '{type_str}'...")
 
             field_json = {
                 "name": field.__name__,
@@ -48,7 +48,7 @@ def schema_to_json(
             # Only include default if it exists
             if field.default is not None:
                 field_json["default"] = field.default
-                logger.debug(f"BaseField '{field.name}' has default value: {field.default}.")
+                _logger.debug(f"BaseField '{field.name}' has default value: {field.default}.")
 
             fields_json.append(field_json)
 
@@ -59,21 +59,21 @@ def schema_to_json(
 
         # Save to file if path is provided
         if file_path:
-            logger.debug(f"Saving JSON schema to file: {file_path}.")
+            _logger.debug(f"Saving JSON schema to file: {file_path}.")
             try:
                 with open(file_path, 'w', encoding='utf-8') as f:
                     json.dump(schema_json, f, indent=2)
-                logger.debug(f"Successfully saved JSON schema to {file_path}.")
+                _logger.debug(f"Successfully saved JSON schema to {file_path}.")
             except Exception as e:
-                logger.error(f"Failed to save JSON schema to file: {e}")
-                logger.debug("File saving error details", exc_info=True)
+                _logger.error(f"Failed to save JSON schema to file: {e}")
+                _logger.debug("File saving error details", exc_info=True)
 
-        logger.debug("Successfully converted schema to JSON format.")
+        _logger.debug("Successfully converted schema to JSON format.")
         return schema_json
 
     except Exception as e:
-        logger.error(f"Error converting schema to JSON format: {e}")
-        logger.debug("Conversion error details", exc_info=True)
+        _logger.error(f"Error converting schema to JSON format: {e}")
+        _logger.debug("Conversion error details", exc_info=True)
         return {"name": "ErrorSchema", "fields": []}
 
 def json_to_schema(json_input: Union[Dict[str, Any], str]) -> Type[Schema]:
@@ -90,23 +90,23 @@ def json_to_schema(json_input: Union[Dict[str, Any], str]) -> Type[Schema]:
         # Check if input is a file path
         if isinstance(json_input, str):
             # Try to load as a file
-            logger.debug(f"Attempting to load JSON from file: {json_input}.")
+            _logger.debug(f"Attempting to load JSON from file: {json_input}.")
             try:
                 with open(json_input, 'r', encoding='utf-8') as f:
                     json_data = json.load(f)
-                logger.debug(f"Successfully loaded JSON from file: {json_input}.")
+                _logger.debug(f"Successfully loaded JSON from file: {json_input}.")
             except (FileNotFoundError, json.JSONDecodeError) as e:
-                logger.error(f"Failed to load JSON from file: {e}")
-                logger.debug("File loading error details", exc_info=True)
+                _logger.error(f"Failed to load JSON from file: {e}")
+                _logger.debug("File loading error details", exc_info=True)
                 raise ValueError(f"Failed to load JSON from file: {e}")
         else:
             # Assume it's already a JSON dictionary
-            logger.debug("Processing provided JSON dictionary...")
+            _logger.debug("Processing provided JSON dictionary...")
             json_data = json_input
 
         # Create a new Schema class
         schema_name = json_data.get("name", "LoadedSchema")
-        logger.debug(f"Creating new Schema class with name: {schema_name}.")
+        _logger.debug(f"Creating new Schema class with name: {schema_name}.")
 
         class LoadedSchema(Schema):
             fields = []
@@ -124,24 +124,24 @@ def json_to_schema(json_input: Union[Dict[str, Any], str]) -> Type[Schema]:
 
         # Process each field
         fields_data = json_data.get("fields", [])
-        logger.debug(f"Processing {len(fields_data)} fields from JSON...")
+        _logger.debug(f"Processing {len(fields_data)} fields from JSON...")
 
         for field_data in fields_data:
             field_name = field_data.get("name", "")
             field_type_str = field_data.get("type", "str")
             field_type = type_mapping.get(field_type_str.lower(), str)
 
-            logger.debug(f"Processing field '{field_name}' with type '{field_type_str}'...")
+            _logger.debug(f"Processing field '{field_name}' with type '{field_type_str}'...")
 
             # Get required status
             required = field_data.get("required", True)
             required_status = "required" if required else "optional"
-            logger.debug(f"BaseField '{field_name}' is {required_status}")
+            _logger.debug(f"BaseField '{field_name}' is {required_status}")
 
             # Get default value if present
             default = field_data.get("default")
             if default is not None:
-                logger.debug(f"BaseField '{field_name}' has default value: {default}")
+                _logger.debug(f"BaseField '{field_name}' has default value: {default}")
 
             field = BaseField(
                 name=field_name,
@@ -153,12 +153,12 @@ def json_to_schema(json_input: Union[Dict[str, Any], str]) -> Type[Schema]:
 
             LoadedSchema.fields.append(field)
 
-        logger.debug(f"Successfully created Schema with {len(LoadedSchema.fields)} fields.")
+        _logger.debug(f"Successfully created Schema with {len(LoadedSchema.fields)} fields.")
         return LoadedSchema
 
     except Exception as e:
-        logger.error(f"Error converting JSON to schema: {e}")
-        logger.debug("Conversion error details", exc_info=True)
+        _logger.error(f"Error converting JSON to schema: {e}")
+        _logger.debug("Conversion error details", exc_info=True)
         # Return a minimal schema if conversion fails
-        logger.warning("Returning fallback schema due to conversion error.")
+        _logger.warning("Returning fallback schema due to conversion error.")
         return create_fallback_schema()

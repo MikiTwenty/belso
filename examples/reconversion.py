@@ -12,6 +12,11 @@ class CustomSchema(Schema):
             required=True
         )
     ]
+SchemaProcessor.display(CustomSchema)
 
 ollama_schema = SchemaProcessor.translate(CustomSchema, to=PROVIDERS.OLLAMA)
-SchemaProcessor.display(ollama_schema)
+openai_schema = SchemaProcessor.translate(ollama_schema, to=PROVIDERS.OPENAI)
+belso_schema = SchemaProcessor.standardize(openai_schema)
+
+SchemaProcessor.display(CustomSchema)
+

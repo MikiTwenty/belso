@@ -10,8 +10,8 @@ from belso.utils.helpers import (
     create_fallback_schema
 )
 
-# Get a module-specific logger
-logger = get_logger(__name__)
+# Get a module-specific _logger
+_logger = get_logger(__name__)
 
 def to_langchain(schema: Type[Schema]) -> Dict[str, Any]:
     """
@@ -25,12 +25,12 @@ def to_langchain(schema: Type[Schema]) -> Dict[str, Any]:
     """
     try:
         schema_name = schema.__name__ if hasattr(schema, "__name__") else "unnamed"
-        logger.debug(f"Starting translation of schema '{schema_name}' to LangChain format...")
+        _logger.debug(f"Starting translation of schema '{schema_name}' to LangChain format...")
 
         properties = build_properties_dict(schema)
         required_fields = schema.get_required_fields()
 
-        logger.debug(f"Found {len(schema.fields)} fields, {len(required_fields)} required.")
+        _logger.debug(f"Found {len(schema.fields)} fields, {len(required_fields)} required.")
 
         # Create the schema in LangChain format
         langchain_schema = {
@@ -40,12 +40,12 @@ def to_langchain(schema: Type[Schema]) -> Dict[str, Any]:
             "required": required_fields
         }
 
-        logger.debug("Successfully created LangChain schema.")
+        _logger.debug("Successfully created LangChain schema.")
         return langchain_schema
 
     except Exception as e:
-        logger.error(f"Error translating schema to LangChain format: {e}")
-        logger.debug("Translation error details", exc_info=True)
+        _logger.error(f"Error translating schema to LangChain format: {e}")
+        _logger.debug("Translation error details", exc_info=True)
         return {}
 
 def from_langchain(schema: Dict[str, Any]) -> Type[Schema]:
@@ -59,7 +59,7 @@ def from_langchain(schema: Dict[str, Any]) -> Type[Schema]:
     - `Type[belso.Schema]`: the converted belso schema.
     """
     try:
-        logger.debug("Starting conversion from LangChain schema to belso format...")
+        _logger.debug("Starting conversion from LangChain schema to belso format...")
 
         # Create a new Schema class
         class ConvertedSchema(Schema):
@@ -70,7 +70,7 @@ def from_langchain(schema: Dict[str, Any]) -> Type[Schema]:
         properties = schema.get("properties", {})
         required_fields = schema.get("required", [])
 
-        logger.debug(f"Found {len(properties)} properties, {len(required_fields)} required fields.")
+        _logger.debug(f"Found {len(properties)} properties, {len(required_fields)} required fields.")
 
         # Convert each property
         for name, prop in properties.items():
@@ -80,11 +80,11 @@ def from_langchain(schema: Dict[str, Any]) -> Type[Schema]:
             required = name in required_fields
             default = prop.get("default") if not required else None
 
-            logger.debug(f"Converting property '{name}' of JSON Schema type '{prop_type}' to Python type '{field_type.__name__}'...")
-            logger.debug(f"Property '{name}' is {'required' if required else 'optional'}.")
+            _logger.debug(f"Converting property '{name}' of JSON Schema type '{prop_type}' to Python type '{field_type.__name__}'...")
+            _logger.debug(f"Property '{name}' is {'required' if required else 'optional'}.")
 
             if default is not None:
-                logger.debug(f"Property '{name}' has default value: {default}.")
+                _logger.debug(f"Property '{name}' has default value: {default}.")
 
             ConvertedSchema.fields.append(
                 BaseField(
@@ -96,11 +96,11 @@ def from_langchain(schema: Dict[str, Any]) -> Type[Schema]:
                 )
             )
 
-        logger.debug(f"Successfully converted LangChain schema to belso schema with {len(ConvertedSchema.fields)} fields.")
+        _logger.debug(f"Successfully converted LangChain schema to belso schema with {len(ConvertedSchema.fields)} fields.")
         return ConvertedSchema
 
     except Exception as e:
-        logger.error(f"Error converting LangChain schema to belso format: {e}")
-        logger.debug("Conversion error details", exc_info=True)
+        _logger.error(f"Error converting LangChain schema to belso format: {e}")
+        _logger.debug("Conversion error details", exc_info=True)
         # Return a minimal schema if conversion fails
         return create_fallback_schema()

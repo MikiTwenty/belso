@@ -1,6 +1,6 @@
 # belso.providers.openai
 
-from typing import List, Optional, Type
+from typing import List, Optional, Type, Tuple
 
 import pydantic
 from belso.utils import get_logger
@@ -9,9 +9,9 @@ from belso.core.field import NestedField, ArrayField
 from pydantic import create_model, Field as PydanticField, BaseModel
 from belso.utils.helpers import map_json_to_python_type, create_fallback_schema
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
-__OPENAI_FIELD_TO_METADATA_MAPPING = {
+_OPENAI_FIELD_TO_METADATA_MAPPING = {
     "enum": ("enum", None),
     "regex": ("pattern", None),
     "multiple_of": ("multipleOf", None),
@@ -28,12 +28,12 @@ def _convert_field_to_pydantic(field: BaseField) -> tuple:
     ### Returns
     - `Tuple[Type, pydantic.Field]`: for use with `create_model`.
     """
-    logger.debug(f"Converting field '{field.name}' to Pydantic field...")
+    _logger.debug(f"Converting field '{field.name}' to Pydantic field...")
 
     field_type = field.type_
     metadata = {"description": field.description or ""}
 
-    for attr, (key, func) in __OPENAI_FIELD_TO_METADATA_MAPPING.items():
+    for attr, (key, func) in _OPENAI_FIELD_TO_METADATA_MAPPING.items():
         value = getattr(field, attr, None)
         if value is not None:
             metadata[key] = func(value) if func else value
@@ -55,7 +55,7 @@ def _convert_nested_field(field: NestedField) -> tuple:
     ### Returns
     - `Tuple[Type, pydantic.Field]`
     """
-    logger.debug(f"Converting nested field '{field.name}' to Pydantic model...")
+    _logger.debug(f"Converting nested field '{field.name}' to Pydantic model...")
     nested_model = to_openai(field.schema)
     return _convert_field_to_pydantic(BaseField(**field.__dict__, type_=nested_model))
 
@@ -69,7 +69,7 @@ def _convert_array_field(field: ArrayField) -> Tuple[Type, pydantic.Field]:
     ### Returns
     - `Tuple[(type, PydanticField)]`
     """
-    logger.debug(f"Converting array field '{field.name}' to Pydantic list...")
+    _logger.debug(f"Converting array field '{field.name}' to Pydantic list...")
 
     metadata = {"description": field.description or ""}
     if field.enum:
@@ -103,7 +103,7 @@ def to_openai(schema: Type[Schema]) -> Type[BaseModel]:
     """
     try:
         schema_name = getattr(schema, "__name__", "GeneratedModel")
-        logger.debug(f"Translating schema '{schema_name}' to OpenAI Pydantic model...")
+        _logger.debug(f"Translating schema '{schema_name}' to OpenAI Pydantic model...")
 
         field_definitions = {}
 
@@ -116,12 +116,12 @@ def to_openai(schema: Type[Schema]) -> Type[BaseModel]:
                 field_definitions[field.name] = _convert_field_to_pydantic(field)
 
         model = create_model(schema_name, **field_definitions)
-        logger.debug(f"Pydantic model '{schema_name}' created successfully.")
+        _logger.debug(f"Pydantic model '{schema_name}' created successfully.")
         return model
 
     except Exception as e:
-        logger.error(f"Error converting to OpenAI model: {e}")
-        logger.debug("Exception details:", exc_info=True)
+        _logger.error(f"Error converting to OpenAI model: {e}")
+        _logger.debug("Exception details:", exc_info=True)
         return create_model("FallbackModel", text=(str, ...))
 
 def from_openai(schema: Type[BaseModel]) -> Type[Schema]:
@@ -135,7 +135,7 @@ def from_openai(schema: Type[BaseModel]) -> Type[Schema]:
     - `Type[belso.Schema]`: the belso schema.
     """
     try:
-        logger.debug("Starting conversion from Pydantic to belso schema...")
+        _logger.debug("Starting conversion from Pydantic to belso schema...")
 
         class ConvertedSchema(Schema):
             fields = []
@@ -146,7 +146,7 @@ def from_openai(schema: Type[BaseModel]) -> Type[Schema]:
             field_type = field_info.outer_type_ if hasattr(field_info, "outer_type_") else field_info.annotation
             required = getattr(field_info, "required", True)
             default = getattr(field_info, "default", None)
-            description = getattr(field_info.field_info, "description", "")
+            description = getattr(field_info, "description", "")
 
             # Handle nested models
             if isinstance(field_type, type) and issubclass(field_type, BaseModel):
@@ -202,10 +202,10 @@ def from_openai(schema: Type[BaseModel]) -> Type[Schema]:
                    )
             )
 
-        logger.debug("Successfully converted Pydantic model to belso schema.")
+        _logger.debug("Successfully converted Pydantic model to belso schema.")
         return ConvertedSchema
 
     except Exception as e:
-        logger.error(f"Error converting from Pydantic model: {e}")
-        logger.debug("Exception details:", exc_info=True)
+        _logger.error(f"Error converting from Pydantic model: {e}")
+        _logger.debug("Exception details:", exc_info=True)
         return create_fallback_schema()

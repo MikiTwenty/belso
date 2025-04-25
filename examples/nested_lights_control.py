@@ -60,6 +60,9 @@ class House(Schema):
     ]
 
 def main():
+    # Display the schema
+    SchemaProcessor.display(House)
+
     # Convert to Ollama format
     ollama_schema = SchemaProcessor.translate(House, to=PROVIDERS.OLLAMA)
 
