@@ -1,82 +1,138 @@
 # belso.providers.openai
 
-from typing import Type, Optional, List
-from pydantic import create_model, Field as PydanticField, BaseModel
+from typing import List, Optional, Type
 
+import pydantic
 from belso.utils import get_logger
 from belso.core import Schema, BaseField
 from belso.core.field import NestedField, ArrayField
-from belso.utils.helpers import create_fallback_schema
+from pydantic import create_model, Field as PydanticField, BaseModel
+from belso.utils.helpers import map_json_to_python_type, create_fallback_schema
 
 logger = get_logger(__name__)
 
-def to_openai(schema: Type[Schema]) -> Type[BaseModel]:
+__OPENAI_FIELD_TO_METADATA_MAPPING = {
+    "enum": ("enum", None),
+    "regex": ("pattern", None),
+    "multiple_of": ("multipleOf", None),
+    "format_": ("format", None),
+}
+
+def _convert_field_to_pydantic(field: BaseField) -> tuple:
     """
-    Convert a belso schema to OpenAI GPT format.\n
+    Converts a base field into a Pydantic field definition.\n
     ---
     ### Args
-    - `schema` (`Type[belso.Schema]`): the belso schema to convert.\n
+    - `field` (`belso.core.BaseField`): the field to convert.\n
     ---
     ### Returns
-    - `Type[belso.schemas.BaseModel]`: the converted Pydantic model.
+    - `Tuple[Type, pydantic.Field]`: for use with `create_model`.
+    """
+    logger.debug(f"Converting field '{field.name}' to Pydantic field...")
+
+    field_type = field.type_
+    metadata = {"description": field.description or ""}
+
+    for attr, (key, func) in __OPENAI_FIELD_TO_METADATA_MAPPING.items():
+        value = getattr(field, attr, None)
+        if value is not None:
+            metadata[key] = func(value) if func else value
+
+    if not field.required and field.default is not None:
+        return Optional[field_type], PydanticField(default=field.default, **metadata)
+    elif not field.required:
+        return Optional[field_type], PydanticField(default=None, **metadata)
+    else:
+        return field_type, PydanticField(..., **metadata)
+
+def _convert_nested_field(field: NestedField) -> tuple:
+    """
+    Convert a nested field into a Pydantic field.\n
+    ---
+    ### Args
+    - `field` (`belso.core.NestedField`): the nested field.\n
+    ---
+    ### Returns
+    - `Tuple[Type, pydantic.Field]`
+    """
+    logger.debug(f"Converting nested field '{field.name}' to Pydantic model...")
+    nested_model = to_openai(field.schema)
+    return _convert_field_to_pydantic(BaseField(**field.__dict__, type_=nested_model))
+
+def _convert_array_field(field: ArrayField) -> Tuple[Type, pydantic.Field]:
+    """
+    Convert an array field into a Pydantic field.\n
+    ---
+    ### Args
+    - `field` (`belso.core.ArrayField`): the array field.\n
+    ---
+    ### Returns
+    - `Tuple[(type, PydanticField)]`
+    """
+    logger.debug(f"Converting array field '{field.name}' to Pydantic list...")
+
+    metadata = {"description": field.description or ""}
+    if field.enum:
+        metadata["enum"] = field.enum
+    if field.items_range:
+        metadata["minItems"] = field.items_range[0]
+        metadata["maxItems"] = field.items_range[1]
+
+    if isinstance(field.items_type, type) and issubclass(field.items_type, Schema):
+        items_model = to_openai(field.items_type)
+        list_type = List[items_model]
+    else:
+        list_type = List[field.items_type]
+
+    if not field.required and field.default is not None:
+        return Optional[list_type], PydanticField(default=field.default, **metadata)
+    elif not field.required:
+        return Optional[list_type], PydanticField(default=None, **metadata)
+    else:
+        return list_type, PydanticField(..., **metadata)
+
+def to_openai(schema: Type[Schema]) -> Type[BaseModel]:
+    """
+    Convert a belso schema to OpenAI-compatible Pydantic model.\n
+    ---
+    ### Args
+    - `schema` (`Type[belso.Schema]`): the belso schema.\n
+    ---
+    ### Returns
+    - `Type[pydantic.BaseModel]`: the Pydantic model.
     """
     try:
         schema_name = getattr(schema, "__name__", "GeneratedModel")
-        logger.debug(f"Translating schema '{schema_name}' to OpenAI format...")
+        logger.debug(f"Translating schema '{schema_name}' to OpenAI Pydantic model...")
 
-        def convert_field(field: BaseField) -> tuple:
-            """
-            Converts a single field into a (type, PydanticField) tuple.
-            """
-            field_type = field.type_
-            metadata = {"description": field.description or ""}
+        field_definitions = {}
 
-            if field.enum:
-                metadata["enum"] = field.enum
-            if field.regex:
-                metadata["pattern"] = field.regex
-            if field.multiple_of:
-                metadata["multipleOf"] = field.multiple_of
-            if field.format_:
-                metadata["format"] = field.format_
-
+        for field in schema.fields:
             if isinstance(field, NestedField):
-                field_type = to_openai(field.schema)
+                field_definitions[field.name] = _convert_nested_field(field)
             elif isinstance(field, ArrayField):
-                if isinstance(field.items_type, type) and issubclass(field.items_type, Schema):
-                    item_model = to_openai(field.items_type)
-                    field_type = List[item_model]
-                else:
-                    field_type = List[field.items_type]
-
-            if not field.required and field.default is not None:
-                return (Optional[field_type], PydanticField(default=field.default, **metadata))
-            elif not field.required:
-                return (Optional[field_type], PydanticField(default=None, **metadata))
+                field_definitions[field.name] = _convert_array_field(field)
             else:
-                return (field_type, PydanticField(..., **metadata))
+                field_definitions[field.name] = _convert_field_to_pydantic(field)
 
-        field_definitions = {
-            field.name: convert_field(field)
-            for field in schema.fields
-        }
-
-        return create_model(schema_name, **field_definitions)
+        model = create_model(schema_name, **field_definitions)
+        logger.debug(f"Pydantic model '{schema_name}' created successfully.")
+        return model
 
     except Exception as e:
-        logger.error(f"Error in to_openai: {e}")
-        logger.debug("Details:", exc_info=True)
+        logger.error(f"Error converting to OpenAI model: {e}")
+        logger.debug("Exception details:", exc_info=True)
         return create_model("FallbackModel", text=(str, ...))
 
 def from_openai(schema: Type[BaseModel]) -> Type[Schema]:
     """
-    Convert a Pydantic OpenAI schema to belso format.
+    Convert a Pydantic model into a belso Schema.\n
     ---
     ### Args
-    - `schema` (`Type[BaseModel]`): the Pydantic model to convert.
+    - `schema` (`Type[pydantic.BaseModel]`): the Pydantic model.\n
     ---
     ### Returns
-    - `Type[Schema]`: the converted belso schema.
+    - `Type[belso.Schema]`: the belso schema.
     """
     try:
         logger.debug("Starting conversion from Pydantic to belso schema...")
@@ -84,15 +140,15 @@ def from_openai(schema: Type[BaseModel]) -> Type[Schema]:
         class ConvertedSchema(Schema):
             fields = []
 
-        model_fields = getattr(schema, "__fields__", {})  # Pydantic v1 & v2 compatibility
+        model_fields = getattr(schema, "__fields__", {})
 
         for name, field_info in model_fields.items():
             field_type = field_info.outer_type_ if hasattr(field_info, "outer_type_") else field_info.annotation
-            required = field_info.required if hasattr(field_info, "required") else True
-            default = field_info.default if hasattr(field_info, "default") else None
-            description = field_info.field_info.description if hasattr(field_info.field_info, "description") else ""
+            required = getattr(field_info, "required", True)
+            default = getattr(field_info, "default", None)
+            description = getattr(field_info.field_info, "description", "")
 
-            # Nested model
+            # Handle nested models
             if isinstance(field_type, type) and issubclass(field_type, BaseModel):
                 nested_schema = from_openai(field_type)
                 ConvertedSchema.fields.append(
@@ -106,11 +162,13 @@ def from_openai(schema: Type[BaseModel]) -> Type[Schema]:
                 )
                 continue
 
-            # Array of nested or base
+            # Handle list of items
             if getattr(field_type, "__origin__", None) is list:
                 item_type = field_type.__args__[0]
+
+                # List di modelli (nested)
                 if isinstance(item_type, type) and issubclass(item_type, BaseModel):
-                    nested_item_schema = from_openai(item_type)
+                    nested_schema = from_openai(item_type)
                     ConvertedSchema.fields.append(
                         ArrayField(
                             name=name,
@@ -120,7 +178,7 @@ def from_openai(schema: Type[BaseModel]) -> Type[Schema]:
                             default=default
                         )
                     )
-                    continue
+                # List di tipi primitivi (aggiungi questo blocco!)
                 else:
                     ConvertedSchema.fields.append(
                         ArrayField(
@@ -131,22 +189,23 @@ def from_openai(schema: Type[BaseModel]) -> Type[Schema]:
                             default=default
                         )
                     )
-                    continue
+                continue
 
-            # BaseField fallback
+            # Fallback: campo base
             ConvertedSchema.fields.append(
                 BaseField(
                     name=name,
-                    type_=field_type,
+                    type_=map_json_to_python_type(str(field_type)),
                     description=description,
                     required=required,
-                    default=default
-                )
+                       default=default
+                   )
             )
 
+        logger.debug("Successfully converted Pydantic model to belso schema.")
         return ConvertedSchema
 
     except Exception as e:
-        logger.error(f"Error in from_openai: {e}")
-        logger.debug("Details:", exc_info=True)
+        logger.error(f"Error converting from Pydantic model: {e}")
+        logger.debug("Exception details:", exc_info=True)
         return create_fallback_schema()

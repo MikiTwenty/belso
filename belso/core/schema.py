@@ -67,7 +67,7 @@ class Schema:
         - `name` (`str`): the name of the field.
         ---
         ### Returns
-        - `Optional[belso.schemas.BaseField]`: the field with the given name, or `None` if not found.
+        - `Optional[belso.core.BaseField]`: the field with the given name, or `None` if not found.
         """
         logger.debug(f'Getting field {name} for {cls.__name__}')
         for field in cls.fields:

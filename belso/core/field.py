@@ -125,7 +125,7 @@ class Field:
             regex: Optional[str] = None,
             multiple_of: Optional[float] = None,
             format_: Optional[str] = None
-        ) -> Union['belso.schemas.BaseField', 'belso.schemas.NestedField', 'belso.schemas.ArrayField']:
+        ) -> Union['belso.core.BaseField', 'belso.core.NestedField', 'belso.core.ArrayField']:
         """
         Create a new Field instance based on the provided type hint.\n
         ---
@@ -146,7 +146,7 @@ class Field:
         - `format_` (`Optional[str]`): semantic hints (e.g., 'email', 'date-time').\n
         ---
         ### Returns
-        - `belso.schemas.BaseField` | `belso.schemas.NestedField` | `belso.schemas.ArrayField`: the created field instance.
+        - `Union[belso.core.BaseField, belso.core.NestedField, belso.core.ArrayField]`: the created field instance.
         """
         origin = get_origin(type_)
         args = get_args(type_)

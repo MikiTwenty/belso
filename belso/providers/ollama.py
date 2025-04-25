@@ -31,7 +31,7 @@ def _convert_field_to_property(field: BaseField) -> Dict[str, Any]:
     Converts a base field into a JSON schema property.\n
     ---
     ### Args
-    - `field` (`BaseField`): the field to convert.\n
+    - `field` (`belso.core.BaseField`): the field to convert.\n
     ---
     ### Returns
     - `Dict[str, Any]`: the corresponding JSON schema property.
@@ -63,7 +63,7 @@ def _convert_nested_field(field: NestedField) -> Dict[str, Any]:
     Convert a nested field into a JSON schema property.\n
     ---
     ### Args
-    - `field` (`belso.schemas.NestedField`): the nested field to convert.\n
+    - `field` (`belso.core.NestedField`): the nested field to convert.\n
     ---
     ### Returns
     - `Dict[str, Any]`: hte JSON schema property.
