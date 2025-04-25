@@ -5,10 +5,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>belso.utils.schema_helpers &mdash; belso 0.0.2 documentation</title>
+  <title>belso.utils.helpers &mdash; belso 0.0.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=324092f7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=f471ba65" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
@@ -46,6 +46,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
 <ul>
@@ -67,7 +68,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">belso.utils.schema_helpers</li>
+      <li class="breadcrumb-item active">belso.utils.helpers</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -76,15 +77,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for belso.utils.schema_helpers</h1><div class="highlight"><pre>
-<span></span><span class="c1"># belso.utils.schema_helpers</span>
+  <h1>Source code for belso.utils.helpers</h1><div class="highlight"><pre>
+<span></span><span class="c1"># belso.utils.helpers</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Any</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">belso.schemas</span><span class="w"> </span><span class="kn">import</span> <span class="n">Schema</span><span class="p">,</span> <span class="n">BaseField</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">belso.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">Schema</span><span class="p">,</span> <span class="n">BaseField</span>
 
 <span class="c1"># Common type mappings</span>
-<span class="n">PYTHON_TO_JSON_TYPE_MAPPING</span> <span class="o">=</span> <span class="p">{</span>
+<span class="n">_PYTHON_TO_JSON_TYPE_MAPPING</span> <span class="o">=</span> <span class="p">{</span>
     <span class="nb">str</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
     <span class="nb">int</span><span class="p">:</span> <span class="s2">&quot;integer&quot;</span><span class="p">,</span>
     <span class="nb">float</span><span class="p">:</span> <span class="s2">&quot;number&quot;</span><span class="p">,</span>
@@ -93,7 +94,7 @@
     <span class="nb">dict</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span>
 <span class="p">}</span>
 
-<span class="n">JSON_TO_PYTHON_TYPE_MAPPING</span> <span class="o">=</span> <span class="p">{</span>
+<span class="n">_JSON_TO_PYTHON_TYPE_MAPPING</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;string&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="s2">&quot;integer&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -102,30 +103,30 @@
     <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="nb">dict</span>
 <span class="p">}</span>
 
-<span class="n">SUPPORT_NESTED_SCHEMA</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;openai&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;google&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;anthropic&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;mistral&quot;</span>
-<span class="p">]</span>
-
 <div class="viewcode-block" id="create_fallback_schema">
-<a class="viewcode-back" href="../../../api/utils.html#belso.utils.schema_helpers.create_fallback_schema">[docs]</a>
+<a class="viewcode-back" href="../../../api/utils.html#belso.utils.helpers.create_fallback_schema">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">create_fallback_schema</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">[</span><span class="n">Schema</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create a standard fallback schema when conversion fails.\n</span>
 <span class="sd">    ---</span>
 <span class="sd">    ### Returns</span>
-<span class="sd">    - `Type[belso.schemas.Schema]`: the fallback schema.</span>
+<span class="sd">    - `Type[belso.Schema]`: the fallback schema.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">class</span><span class="w"> </span><span class="nc">FallbackSchema</span><span class="p">(</span><span class="n">Schema</span><span class="p">):</span>
         <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;FallbackSchema&quot;</span>
-        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="n">BaseField</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Fallback field&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">BaseField</span><span class="p">(</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;text&quot;</span><span class="p">,</span>
+                <span class="n">type_</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+                <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Fallback field&quot;</span><span class="p">,</span>
+                <span class="n">required</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
     <span class="k">return</span> <span class="n">FallbackSchema</span></div>
 
 
 <div class="viewcode-block" id="map_python_to_json_type">
-<a class="viewcode-back" href="../../../api/utils.html#belso.utils.schema_helpers.map_python_to_json_type">[docs]</a>
+<a class="viewcode-back" href="../../../api/utils.html#belso.utils.helpers.map_python_to_json_type">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">map_python_to_json_type</span><span class="p">(</span><span class="n">field_type</span><span class="p">:</span> <span class="n">Type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Map Python type to JSON Schema type.\n</span>
@@ -136,11 +137,11 @@
 <span class="sd">    ### Returns</span>
 <span class="sd">    - `str`: the JSON Schema type.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">PYTHON_TO_JSON_TYPE_MAPPING</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field_type</span><span class="p">,</span> <span class="s2">&quot;string&quot;</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">_PYTHON_TO_JSON_TYPE_MAPPING</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field_type</span><span class="p">,</span> <span class="s2">&quot;string&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="map_json_to_python_type">
-<a class="viewcode-back" href="../../../api/utils.html#belso.utils.schema_helpers.map_json_to_python_type">[docs]</a>
+<a class="viewcode-back" href="../../../api/utils.html#belso.utils.helpers.map_json_to_python_type">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">map_json_to_python_type</span><span class="p">(</span><span class="n">json_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Map JSON Schema type to Python type.\n</span>
@@ -151,17 +152,17 @@
 <span class="sd">    ### Returns</span>
 <span class="sd">    - `Type`: the Python type.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">JSON_TO_PYTHON_TYPE_MAPPING</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">json_type</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">_JSON_TO_PYTHON_TYPE_MAPPING</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">json_type</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="build_properties_dict">
-<a class="viewcode-back" href="../../../api/utils.html#belso.utils.schema_helpers.build_properties_dict">[docs]</a>
+<a class="viewcode-back" href="../../../api/utils.html#belso.utils.helpers.build_properties_dict">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">build_properties_dict</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">Schema</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Build a properties dictionary from a schema for JSON Schema formats.\n</span>
 <span class="sd">    ---</span>
 <span class="sd">    ### Args</span>
-<span class="sd">    - `schema` (`Type[belso.schemas.Schema]`): the schema to build the properties dictionary from.\n</span>
+<span class="sd">    - `schema` (`Type[belso.Schema]`): the schema to build the properties dictionary from.\n</span>
 <span class="sd">    ---</span>
 <span class="sd">    ### Returns</span>
 <span class="sd">    - `Dict[str, Dict[str, Any]]`: the properties dictionary.</span>
@@ -169,7 +170,7 @@
     <span class="n">properties</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">schema</span><span class="o">.</span><span class="n">fields</span><span class="p">:</span>
-        <span class="n">json_type</span> <span class="o">=</span> <span class="n">map_python_to_json_type</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+        <span class="n">json_type</span> <span class="o">=</span> <span class="n">map_python_to_json_type</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">type_</span><span class="p">)</span>
 
         <span class="n">property_def</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">json_type</span><span class="p">,</span>
@@ -183,41 +184,6 @@
         <span class="n">properties</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">property_def</span>
 
     <span class="k">return</span> <span class="n">properties</span></div>
-
-
-<div class="viewcode-block" id="is_schema_supported">
-<a class="viewcode-back" href="../../../api/utils.html#belso.utils.schema_helpers.is_schema_supported">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">is_schema_supported</span><span class="p">(</span>
-        <span class="n">schema</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">Schema</span><span class="p">],</span>
-        <span class="n">provider</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Check if a schema is supported by a provider.\n</span>
-<span class="sd">    ---</span>
-<span class="sd">    ### Args</span>
-<span class="sd">    - `schema` (`Type[belso.schemas.Schema]`): the schema to check.</span>
-<span class="sd">    - `provider` (`str`): the provider to check against.\n</span>
-<span class="sd">    ---</span>
-<span class="sd">    ### Returns</span>
-<span class="sd">    - `bool`: `True` if the schema is supported, `False` otherwise.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Basic support check - can be extended with provider-specific logic</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="s2">&quot;fields&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">schema</span><span class="o">.</span><span class="n">fields</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">False</span>
-
-    <span class="c1"># Verifica se lo schema è annidato</span>
-    <span class="n">has_nested_schema</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">schema</span><span class="o">.</span><span class="n">fields</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">Schema</span><span class="p">):</span>
-            <span class="n">has_nested_schema</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">break</span>
-
-    <span class="c1"># Se lo schema è annidato, verifica se il provider lo supporta</span>
-    <span class="k">if</span> <span class="n">has_nested_schema</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">provider</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">SUPPORT_NESTED_SCHEMA</span>
-
-    <span class="c1"># Se lo schema non è annidato, tutti i provider lo supportano</span>
-    <span class="k">return</span> <span class="kc">True</span></div>
 
 </pre></div>
 

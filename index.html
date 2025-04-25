@@ -9,7 +9,7 @@
   <title>Welcome to belso’s documentation! &mdash; belso 0.0.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
-      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=324092f7" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=f471ba65" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
@@ -48,6 +48,7 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
 <ul>
@@ -86,7 +87,6 @@
 <ul class="simple">
 <li><p>Convert between different LLM provider schema formats</p></li>
 <li><p>Support for nested schemas</p></li>
-<li><p>Validation of structured outputs</p></li>
 <li><p>Support for multiple providers including OpenAI, Google, Anthropic, Mistral, and more</p></li>
 </ul>
 </section>
@@ -99,24 +99,18 @@
 <section id="quick-start">
 <h2>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">belso.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">PROVIDERS</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">belso.schemas</span><span class="w"> </span><span class="kn">import</span> <span class="n">Schema</span><span class="p">,</span> <span class="n">BaseField</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">belso.validator</span><span class="w"> </span><span class="kn">import</span> <span class="n">SchemaValidator</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">belso.translator</span><span class="w"> </span><span class="kn">import</span> <span class="n">SchemaTranslator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">belso</span><span class="w"> </span><span class="kn">import</span> <span class="n">Schema</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">SchemaProcessor</span>
 
 <span class="c1"># Define your schema</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">UserSchema</span><span class="p">(</span><span class="n">Schema</span><span class="p">):</span>
     <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;UserSchema&quot;</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">BaseField</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;User&#39;s name&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-        <span class="n">BaseField</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;User&#39;s age&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">Field</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;User&#39;s name&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+        <span class="n">Field</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;User&#39;s age&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="p">]</span>
 
 <span class="c1"># Translate to OpenAI format</span>
-<span class="n">openai_schema</span> <span class="o">=</span> <span class="n">SchemaTranslator</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">UserSchema</span><span class="p">,</span> <span class="n">PROVIDERS</span><span class="o">.</span><span class="n">OPENAI</span><span class="p">)</span>
-
-<span class="c1"># Validate data against schema</span>
-<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">}</span>
-<span class="n">validated_data</span> <span class="o">=</span> <span class="n">SchemaValidator</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">UserSchema</span><span class="p">)</span>
+<span class="n">openai_schema</span> <span class="o">=</span> <span class="n">SchemaProcessor</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">UserSchema</span><span class="p">,</span> <span class="n">PROVIDERS</span><span class="o">.</span><span class="n">OPENAI</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -142,6 +136,11 @@
 <li class="toctree-l2"><a class="reference internal" href="examples.html#nested-schema-example">Nested Schema Example</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id1">[0.0.2] - 2025-04-25</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id2">[0.0.1] - 2025-04-22</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </section>
@@ -159,9 +158,9 @@
 <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/schemas.html">Schemas</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/translator.html">Translator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/validator.html">Validator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/core.html">Core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/providers.html">Providers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/formats.html">Formats</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/utils.html">Utilities</a></li>
 </ul>
 </li>

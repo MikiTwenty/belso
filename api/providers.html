@@ -1,0 +1,329 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Providers &mdash; belso 0.0.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=f471ba65" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=e3a6060d"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Formats" href="formats.html" />
+    <link rel="prev" title="Core" href="core.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            belso
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="core.html">Core</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Providers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#openai">OpenAI</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#belso.providers.to_openai"><code class="docutils literal notranslate"><span class="pre">to_openai()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#belso.providers.from_openai"><code class="docutils literal notranslate"><span class="pre">from_openai()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#anthropic">Anthropic</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#belso.providers.to_anthropic"><code class="docutils literal notranslate"><span class="pre">to_anthropic()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#belso.providers.from_anthropic"><code class="docutils literal notranslate"><span class="pre">from_anthropic()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#google">Google</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#belso.providers.to_google"><code class="docutils literal notranslate"><span class="pre">to_google()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#belso.providers.from_google"><code class="docutils literal notranslate"><span class="pre">from_google()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#mistral">Mistral</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#belso.providers.to_mistral"><code class="docutils literal notranslate"><span class="pre">to_mistral()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#belso.providers.from_mistral"><code class="docutils literal notranslate"><span class="pre">from_mistral()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ollama">Ollama</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#belso.providers.to_ollama"><code class="docutils literal notranslate"><span class="pre">to_ollama()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#belso.providers.from_ollama"><code class="docutils literal notranslate"><span class="pre">from_ollama()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#huggingface">HuggingFace</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#belso.providers.to_huggingface"><code class="docutils literal notranslate"><span class="pre">to_huggingface()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#belso.providers.from_huggingface"><code class="docutils literal notranslate"><span class="pre">from_huggingface()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#langchain">LangChain</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#belso.providers.to_langchain"><code class="docutils literal notranslate"><span class="pre">to_langchain()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#belso.providers.from_langchain"><code class="docutils literal notranslate"><span class="pre">from_langchain()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="formats.html">Formats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">Utilities</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">belso</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API Reference</a></li>
+      <li class="breadcrumb-item active">Providers</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/providers.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="providers">
+<h1>Providers<a class="headerlink" href="#providers" title="Link to this heading"></a></h1>
+<section id="openai">
+<h2>OpenAI<a class="headerlink" href="#openai" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.providers.to_openai">
+<span class="sig-prename descclassname"><span class="pre">belso.providers.</span></span><span class="sig-name descname"><span class="pre">to_openai</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/providers/openai.html#to_openai"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.providers.to_openai" title="Link to this definition"></a></dt>
+<dd><p>Convert a belso schema to OpenAI-compatible Pydantic model.</p>
+<p class="rubric">Args</p>
+<ul class="simple">
+<li><p><strong>schema</strong> (<code class="customtype docutils literal notranslate"><span class="pre">Type[belso.Schema]</span></code>): the belso schema.</p></li>
+</ul>
+<p class="rubric">Returns</p>
+<ul class="simple">
+<li><p><code class="customtype docutils literal notranslate"><span class="pre">Type[pydantic.BaseModel]</span></code>: the Pydantic model.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.providers.from_openai">
+<span class="sig-prename descclassname"><span class="pre">belso.providers.</span></span><span class="sig-name descname"><span class="pre">from_openai</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Converted'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/providers/openai.html#from_openai"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.providers.from_openai" title="Link to this definition"></a></dt>
+<dd><p>Convert a Pydantic model into a belso Schema.</p>
+<p class="rubric">Args</p>
+<ul class="simple">
+<li><p><strong>schema</strong> (<code class="customtype docutils literal notranslate"><span class="pre">Type[pydantic.BaseModel]</span></code>): the Pydantic model.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name_prefix</span></code> (<code class="docutils literal notranslate"><span class="pre">str</span></code>, optional): the prefix to add to the schema name. Defaults to “Converted”.</p></li>
+</ul>
+<p class="rubric">Returns</p>
+<ul class="simple">
+<li><p><code class="customtype docutils literal notranslate"><span class="pre">Type[belso.Schema]</span></code>: the belso schema.</p></li>
+</ul>
+</dd></dl>
+
+</section>
+<section id="anthropic">
+<h2>Anthropic<a class="headerlink" href="#anthropic" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.providers.to_anthropic">
+<span class="sig-prename descclassname"><span class="pre">belso.providers.</span></span><span class="sig-name descname"><span class="pre">to_anthropic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/providers/anthropic.html#to_anthropic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.providers.to_anthropic" title="Link to this definition"></a></dt>
+<dd><p>Convert a belso schema to Anthropic Claude format.</p>
+<p class="rubric">Args</p>
+<ul class="simple">
+<li><p><strong>schema</strong> (<code class="customtype docutils literal notranslate"><span class="pre">Type[belso.Schema]</span></code>): the belso schema to convert.</p></li>
+</ul>
+<p class="rubric">Returns</p>
+<ul class="simple">
+<li><p><code class="customtype docutils literal notranslate"><span class="pre">Dict[str,</span> <span class="pre">Any]</span></code>: the converted schema.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.providers.from_anthropic">
+<span class="sig-prename descclassname"><span class="pre">belso.providers.</span></span><span class="sig-name descname"><span class="pre">from_anthropic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Converted'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/providers/anthropic.html#from_anthropic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.providers.from_anthropic" title="Link to this definition"></a></dt>
+<dd><p>Convert an Anthropic schema to belso format.</p>
+<p class="rubric">Args</p>
+<ul class="simple">
+<li><p><strong>schema</strong> (<code class="customtype docutils literal notranslate"><span class="pre">Dict[str,</span> <span class="pre">Any]</span></code>): the Anthropic schema to convert.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name_prefix</span></code> (<code class="docutils literal notranslate"><span class="pre">str</span></code>, optional): the prefix to add to the schema name. Defaults to “Converted”.</p></li>
+</ul>
+<p class="rubric">Returns</p>
+<ul class="simple">
+<li><p><code class="customtype docutils literal notranslate"><span class="pre">Type[belso.Schema]</span></code>: the converted belso schema.</p></li>
+</ul>
+</dd></dl>
+
+</section>
+<section id="google">
+<h2>Google<a class="headerlink" href="#google" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.providers.to_google">
+<span class="sig-prename descclassname"><span class="pre">belso.providers.</span></span><span class="sig-name descname"><span class="pre">to_google</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/providers/google.html#to_google"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.providers.to_google" title="Link to this definition"></a></dt>
+<dd><p>Convert a belso schema to Google Gemini format.</p>
+<p class="rubric">Args</p>
+<ul class="simple">
+<li><p><strong>schema</strong> (<code class="customtype docutils literal notranslate"><span class="pre">Type[Schema]</span></code>)</p></li>
+</ul>
+<p class="rubric">Returns</p>
+<ul class="simple">
+<li><p><code class="customtype docutils literal notranslate"><span class="pre">content.Schema</span></code>: the converted schema.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.providers.from_google">
+<span class="sig-prename descclassname"><span class="pre">belso.providers.</span></span><span class="sig-name descname"><span class="pre">from_google</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Converted'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/providers/google.html#from_google"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.providers.from_google" title="Link to this definition"></a></dt>
+<dd><p>Convert a Google Gemini schema to belso format.</p>
+<p class="rubric">Args</p>
+<ul class="simple">
+<li><p><strong>schema</strong> (<code class="customtype docutils literal notranslate"><span class="pre">content.Schema</span></code>): the Google schema.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name_prefix</span></code> (<code class="docutils literal notranslate"><span class="pre">str</span></code>, optional): the prefix to add to the schema name. Defaults to “Converted”.</p></li>
+</ul>
+<p class="rubric">Returns</p>
+<ul class="simple">
+<li><p><code class="customtype docutils literal notranslate"><span class="pre">Type[Schema]</span></code>: the converted belso schema.</p></li>
+</ul>
+</dd></dl>
+
+</section>
+<section id="mistral">
+<h2>Mistral<a class="headerlink" href="#mistral" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.providers.to_mistral">
+<span class="sig-prename descclassname"><span class="pre">belso.providers.</span></span><span class="sig-name descname"><span class="pre">to_mistral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/providers/mistral.html#to_mistral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.providers.to_mistral" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.providers.from_mistral">
+<span class="sig-prename descclassname"><span class="pre">belso.providers.</span></span><span class="sig-name descname"><span class="pre">from_mistral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Converted'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/providers/mistral.html#from_mistral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.providers.from_mistral" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="ollama">
+<h2>Ollama<a class="headerlink" href="#ollama" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.providers.to_ollama">
+<span class="sig-prename descclassname"><span class="pre">belso.providers.</span></span><span class="sig-name descname"><span class="pre">to_ollama</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/providers/ollama.html#to_ollama"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.providers.to_ollama" title="Link to this definition"></a></dt>
+<dd><p>Convert a belso schema to Ollama format.</p>
+<p class="rubric">Args</p>
+<ul class="simple">
+<li><p><strong>schema</strong> (<code class="customtype docutils literal notranslate"><span class="pre">Type[belso.Schema]</span></code>): the belso schema to convert.</p></li>
+</ul>
+<p class="rubric">Returns</p>
+<ul class="simple">
+<li><p><code class="customtype docutils literal notranslate"><span class="pre">Dict[str,</span> <span class="pre">Any]</span></code>: the converted schema.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.providers.from_ollama">
+<span class="sig-prename descclassname"><span class="pre">belso.providers.</span></span><span class="sig-name descname"><span class="pre">from_ollama</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Converted'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/providers/ollama.html#from_ollama"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.providers.from_ollama" title="Link to this definition"></a></dt>
+<dd><p>Convert a Ollama schema to belso format.</p>
+<p class="rubric">Args</p>
+<ul class="simple">
+<li><p><strong>schema</strong> (<code class="customtype docutils literal notranslate"><span class="pre">Dict[str,</span> <span class="pre">Any]</span></code>): the schema to convert.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name_prefix</span></code> (<code class="docutils literal notranslate"><span class="pre">str</span></code>, optional): the prefix to add to the schema name. Defaults to “Converted”.</p></li>
+</ul>
+<p class="rubric">Returns</p>
+<ul class="simple">
+<li><p><code class="customtype docutils literal notranslate"><span class="pre">Type[belso.Schema]</span></code>: the converted belso schema.</p></li>
+</ul>
+</dd></dl>
+
+</section>
+<section id="huggingface">
+<h2>HuggingFace<a class="headerlink" href="#huggingface" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.providers.to_huggingface">
+<span class="sig-prename descclassname"><span class="pre">belso.providers.</span></span><span class="sig-name descname"><span class="pre">to_huggingface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/providers/huggingface.html#to_huggingface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.providers.to_huggingface" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.providers.from_huggingface">
+<span class="sig-prename descclassname"><span class="pre">belso.providers.</span></span><span class="sig-name descname"><span class="pre">from_huggingface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Converted'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/providers/huggingface.html#from_huggingface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.providers.from_huggingface" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="langchain">
+<h2>LangChain<a class="headerlink" href="#langchain" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.providers.to_langchain">
+<span class="sig-prename descclassname"><span class="pre">belso.providers.</span></span><span class="sig-name descname"><span class="pre">to_langchain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/providers/langchain.html#to_langchain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.providers.to_langchain" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.providers.from_langchain">
+<span class="sig-prename descclassname"><span class="pre">belso.providers.</span></span><span class="sig-name descname"><span class="pre">from_langchain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Converted'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/providers/langchain.html#from_langchain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.providers.from_langchain" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="core.html" class="btn btn-neutral float-left" title="Core" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="formats.html" class="btn btn-neutral float-right" title="Formats" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Michele Ventimiglia.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

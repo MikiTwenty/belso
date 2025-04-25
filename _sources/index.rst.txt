@@ -13,7 +13,6 @@ Features
 
 * Convert between different LLM provider schema formats
 * Support for nested schemas
-* Validation of structured outputs
 * Support for multiple providers including OpenAI, Google, Anthropic, Mistral, and more
 
 Installation
@@ -29,24 +28,18 @@ Quick Start
 .. code-block:: python
 
    from belso.utils import PROVIDERS
-   from belso.schemas import Schema, BaseField
-   from belso.validator import SchemaValidator
-   from belso.translator import SchemaTranslator
+   from belso import Schema, Field, SchemaProcessor
 
    # Define your schema
    class UserSchema(Schema):
        name = "UserSchema"
        fields = [
-           BaseField(name="name", type=str, description="User's name", required=True),
-           BaseField(name="age", type=int, description="User's age", required=True)
+           Field(name="name", type_=str, description="User's name", required=True),
+           Field(name="age", type_=int, description="User's age", required=True)
        ]
 
    # Translate to OpenAI format
-   openai_schema = SchemaTranslator.translate(UserSchema, PROVIDERS.OPENAI)
-
-   # Validate data against schema
-   data = {"name": "John", "age": 30}
-   validated_data = SchemaValidator.validate(data, UserSchema)
+   openai_schema = SchemaProcessor.translate(UserSchema, PROVIDERS.OPENAI)
 
 Contents
 --------
@@ -59,6 +52,7 @@ Contents
    installation
    quickstart
    examples
+   changelog
 
 Indices and tables
 ==================
@@ -82,4 +76,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-

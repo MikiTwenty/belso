@@ -9,7 +9,7 @@
   <title>Examples &mdash; belso 0.0.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
-      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=324092f7" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=f471ba65" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
@@ -20,7 +20,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="API Reference" href="api/index.html" />
+    <link rel="next" title="Changelog" href="changelog.html" />
     <link rel="prev" title="Quick Start Guide" href="quickstart.html" /> 
 </head>
 
@@ -53,6 +53,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#nested-schema-example">Nested Schema Example</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
 <ul>
@@ -88,37 +89,36 @@
 <p>Here are some examples of how to use belso in different scenarios.</p>
 <section id="basic-schema-example">
 <h2>Basic Schema Example<a class="headerlink" href="#basic-schema-example" title="Link to this heading"></a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">belso.schemas</span><span class="w"> </span><span class="kn">import</span> <span class="n">Schema</span><span class="p">,</span> <span class="n">BaseField</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">belso</span><span class="w"> </span><span class="kn">import</span> <span class="n">Schema</span><span class="p">,</span> <span class="n">Field</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">WeatherSchema</span><span class="p">(</span><span class="n">Schema</span><span class="p">):</span>
     <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;WeatherSchema&quot;</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">BaseField</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;temperature&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Temperature in Celsius&quot;</span><span class="p">),</span>
-        <span class="n">BaseField</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;humidity&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Humidity percentage&quot;</span><span class="p">),</span>
-        <span class="n">BaseField</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;conditions&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Weather conditions&quot;</span><span class="p">)</span>
+        <span class="n">Field</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;temperature&quot;</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Temperature in Celsius&quot;</span><span class="p">),</span>
+        <span class="n">Field</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;humidity&quot;</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Humidity percentage&quot;</span><span class="p">),</span>
+        <span class="n">Field</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;conditions&quot;</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Weather conditions&quot;</span><span class="p">)</span>
     <span class="p">]</span>
 </pre></div>
 </div>
 </section>
 <section id="nested-schema-example">
 <h2>Nested Schema Example<a class="headerlink" href="#nested-schema-example" title="Link to this heading"></a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">belso.schemas</span><span class="w"> </span><span class="kn">import</span> <span class="n">Schema</span><span class="p">,</span> <span class="n">BaseField</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">belso.schemas.nested</span><span class="w"> </span><span class="kn">import</span> <span class="n">NestedField</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">belso</span><span class="w"> </span><span class="kn">import</span> <span class="n">Schema</span><span class="p">,</span> <span class="n">Field</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">AddressSchema</span><span class="p">(</span><span class="n">Schema</span><span class="p">):</span>
     <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;AddressSchema&quot;</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">BaseField</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;street&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Street address&quot;</span><span class="p">),</span>
-        <span class="n">BaseField</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;city&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;City name&quot;</span><span class="p">),</span>
-        <span class="n">BaseField</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;zip_code&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Postal code&quot;</span><span class="p">)</span>
+        <span class="n">Field</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;street&quot;</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Street address&quot;</span><span class="p">),</span>
+        <span class="n">Field</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;city&quot;</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;City name&quot;</span><span class="p">),</span>
+        <span class="n">Field</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;zip_code&quot;</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Postal code&quot;</span><span class="p">)</span>
     <span class="p">]</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">PersonSchema</span><span class="p">(</span><span class="n">Schema</span><span class="p">):</span>
     <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;PersonSchema&quot;</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">BaseField</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Person&#39;s name&quot;</span><span class="p">),</span>
-        <span class="n">BaseField</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Person&#39;s age&quot;</span><span class="p">),</span>
-        <span class="n">NestedField</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;address&quot;</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">AddressSchema</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Person&#39;s address&quot;</span><span class="p">)</span>
+        <span class="n">Field</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Person&#39;s name&quot;</span><span class="p">),</span>
+        <span class="n">Field</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Person&#39;s age&quot;</span><span class="p">),</span>
+        <span class="n">Field</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;address&quot;</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="n">AddressSchema</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Person&#39;s address&quot;</span><span class="p">)</span>
     <span class="p">]</span>
 </pre></div>
 </div>
@@ -130,7 +130,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="quickstart.html" class="btn btn-neutral float-left" title="Quick Start Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="api/index.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="changelog.html" class="btn btn-neutral float-right" title="Changelog" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
