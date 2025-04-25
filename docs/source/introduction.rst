@@ -6,7 +6,6 @@ Introduction
 Key Features
 ------------
 
-- **Schema Validation**: Validate LLM outputs against predefined schemas
 - **Multi-Provider Support**: Seamlessly work with outputs from:
 
   - OpenAI
@@ -18,4 +17,3 @@ Key Features
   - LangChain
 
 - **Format Translation**: Convert between different schema formats
-- **Robust Error Handling**: Comprehensive logging and error management

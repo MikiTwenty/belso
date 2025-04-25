@@ -35,14 +35,12 @@ setup(
     include_package_data = True,
     python_requires=">=3.10",
     install_requires = requirements,
-    tests_require = requirements,
     zip_safe = False,
     long_description = long_description,
     long_description_content_type = "text/markdown",
     classifiers = [
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
-        "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         "Programming Language :: Python"
     ],

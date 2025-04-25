@@ -8,14 +8,14 @@ Basic Schema Example
 
 .. code-block:: python
 
-   from belso.schemas import Schema, BaseField
+   from belso import Schema, Field
 
    class WeatherSchema(Schema):
        name = "WeatherSchema"
        fields = [
-           BaseField(name="temperature", type=float, description="Temperature in Celsius"),
-           BaseField(name="humidity", type=float, description="Humidity percentage"),
-           BaseField(name="conditions", type=str, description="Weather conditions")
+           Field(name="temperature", type_=float, description="Temperature in Celsius"),
+           Field(name="humidity", type_=float, description="Humidity percentage"),
+           Field(name="conditions", type_=str, description="Weather conditions")
        ]
 
 Nested Schema Example
@@ -23,21 +23,20 @@ Nested Schema Example
 
 .. code-block:: python
 
-   from belso.schemas import Schema, BaseField
-   from belso.schemas.nested import NestedField
+   from belso import Schema, Field
 
    class AddressSchema(Schema):
        name = "AddressSchema"
        fields = [
-           BaseField(name="street", type=str, description="Street address"),
-           BaseField(name="city", type=str, description="City name"),
-           BaseField(name="zip_code", type=str, description="Postal code")
+           Field(name="street", type_=str, description="Street address"),
+           Field(name="city", type_=str, description="City name"),
+           Field(name="zip_code", type_=str, description="Postal code")
        ]
 
    class PersonSchema(Schema):
        name = "PersonSchema"
        fields = [
-           BaseField(name="name", type=str, description="Person's name"),
-           BaseField(name="age", type=int, description="Person's age"),
-           NestedField(name="address", schema=AddressSchema, description="Person's address")
+           Field(name="name", type_=str, description="Person's name"),
+           Field(name="age", type_=int, description="Person's age"),
+           Field(name="address", type_=AddressSchema, description="Person's address")
        ]

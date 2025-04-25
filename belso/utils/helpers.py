@@ -1,11 +1,11 @@
-# belso.utils.schema_helpers
+# belso.utils.helpers
 
 from typing import Dict, Type, Any
 
-from belso.schemas import Schema, BaseField
+from belso.core import Schema, BaseField
 
 # Common type mappings
-PYTHON_TO_JSON_TYPE_MAPPING = {
+_PYTHON_TO_JSON_TYPE_MAPPING = {
     str: "string",
     int: "integer",
     float: "number",
@@ -14,7 +14,7 @@ PYTHON_TO_JSON_TYPE_MAPPING = {
     dict: "object"
 }
 
-JSON_TO_PYTHON_TYPE_MAPPING = {
+_JSON_TO_PYTHON_TYPE_MAPPING = {
     "string": str,
     "integer": int,
     "number": float,
@@ -23,23 +23,23 @@ JSON_TO_PYTHON_TYPE_MAPPING = {
     "object": dict
 }
 
-SUPPORT_NESTED_SCHEMA = [
-    "openai",
-    "google",
-    "anthropic",
-    "mistral"
-]
-
 def create_fallback_schema() -> Type[Schema]:
     """
     Create a standard fallback schema when conversion fails.\n
     ---
     ### Returns
-    - `Type[belso.schemas.Schema]`: the fallback schema.
+    - `Type[belso.Schema]`: the fallback schema.
     """
     class FallbackSchema(Schema):
         name = "FallbackSchema"
-        fields = [BaseField(name="text", type=str, description="Fallback field", required=True)]
+        fields = [
+            BaseField(
+                name="text",
+                type_=str,
+                description="Fallback field",
+                required=True
+            )
+        ]
     return FallbackSchema
 
 def map_python_to_json_type(field_type: Type) -> str:
@@ -52,7 +52,7 @@ def map_python_to_json_type(field_type: Type) -> str:
     ### Returns
     - `str`: the JSON Schema type.
     """
-    return PYTHON_TO_JSON_TYPE_MAPPING.get(field_type, "string")
+    return _PYTHON_TO_JSON_TYPE_MAPPING.get(field_type, "string")
 
 def map_json_to_python_type(json_type: str) -> Type:
     """
@@ -64,14 +64,14 @@ def map_json_to_python_type(json_type: str) -> Type:
     ### Returns
     - `Type`: the Python type.
     """
-    return JSON_TO_PYTHON_TYPE_MAPPING.get(json_type, str)
+    return _JSON_TO_PYTHON_TYPE_MAPPING.get(json_type, str)
 
 def build_properties_dict(schema: Type[Schema]) -> Dict[str, Dict[str, Any]]:
     """
     Build a properties dictionary from a schema for JSON Schema formats.\n
     ---
     ### Args
-    - `schema` (`Type[belso.schemas.Schema]`): the schema to build the properties dictionary from.\n
+    - `schema` (`Type[belso.Schema]`): the schema to build the properties dictionary from.\n
     ---
     ### Returns
     - `Dict[str, Dict[str, Any]]`: the properties dictionary.
@@ -79,7 +79,7 @@ def build_properties_dict(schema: Type[Schema]) -> Dict[str, Dict[str, Any]]:
     properties = {}
 
     for field in schema.fields:
-        json_type = map_python_to_json_type(field.type)
+        json_type = map_python_to_json_type(field.type_)
 
         property_def = {
             "type": json_type,
@@ -93,35 +93,3 @@ def build_properties_dict(schema: Type[Schema]) -> Dict[str, Dict[str, Any]]:
         properties[field.name] = property_def
 
     return properties
-
-def is_schema_supported(
-        schema: Type[Schema],
-        provider: str
-    ) -> bool:
-    """
-    Check if a schema is supported by a provider.\n
-    ---
-    ### Args
-    - `schema` (`Type[belso.schemas.Schema]`): the schema to check.
-    - `provider` (`str`): the provider to check against.\n
-    ---
-    ### Returns
-    - `bool`: `True` if the schema is supported, `False` otherwise.
-    """
-    # Basic support check - can be extended with provider-specific logic
-    if not hasattr(schema, "fields") or not schema.fields:
-        return False
-
-    # Verifica se lo schema è annidato
-    has_nested_schema = False
-    for field in schema.fields:
-        if issubclass(field.type, Schema):
-            has_nested_schema = True
-            break
-
-    # Se lo schema è annidato, verifica se il provider lo supporta
-    if has_nested_schema:
-        return provider.lower() in SUPPORT_NESTED_SCHEMA
-
-    # Se lo schema non è annidato, tutti i provider lo supportano
-    return True
