@@ -5,6 +5,7 @@ from typing import Any, Dict, Type
 from belso.utils import get_logger
 from belso.core import Schema, BaseField
 from belso.core.field import NestedField, ArrayField
+from belso.utils.constants import _LANGCHAIN_FIELD_MAP
 from belso.utils.helpers import (
     map_json_to_python_type,
     map_python_to_json_type,
@@ -13,27 +14,22 @@ from belso.utils.helpers import (
 
 _logger = get_logger(__name__)
 
-_LANGCHAIN_FIELD_TO_PROPERTY_MAPPING = {
-    "default": ("default", None),
-    "enum": ("enum", None),
-    "regex": ("pattern", None),
-    "multiple_of": ("multipleOf", None),
-    "format_": ("format", None),
-    "range_": [("minimum", lambda r: r[0]), ("maximum", lambda r: r[1])],
-    "exclusive_range": [("exclusiveMinimum", lambda r: r[0]), ("exclusiveMaximum", lambda r: r[1])],
-    "length_range": [("minLength", lambda r: r[0]), ("maxLength", lambda r: r[1])],
-    "items_range": [("minItems", lambda r: r[0]), ("maxItems", lambda r: r[1])],
-    "properties_range": [("minProperties", lambda r: r[0]), ("maxProperties", lambda r: r[1])]
-}
-
-
 def _convert_field_to_property(field: BaseField) -> Dict[str, Any]:
+    """
+    Converts a base field into a JSON schema property.\n
+    ---
+    ### Args
+    - `field` (`belso.core.BaseField`): the field to convert.\n
+    ---
+    ### Returns
+    - `dict`: the JSON schema property.\n
+    """
     base_property = {
         "type": map_python_to_json_type(getattr(field, "type_", str)),
         "description": field.description
     }
 
-    for attr, mappings in _LANGCHAIN_FIELD_TO_PROPERTY_MAPPING.items():
+    for attr, mappings in _LANGCHAIN_FIELD_MAP.items():
         value = getattr(field, attr, None)
         if value is not None:
             if isinstance(mappings, list):
@@ -47,6 +43,15 @@ def _convert_field_to_property(field: BaseField) -> Dict[str, Any]:
 
 
 def _convert_nested_field(field: NestedField) -> Dict[str, Any]:
+    """
+    Converts a nested field into a JSON schema property.\n
+    ---
+    ### Args
+    - `field` (`belso.core.NestedField`): the nested field to convert.\n
+    ---
+    ### Returns
+    - `dict`: the JSON schema property.\n
+    """
     nested_schema = to_langchain(field.schema)
     return {
         "type": "object",
@@ -81,6 +86,15 @@ def _convert_array_field(field: ArrayField) -> Dict[str, Any]:
 
 
 def to_langchain(schema: Type[Schema]) -> Dict[str, Any]:
+    """
+    Converts a belso schema to a LangChain schema.\n
+    ---
+    ### Args
+    - `schema` (`belso.core.Schema`): the schema to convert.\n
+    ---
+    ### Returns
+    - `dict`: the LangChain schema.
+    """
     try:
         schema_name = getattr(schema, "__name__", "unnamed")
         _logger.debug(f"Starting translation of schema '{schema_name}' to LangChain format...")
@@ -106,11 +120,20 @@ def to_langchain(schema: Type[Schema]) -> Dict[str, Any]:
         _logger.debug("Translation error details", exc_info=True)
         return {}
 
-
 def from_langchain(
-    schema: Dict[str, Any],
-    name_prefix: str = "Converted"
-) -> Type[Schema]:
+        schema: Dict[str, Any],
+        name_prefix: str = "Converted"
+    ) -> Type[Schema]:
+    """
+    Converts a LangChain schema to a belso schema.\n
+    ---
+    ### Args
+    - `schema` (`dict`): the LangChain schema.
+    - `name_prefix` (`str`, optional): the prefix to add to the schema name.\n
+    ---
+    ### Returns
+    - `belso.core.Schema`: the converted belso schema.
+    """
     try:
         _logger.debug("Starting conversion from LangChain schema to belso format...")
 

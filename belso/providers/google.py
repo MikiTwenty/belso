@@ -8,21 +8,9 @@ from belso.utils import get_logger
 from belso.core import Schema, BaseField
 from belso.core.field import NestedField, ArrayField
 from belso.utils.helpers import create_fallback_schema
+from belso.utils.constants import _GOOGLE_TYPE_MAP, _REVERSE_GOOGLE_TYPE_MAP
 
 _logger = get_logger(__name__)
-
-_GOOGLE_TYPE_MAPPING = {
-    str: content.Type.STRING,
-    int: content.Type.INTEGER,
-    float: content.Type.NUMBER,
-    bool: content.Type.BOOLEAN,
-    list: content.Type.ARRAY,
-    dict: content.Type.OBJECT,
-    Any: content.Type.TYPE_UNSPECIFIED
-}
-
-_REVERSE_GOOGLE_TYPE_MAPPING = {v: k for k, v in _GOOGLE_TYPE_MAPPING.items()}
-
 
 def _convert_field_to_schema(field: BaseField) -> content.Schema:
     """
@@ -37,7 +25,7 @@ def _convert_field_to_schema(field: BaseField) -> content.Schema:
     _logger.debug(f"Converting base field '{field.name}' to Google Schema...")
 
     schema = content.Schema(
-        type=_GOOGLE_TYPE_MAPPING.get(field.type_, content.Type.TYPE_UNSPECIFIED),
+        type=_GOOGLE_TYPE_MAP.get(field.type_, content.Type.TYPE_UNSPECIFIED),
         description=field.description or "",
         nullable=not field.required
     )
@@ -89,7 +77,7 @@ def _convert_array_field(field: ArrayField) -> content.Schema:
         items_schema = to_google(field.items_type)
     else:
         items_schema = content.Schema(
-            type=_GOOGLE_TYPE_MAPPING.get(field.items_type, content.Type.TYPE_UNSPECIFIED)
+            type=_GOOGLE_TYPE_MAP.get(field.items_type, content.Type.TYPE_UNSPECIFIED)
         )
 
     schema = content.Schema(
@@ -165,7 +153,7 @@ def from_google(
         properties = schema.properties
 
         for name, prop in properties.items():
-            field_type = _REVERSE_GOOGLE_TYPE_MAPPING.get(prop.type, str)
+            field_type = _REVERSE_GOOGLE_TYPE_MAP.get(prop.type, str)
             description = prop.description or ""
             required = name in required_fields
             default = None
@@ -187,7 +175,7 @@ def from_google(
                 )
             # Array
             elif prop.type == content.Type.ARRAY and prop.items:
-                items_type = _REVERSE_GOOGLE_TYPE_MAPPING.get(prop.items.type, str)
+                items_type = _REVERSE_GOOGLE_TYPE_MAP.get(prop.items.type, str)
                 ConvertedSchema.fields.append(
                     ArrayField(
                         name=name,

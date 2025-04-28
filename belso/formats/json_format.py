@@ -6,27 +6,25 @@ from typing import Any, Dict, Optional, Type, Union
 
 from belso.utils import get_logger
 from belso.core import Schema, BaseField
+from belso.utils.constants import _JSON_TYPE_MAP
 from belso.core.field import NestedField, ArrayField
 from belso.utils.helpers import create_fallback_schema
 
 _logger = get_logger(__name__)
-
-_TYPE_MAP = {
-    "str": str,
-    "int": int,
-    "float": float,
-    "bool": bool,
-    "list": list,
-    "dict": dict,
-    "any": Any
-}
 
 def _add_prefix(
         base: str,
         prefix: str
     ) -> str:
     """
-    Applica `prefix` solo se `base` non lo possiede già in testa.
+    Apply `prefix` only if `base` does not already start with it.\n
+    ---
+    ### Args
+    - `base` (`str`): original string.
+    - `prefix` (`str`): prefix to apply.\n
+    ---
+    ### Returns
+    - `str`: `base` prefixed with `prefix` if needed.
     """
     return base if not prefix or base.startswith(prefix) else f"{prefix}{base}"
 
@@ -45,6 +43,16 @@ def _to_json(
         schema: Type[Schema], *,
         root_prefix: str = ""
     ) -> Dict[str, Any]:
+    """
+    Serialize `schema` in a dict JSON-ready.\n
+    ---
+    ### Args
+    - `schema` (`Type[Schema]`): schema to serialize.
+    - `root_prefix` (`str`, optional): prefix to apply to the root schema name.\n
+    ---
+    ### Returns
+    - `Dict[str, Any]`: dict JSON-ready representation of `schema`.
+    """
     schema_json: Dict[str, Any] = {
         "name": _add_prefix(schema.__name__, root_prefix),
         "fields": []
@@ -54,7 +62,6 @@ def _to_json(
         # nested object
         if isinstance(fld, NestedField):
             fld_dict = _field_dict(fld)
-            # nessun nuovo prefisso – manteniamo il nome originale del nested schema
             fld_dict["schema"] = _to_json(fld.schema, root_prefix="")
             schema_json["fields"].append(fld_dict)
             continue
@@ -81,8 +88,15 @@ def to_json(
         name_prefix: str = "",
     ) -> Dict[str, Any]:
     """
-    Serializza `schema` in un dizionario JSON-ready e, se indicato,
-    lo salva su disco.
+    Serialize `schema` in JSON format.\n
+    ---
+    ### Args
+    - `schema` (`Type[Schema]`): schema to serialize.
+    - `file_path` (`Optional[Union[str, Path]]`, optional): path to save the JSON file.
+    - `name_prefix` (`str`, optional): prefix to apply to the root schema name.\n
+    ---
+    ### Returns
+    - `Dict[str, Any]`: dict JSON-ready representation of `schema`.
     """
     try:
         data = _to_json(schema, root_prefix=name_prefix)
@@ -95,6 +109,15 @@ def to_json(
         return {"name": "ErrorSchema", "fields": []}
 
 def _from_json(data: Dict[str, Any]) -> Type[Schema]:
+    """
+    Load JSON data into a belso Schema.\n
+    ---
+    ### Args
+    - `data` (`Dict[str, Any]`): JSON data to load.\n
+    ---
+    ### Returns
+    - `Type[Schema]`: belso Schema loaded from JSON data.
+    """
     class DynamicSchema(Schema):
         fields: list = []
 
@@ -106,7 +129,7 @@ def _from_json(data: Dict[str, Any]) -> Type[Schema]:
         default = fld.get("default")
         descr = fld.get("description", "")
 
-        # ------- nested object ---------------------------------------------
+        # nested object
         if "schema" in fld:
             nested_schema = _from_json(fld["schema"])
             DynamicSchema.fields.append(
@@ -115,7 +138,7 @@ def _from_json(data: Dict[str, Any]) -> Type[Schema]:
             )
             continue
 
-        # ------- array ------------------------------------------------------
+        # array
         if "items_schema" in fld:
             items_schema = _from_json(fld["items_schema"])
             DynamicSchema.fields.append(
@@ -130,8 +153,8 @@ def _from_json(data: Dict[str, Any]) -> Type[Schema]:
             )
             continue
 
-        # ------- primitive --------------------------------------------------
-        py_type = _TYPE_MAP.get(fld.get("type", "str").lower(), str)
+        # primitive
+        py_type = _JSON_TYPE_MAP.get(fld.get("type", "str").lower(), str)
         DynamicSchema.fields.append(
             BaseField(name=name, type_=py_type, description=descr,
                       required=required, default=default)
@@ -144,9 +167,14 @@ def from_json(
         name_prefix: str = ""
     ) -> Type[Schema]:
     """
-    Carica uno schema JSON (dict o file) in un `belso.Schema`.
-    Applica, se richiesto, un prefisso **solo** al nome dello
-    schema root, senza toccare i nomi già presenti nei nested.
+    Load JSON (string / file / dict) into a belso Schema.\n
+    ---
+    ### Args
+    - `json_input` (`Union[str, Path, Dict[str, Any]]`): JSON input to load.
+    - `name_prefix` (`str`, optional): prefix to apply to the root schema name.\n
+    ---
+    ### Returns
+    - `Type[Schema]`: belso Schema loaded from JSON input.
     """
     try:
         if isinstance(json_input, (str, Path)):

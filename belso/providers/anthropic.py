@@ -5,6 +5,7 @@ from typing import Any, Dict, Type
 from belso.utils import get_logger
 from belso.core import Schema, BaseField
 from belso.core.field import NestedField, ArrayField
+from belso.utils.constants import _ANTHROPIC_FIELD_MAP
 from belso.utils.helpers import (
     map_json_to_python_type,
     map_python_to_json_type,
@@ -13,25 +14,12 @@ from belso.utils.helpers import (
 
 _logger = get_logger(__name__)
 
-_ANTHROPIC_FIELD_TO_PROPERTY_MAPPING = {
-    "default": ("default", None),
-    "enum": ("enum", None),
-    "regex": ("pattern", None),
-    "multiple_of": ("multipleOf", None),
-    "format_": ("format", None),
-    "range_": [("minimum", lambda r: r[0]), ("maximum", lambda r: r[1])],
-    "exclusive_range": [("exclusiveMinimum", lambda r: r[0]), ("exclusiveMaximum", lambda r: r[1])],
-    "length_range": [("minLength", lambda r: r[0]), ("maxLength", lambda r: r[1])],
-    "items_range": [("minItems", lambda r: r[0]), ("maxItems", lambda r: r[1])],
-    "properties_range": [("minProperties", lambda r: r[0]), ("maxProperties", lambda r: r[1])]
-}
-
 def _convert_field_to_property(field: BaseField) -> Dict[str, Any]:
     """
-    Converts a base field into a JSON schema property.
+    Converts a base field into a JSON schema property.\n
     ---
     ### Args
-    - `field` (`belso.core.BaseField`): the field to convert.
+    - `field` (`belso.core.BaseField`): the field to convert.\n
     ---
     ### Returns
     - `Dict[str, Any]`: the corresponding JSON schema property.
@@ -43,7 +31,7 @@ def _convert_field_to_property(field: BaseField) -> Dict[str, Any]:
         "description": field.description
     }
 
-    for attr, mappings in _ANTHROPIC_FIELD_TO_PROPERTY_MAPPING.items():
+    for attr, mappings in _ANTHROPIC_FIELD_MAP.items():
         value = getattr(field, attr, None)
         if value is not None:
             if isinstance(mappings, list):
@@ -59,10 +47,10 @@ def _convert_field_to_property(field: BaseField) -> Dict[str, Any]:
 
 def _convert_nested_field(field: NestedField) -> Dict[str, Any]:
     """
-    Convert a nested field into a JSON schema property.
+    Convert a nested field into a JSON schema property.\n
     ---
     ### Args
-    - `field` (`belso.core.NestedField`): the nested field to convert.
+    - `field` (`belso.core.NestedField`): the nested field to convert.\n
     ---
     ### Returns
     - `Dict[str, Any]`: the JSON schema property.
@@ -78,10 +66,10 @@ def _convert_nested_field(field: NestedField) -> Dict[str, Any]:
 
 def _convert_array_field(field: ArrayField) -> Dict[str, Any]:
     """
-    Convert an array field into a JSON schema property.
+    Convert an array field into a JSON schema property.\n
     ---
     ### Args
-    - `field` (`belso.schema.ArrayField`): the array field to convert.
+    - `field` (`belso.schema.ArrayField`): the array field to convert.\n
     ---
     ### Returns
     - `Dict[str, Any]`: the JSON schema property.
@@ -112,10 +100,10 @@ def _convert_array_field(field: ArrayField) -> Dict[str, Any]:
 
 def to_anthropic(schema: Type[Schema]) -> Dict[str, Any]:
     """
-    Convert a belso schema to Anthropic Claude format.
+    Convert a belso schema to Anthropic Claude format.\n
     ---
     ### Args
-    - `schema` (`Type[belso.Schema]`): the belso schema to convert.
+    - `schema` (`Type[belso.Schema]`): the belso schema to convert.\n
     ---
     ### Returns
     - `Dict[str, Any]`: the converted schema.
@@ -153,11 +141,11 @@ def from_anthropic(
         name_prefix: str = "Converted"
     ) -> Type[Schema]:
     """
-    Convert an Anthropic schema to belso format.
+    Convert an Anthropic schema to belso format.\n
     ---
     ### Args
     - `schema` (`Dict[str, Any]`): the Anthropic schema to convert.
-    - `name_prefix` (`str`, optional): the prefix to add to the schema name. Defaults to "Converted".
+    - `name_prefix` (`str`, optional): the prefix to add to the schema name. Defaults to "Converted".\n
     ---
     ### Returns
     - `Type[belso.Schema]`: the converted belso schema.

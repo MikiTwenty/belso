@@ -4,30 +4,40 @@ import yaml
 from pathlib import Path
 from typing import Any, Dict, Optional, Type, Union
 
-from belso.core import Schema, BaseField
-from belso.core.field import NestedField, ArrayField
 from belso.utils import get_logger
+from belso.core import Schema, BaseField
+from belso.utils.constants import _YAML_TYPE_MAP
+from belso.core.field import NestedField, ArrayField
 from belso.utils.helpers import create_fallback_schema
 
 _logger = get_logger(__name__)
 
-_TYPE_MAP = {
-    "str": str,
-    "int": int,
-    "float": float,
-    "bool": bool,
-    "list": list,
-    "dict": dict,
-    "any": Any
-}
-
-def _add_prefix(base: str, prefix: str) -> str:
+def _add_prefix(
+        base: str,
+        prefix: str
+    ) -> str:
     """
-    Add `prefix` only if `base` does **not** already start with it.
+    Add `prefix` only if `base` does not already start with it.\n
+    ---
+    ### Args
+    - `base` (`str`): base name.
+    - `prefix` (`str`): prefix to add.\n
+    ---
+    ### Returns
+    - `str`: prefixed name.
     """
     return base if (not prefix or base.startswith(prefix)) else f"{prefix}{base}"
 
 def _field_dict(f: BaseField) -> Dict[str, Any]:
+    """
+    Return a dict representation of `f` (used for YAML serialisation).\n
+    ---
+    ### Args
+    - `f` (`BaseField`): field to serialise.\n
+    ---
+    ### Returns
+    - `Dict[str, Any]`: dict representation of `f`.
+    """
     d: Dict[str, Any] = {
         "name": f.name,
         "type": f.type_.__name__ if hasattr(f.type_, "__name__") else str(f.type_),
@@ -42,6 +52,17 @@ def _to_yaml(
         schema: Type[Schema], *,
         root_prefix: str = ""
     ) -> Dict[str, Any]:
+    """
+    Recursively serialise `schema` to YAML. `root_prefix` is applied
+    once to the root schema only; children keep their own names untouched.\n
+    ---
+    ### Args
+    - `schema` (`Type[Schema]`): schema to serialise.
+    - `root_prefix` (`str`): prefix to apply to the root schema name.\n
+    ---
+    ### Returns
+    - `Dict[str, Any]`: dict representation of `schema`.
+    """
     data: Dict[str, Any] = {
         "name": _add_prefix(schema.__name__, root_prefix),
         "fields": []
@@ -51,7 +72,7 @@ def _to_yaml(
         # nested object
         if isinstance(fld, NestedField):
             fd = _field_dict(fld)
-            fd["schema"] = _to_yaml(fld.schema, root_prefix="")         # **no extra prefix**
+            fd["schema"] = _to_yaml(fld.schema, root_prefix="")  # no extra prefix
             data["fields"].append(fd)
             continue
 
@@ -77,8 +98,16 @@ def to_yaml(
         name_prefix: str = ""
     ) -> str:
     """
-    Serialise `schema` to YAML.  `name_prefix` is applied **once** to the
-    root schema only; children keep their own names untouched.
+    Serialise `schema` to YAML. `name_prefix` is applied once to the
+    root schema only; children keep their own names untouched.\n
+    ---
+    ### Args
+    - `schema` (`Type[Schema]`): schema to serialise.
+    - `file_path` (`Optional[Union[str, Path]]`): path to save the YAML file.
+    - `name_prefix` (`str`): prefix to apply to the root schema name.\n
+    ---
+    ### Returns
+    - `str`: YAML representation of `schema`.
     """
     try:
         data = _to_yaml(schema, root_prefix=name_prefix)
@@ -91,6 +120,15 @@ def to_yaml(
         return "name: ErrorSchema\nfields: []\n"
 
 def _from_yaml(data: Dict[str, Any]) -> Type[Schema]:
+    """
+    Recursively deserialise `data` from YAML.\n
+    ---
+    ### Args
+    - `data` (`Dict[str, Any]`): dict representation of the schema.\n
+    ---
+    ### Returns
+    - `Type[Schema]`: schema deserialised from `data`.
+    """
     class DynamicSchema(Schema):
         fields: list = []
 
@@ -127,7 +165,7 @@ def _from_yaml(data: Dict[str, Any]) -> Type[Schema]:
             continue
 
         # primitive
-        py_type = _TYPE_MAP.get(fld.get("type", "str").lower(), str)
+        py_type = _YAML_TYPE_MAP.get(fld.get("type", "str").lower(), str)
         DynamicSchema.fields.append(
             BaseField(name=name, type_=py_type, description=descr,
                       required=required, default=default)
@@ -141,7 +179,14 @@ def from_yaml(
     ) -> Type[Schema]:
     """
     Load YAML (string / file / dict) into a belso Schema.
-    `name_prefix` is applied **only** to the root schema name.
+    `name_prefix` is applied only to the root schema name.\n
+    ---
+    ### Args
+    - `yaml_input` (`Union[str, Path, Dict[str, Any]]`): YAML input.
+    - `name_prefix` (`str`): prefix to apply to the root schema name.\n
+    ---
+    ### Returns
+    - `Type[Schema]`: schema deserialised from `yaml_input`.
     """
     try:
         if isinstance(yaml_input, (str, Path)):

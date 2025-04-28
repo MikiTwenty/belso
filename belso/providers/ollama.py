@@ -4,6 +4,7 @@ from typing import Any, Dict, Type
 
 from belso.utils import get_logger
 from belso.core import Schema, BaseField
+from belso.utils.constants import _OLLAMA_FIELD_MAP
 from belso.core.field import NestedField, ArrayField
 from belso.utils.helpers import (
     map_json_to_python_type,
@@ -12,19 +13,6 @@ from belso.utils.helpers import (
 )
 
 _logger = get_logger(__name__)
-
-_OLLAMA_FIELD_TO_PROPERTY_MAPPING = {
-    "default": ("default", None),
-    "enum": ("enum", None),
-    "regex": ("pattern", None),
-    "multiple_of": ("multipleOf", None),
-    "format_": ("format", None),
-    "range_": [("minimum", lambda r: r[0]), ("maximum", lambda r: r[1])],
-    "exclusive_range": [("exclusiveMinimum", lambda r: r[0]), ("exclusiveMaximum", lambda r: r[1])],
-    "length_range": [("minLength", lambda r: r[0]), ("maxLength", lambda r: r[1])],
-    "items_range": [("minItems", lambda r: r[0]), ("maxItems", lambda r: r[1])],
-    "properties_range": [("minProperties", lambda r: r[0]), ("maxProperties", lambda r: r[1])]
-}
 
 def _convert_field_to_property(field: BaseField) -> Dict[str, Any]:
     """
@@ -44,7 +32,7 @@ def _convert_field_to_property(field: BaseField) -> Dict[str, Any]:
         "description": field.description
     }
 
-    for attr, mappings in _OLLAMA_FIELD_TO_PROPERTY_MAPPING.items():
+    for attr, mappings in _OLLAMA_FIELD_MAP.items():
         value = getattr(field, attr, None)
         if value is not None:
             if isinstance(mappings, list):

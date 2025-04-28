@@ -6,18 +6,12 @@ import pydantic
 import pydantic.fields
 from belso.utils import get_logger
 from belso.core import Schema, BaseField
+from belso.utils.constants import _OPENAI_FIELD_MAP
 from belso.core.field import NestedField, ArrayField
 from pydantic import create_model, Field as PydanticField, BaseModel
 from belso.utils.helpers import map_json_to_python_type, create_fallback_schema
 
 _logger = get_logger(__name__)
-
-_OPENAI_FIELD_TO_METADATA_MAPPING = {
-    "enum": ("enum", None),
-    "regex": ("pattern", None),
-    "multiple_of": ("multipleOf", None),
-    "format_": ("format", None),
-}
 
 def _convert_field_to_pydantic(field: BaseField) -> tuple:
     """
@@ -34,7 +28,7 @@ def _convert_field_to_pydantic(field: BaseField) -> tuple:
     field_type = field.type_
     metadata = {"description": field.description or ""}
 
-    for attr, (key, func) in _OPENAI_FIELD_TO_METADATA_MAPPING.items():
+    for attr, (key, func) in _OPENAI_FIELD_MAP.items():
         value = getattr(field, attr, None)
         if value is not None:
             metadata[key] = func(value) if func else value

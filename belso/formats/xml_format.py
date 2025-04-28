@@ -6,37 +6,41 @@ from typing import Any, Optional, Type, Union
 from belso.utils import get_logger
 import xml.etree.ElementTree as ET
 from belso.core import Schema, BaseField
+from belso.utils.constants import _XML_TYPE_MAP
 from belso.core.field import NestedField, ArrayField
 from belso.utils.helpers import create_fallback_schema
 
 _logger = get_logger(__name__)
-
-_TYPE_MAP = {
-    "str": str,
-    "int": int,
-    "float": float,
-    "bool": bool,
-    "list": list,
-    "dict": dict,
-    "any": Any
-}
 
 def _add_prefix(
         base: str,
         prefix: str
     ) -> str:
     """
-    Add `prefix` only if `base` does **not** already start with it.
+    Add `prefix` only if `base` does not already start with it.\n
+    ---
+    ### Args
+    - `base` (`str`): string to which `prefix` is applied.
+    - `prefix` (`str`): prefix to apply to `base`.\n
+    ---
+    ### Returns
+    - `str`: `base` with `prefix` applied if needed.\n
     """
     return base if (not prefix or base.startswith(prefix)) else f"{prefix}{base}"
-
 
 def _indent(
         elem: ET.Element,
         level: int = 0
     ) -> None:
     """
-    Pretty-print helper.
+    Pretty-print helper.\n
+    ---
+    ### Args
+    - `elem` (`ET.Element`): element to pretty-print.
+    - `level` (`int`): current level of indentation.\n
+    ---
+    ### Returns
+    - `None`: pretty-printing is done in-place.
     """
     i = "\n" + level * "  "
     if len(elem):
@@ -55,6 +59,17 @@ def _to_xml(
         schema: Type[Schema], *,
         root_prefix: str = ""
     ) -> ET.Element:
+    """
+    Serialise `schema` to XML. `root_prefix` is applied once to the
+    root schema only; children keep their own names untouched.\n
+    ---
+    ### Args
+    - `schema` (`Type[Schema]`): schema to serialise.
+    - `root_prefix` (`str`): prefix to apply to the root schema name.\n
+    ---
+    ### Returns
+    - `ET.Element`: root element of the XML representation of `schema`.
+    """
     root = ET.Element("schema", {"name": _add_prefix(schema.__name__, root_prefix)})
     fields_el = ET.SubElement(root, "fields")
 
@@ -93,8 +108,16 @@ def to_xml(
         file_path: Optional[Union[str, Path]] = None,
         name_prefix: str = "") -> str:
     """
-    Serialise `schema` to XML.  `name_prefix` is applied **once** to the
-    root schema only; children keep their own names untouched.
+    Serialise `schema` to XML. `name_prefix` is applied once to the
+    root schema only; children keep their own names untouched.\n
+    ---
+    ### Args
+    - `schema` (`Type[Schema]`): schema to serialise.
+    - `file_path` (`Optional[Union[str, Path]]`): path to save the XML file.
+    - `name_prefix` (`str`): prefix to apply to the root schema name.\n
+    ---
+    ### Returns
+    - `str`: XML representation of `schema`.
     """
     try:
         root = _to_xml(schema, root_prefix=name_prefix)
@@ -116,7 +139,7 @@ def _from_xml(elem: ET.Element) -> Type[Schema]:
     for f_el in elem.find("fields").findall("field"):
         fname = f_el.get("name")
         ftype_str = f_el.get("type", "str")
-        ftype = _TYPE_MAP.get(ftype_str.lower(), str)
+        ftype = _XML_TYPE_MAP.get(ftype_str.lower(), str)
         frequired = f_el.get("required", "true") == "true"
         fdesc = f_el.findtext("description", "")
         fdef_el = f_el.find("default")
@@ -136,7 +159,7 @@ def _from_xml(elem: ET.Element) -> Type[Schema]:
         arr_info = f_el.find("array_info")
         if arr_info is not None:
             items_type_str = arr_info.findtext("items_type", "str")
-            items_type = _TYPE_MAP.get(items_type_str.lower(), str)
+            items_type = _XML_TYPE_MAP.get(items_type_str.lower(), str)
             items_schema_root = arr_info.find("items_schema/schema")
 
             if items_schema_root is not None:
@@ -167,7 +190,14 @@ def from_xml(
     ) -> Type[Schema]:
     """
     Load XML (string / file / Element) into a belso Schema.
-    `name_prefix` is applied **only** to the root schema name.
+    `name_prefix` is applied **only** to the root schema name.\n
+    ---
+    ### Args
+    - `xml_input` (`Union[str, Path, ET.Element]`): XML input.
+    - `name_prefix` (`str`): prefix to apply to the root schema name.\n
+    ---
+    ### Returns
+    - `Type[Schema]`: schema deserialised from `xml_input`.
     """
     try:
         if isinstance(xml_input, (str, Path)):
