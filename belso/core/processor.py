@@ -2,6 +2,7 @@
 
 from typing import Any, Dict, Type, Union, Optional
 
+import json
 from rich import box
 from rich.table import Table
 from pydantic import BaseModel
@@ -32,7 +33,7 @@ from belso.formats import (
     schema_to_xml,
     xml_to_schema
 )
-from belso.utils import PROVIDERS, get_logger
+from belso.utils import FORMATS, FORMATS, get_logger
 
 # Get a module-specific logger
 _logger = get_logger(__name__)
@@ -73,7 +74,7 @@ class SchemaProcessor:
         ---
         ### Args
         - `schema` (`Any`): the schema to translate.
-        - `to` (`str`): the target format. Can be a string or a `belso.utils.PROVIDERS` attribute.
+        - `to` (`str`): the target format. Can be a string or a `belso.utils.FORMATS` attribute.
         - `from_format` (`Optional[str]`): optional format hint for the input schema. If `None`, the format will be auto-detected. Defaults to `None`.\n
         ---
         ### Returns
@@ -91,7 +92,7 @@ class SchemaProcessor:
                 _logger.debug(f"Using provided source format: '{from_format}'.")
 
             # Convert to our internal format if needed
-            if from_format != PROVIDERS.BELSO:
+            if from_format != FORMATS.BELSO:
                 _logger.debug(f"Converting from '{from_format}' to internal belso format...")
                 belso_schema = SchemaProcessor.standardize(schema, from_format)
                 _logger.info("Successfully converted to belso format.")
@@ -101,23 +102,23 @@ class SchemaProcessor:
 
             # Translate to target format
             _logger.debug(f"Translating from belso format to '{to}' format...")
-            if to == PROVIDERS.GOOGLE:
+            if to == FORMATS.GOOGLE:
                 result = to_google(belso_schema)
-            elif to == PROVIDERS.OLLAMA:
+            elif to == FORMATS.OLLAMA:
                 result = to_ollama(belso_schema)
-            elif to == PROVIDERS.OPENAI:
+            elif to == FORMATS.OPENAI:
                 result = to_openai(belso_schema)
-            elif to == PROVIDERS.ANTHROPIC:
+            elif to == FORMATS.ANTHROPIC:
                 result = to_anthropic(belso_schema)
-            elif to == PROVIDERS.LANGCHAIN:
+            elif to == FORMATS.LANGCHAIN:
                 result = to_langchain(belso_schema)
-            elif to == PROVIDERS.HUGGINGFACE:
+            elif to == FORMATS.HUGGINGFACE:
                 result = to_huggingface(belso_schema)
-            elif to == PROVIDERS.MISTRAL:
+            elif to == FORMATS.MISTRAL:
                 result = to_mistral(belso_schema)
-            elif to == PROVIDERS.JSON:
+            elif to == FORMATS.JSON:
                 result = schema_to_json(belso_schema)
-            elif to == PROVIDERS.XML:
+            elif to == FORMATS.XML:
                 result = schema_to_xml(belso_schema)
             else:
                 _logger.error(f"Unsupported target format: '{to}'.")
@@ -156,33 +157,37 @@ class SchemaProcessor:
             else:
                 _logger.debug(f"Using provided source format: '{from_format}'.")
 
+            if from_format == FORMATS.BELSO:
+                _logger.debug("Schema is already in belso format, no conversion needed.")
+                return schema
+
             _logger.debug(f"Standardizing schema from '{from_format}' format to belso format...")
 
-            if from_format == "google":
+            if from_format == FORMATS.GOOGLE:
                 _logger.debug("Converting from Google format...")
                 result = from_google(schema)
-            elif from_format == "ollama":
+            elif from_format == FORMATS.OLLAMA:
                 _logger.debug("Converting from Ollama format...")
                 result = from_ollama(schema)
-            elif from_format == "openai":
+            elif from_format == FORMATS.OPENAI:
                 _logger.debug("Converting from OpenAI format...")
                 result = from_openai(schema)
-            elif from_format == "anthropic":
+            elif from_format == FORMATS.ANTHROPIC:
                 _logger.debug("Converting from Anthropic format...")
                 result = from_anthropic(schema)
-            elif from_format == "langchain":
+            elif from_format == FORMATS.LANGCHAIN:
                 _logger.debug("Converting from Langchain format...")
                 result = from_langchain(schema)
-            elif from_format == "huggingface":
+            elif from_format == FORMATS.HUGGINGFACE:
                 _logger.debug("Converting from Hugging Face format...")
                 result = from_huggingface(schema)
-            elif from_format == "mistral":
+            elif from_format == FORMATS.MISTRAL:
                 _logger.debug("Converting from Mistral format...")
                 result = from_mistral(schema)
-            elif from_format == "json":
+            elif from_format == FORMATS.JSON:
                 _logger.debug("Converting from JSON format...")
                 result = json_to_schema(schema)
-            elif from_format == "xml":
+            elif from_format == FORMATS.XML:
                 _logger.debug("Converting from XML format...")
                 result = xml_to_schema(schema)
             else:
@@ -218,7 +223,7 @@ class SchemaProcessor:
 
             # First ensure we have a belso schema
             format_type = SchemaProcessor.detect_format(schema)
-            if format_type != "belso":
+            if format_type != FORMATS.BELSO:
                 _logger.debug(f"Schema is in '{format_type}' format, converting to belso format first...")
                 belso_schema = SchemaProcessor.standardize(schema, format_type)
                 _logger.info("Successfully converted to belso format.")
@@ -286,7 +291,7 @@ class SchemaProcessor:
 
             # First ensure we have a belso schema
             format_type = SchemaProcessor.detect_format(schema)
-            if format_type != "belso":
+            if format_type != FORMATS.BELSO:
                 _logger.debug(f"Schema is in '{format_type}' format, converting to belso format first...")
                 belso_schema = SchemaProcessor.standardize(schema, format_type)
                 _logger.info("Successfully converted to belso format.")
@@ -436,7 +441,7 @@ class SchemaProcessor:
                 format_type = SchemaProcessor.detect_format(schema)
                 _logger.debug(f"Auto-detected schema format: '{format_type}'.")
 
-            if format_type != "belso":
+            if format_type != FORMATS.BELSO:
                 _logger.debug(f"Converting from '{format_type}' to belso format for printing...")
                 belso_schema = SchemaProcessor.standardize(schema, format_type)
             else:

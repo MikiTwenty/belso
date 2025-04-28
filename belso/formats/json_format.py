@@ -39,7 +39,7 @@ def schema_to_json(
             _logger.debug(f"Processing field '{field.name}' of type '{type_str}'...")
 
             field_json = {
-                "name": field.__name__,
+                "name": field.name,
                 "type": type_str,
                 "description": field.description,
                 "required": field.required

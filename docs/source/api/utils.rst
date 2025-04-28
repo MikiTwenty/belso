@@ -4,10 +4,10 @@ Utilities
 Constants
 ---------
 
-PROVIDERS
+FORMATS
 ~~~~~~~~~
 
-.. autoclass:: belso.utils.constants.PROVIDERS
+.. autoclass:: belso.utils.constants.FORMATS
    :members:
    :show-inheritance:
    :undoc-members:

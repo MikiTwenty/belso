@@ -30,10 +30,10 @@ Convert your schema to a specific provider format:
 .. code-block:: python
 
     from belso import SchemaProcessor
-    from belso.utils import PROVIDERS
+    from belso.utils import FORMATS
 
     # Convert to OpenAI format
-    openai_schema = SchemaProcessor.translate(UserSchema, to=PROVIDERS.OPENAI)
+    openai_schema = SchemaProcessor.translate(UserSchema, to=FORMATS.OPENAI)
 
     # Convert to Anthropic format
-    anthropic_schema = SchemaProcessor.translate(UserSchema, to=PROVIDERS.ANTHROPIC)
+    anthropic_schema = SchemaProcessor.translate(UserSchema, to=FORMATS.ANTHROPIC)

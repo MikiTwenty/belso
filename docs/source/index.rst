@@ -27,7 +27,7 @@ Quick Start
 
 .. code-block:: python
 
-   from belso.utils import PROVIDERS
+   from belso.utils import FORMATS
    from belso import Schema, Field, SchemaProcessor
 
    # Define your schema
@@ -39,7 +39,7 @@ Quick Start
        ]
 
    # Translate to OpenAI format
-   openai_schema = SchemaProcessor.translate(UserSchema, PROVIDERS.OPENAI)
+   openai_schema = SchemaProcessor.translate(UserSchema, FORMATS.OPENAI)
 
 Contents
 --------

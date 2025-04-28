@@ -1,4 +1,4 @@
-from belso.utils import PROVIDERS
+from belso.utils import FORMATS
 from belso import Schema, Field, SchemaProcessor
 
 class LightSchema(Schema):
@@ -58,13 +58,17 @@ class House(Schema):
 
 SchemaProcessor.display(House)
 
-schema = SchemaProcessor.translate(House, to=PROVIDERS.OLLAMA)
-schema = SchemaProcessor.translate(schema, to=PROVIDERS.OPENAI)
-schema = SchemaProcessor.translate(schema, to=PROVIDERS.GOOGLE)
-schema = SchemaProcessor.translate(schema, to=PROVIDERS.ANTHROPIC)
-schema = SchemaProcessor.translate(schema, to=PROVIDERS.HUGGINGFACE)
-schema = SchemaProcessor.translate(schema, to=PROVIDERS.LANGCHAIN)
-schema = SchemaProcessor.translate(schema, to=PROVIDERS.MISTRAL)
+schema = SchemaProcessor.translate(House, to=FORMATS.OLLAMA)
+schema = SchemaProcessor.translate(schema, to=FORMATS.OPENAI)
+schema = SchemaProcessor.translate(schema, to=FORMATS.GOOGLE)
+schema = SchemaProcessor.translate(schema, to=FORMATS.ANTHROPIC)
+schema = SchemaProcessor.translate(schema, to=FORMATS.HUGGINGFACE)
+schema = SchemaProcessor.translate(schema, to=FORMATS.LANGCHAIN)
+schema = SchemaProcessor.translate(schema, to=FORMATS.MISTRAL)
+SchemaProcessor.to_json(schema, "./examples/nested_schema.json")
+schema = SchemaProcessor.from_json("./examples/nested_schema.json")
+SchemaProcessor.to_xml(schema, "./examples/nested_schema.xml")
+schema = SchemaProcessor.from_xml("./examples/nested_schema.xml")
 schema = SchemaProcessor.standardize(schema)
 
 SchemaProcessor.display(schema)

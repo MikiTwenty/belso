@@ -1,6 +1,6 @@
 # belso.utils.constants
 
-class PROVIDERS:
+class FORMATS:
     """
     A class that provides constants for supported schema providers.
     This allows for more readable code when specifying providers in the translate method.
@@ -22,7 +22,7 @@ class PROVIDERS:
     XML = "xml"
 
     @classmethod
-    def get_all_providers(cls) -> list:
+    def get_all_formats(cls) -> list:
         """
         Get a list of all supported providers.\n
         ---

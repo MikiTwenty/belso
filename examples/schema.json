@@ -1,0 +1,11 @@
+{
+  "name": "ConvertedSchema",
+  "fields": [
+    {
+      "name": "value",
+      "type": "str",
+      "description": "Random boolean value",
+      "required": true
+    }
+  ]
+}

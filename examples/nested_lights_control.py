@@ -1,7 +1,7 @@
 import json
 import ollama
 
-from belso.utils import PROVIDERS
+from belso.utils import FORMATS
 from belso import Schema, Field, SchemaProcessor
 
 class LightSchema(Schema):
@@ -64,7 +64,7 @@ def main():
     SchemaProcessor.display(House)
 
     # Convert to Ollama format
-    ollama_schema = SchemaProcessor.translate(House, to=PROVIDERS.OLLAMA)
+    ollama_schema = SchemaProcessor.translate(House, to=FORMATS.OLLAMA)
 
     print("\nConverted schema to Ollama format:")
     print(json.dumps(ollama_schema, indent=4))
