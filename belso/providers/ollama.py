@@ -144,14 +144,14 @@ def to_ollama(schema: Type[Schema]) -> Dict[str, Any]:
 
 def from_ollama(
         schema: Dict[str, Any],
-        name_prefix: str = "Converted"
+        schema_name: str = "Schema"
     ) -> Type[Schema]:
     """
     Convert a Ollama schema to belso format.\n
     ---
     ### Args
     - `schema` (`Dict[str, Any]`): the schema to convert.
-    - `name_prefix` (`str`, optional): the prefix to add to the schema name. Defaults to "Converted".\n
+    - `schema_name` (`str`, optional): the prefix to add to the schema name. Defaults to "Schema".\n
     ---
     ### Returns
     - `Type[belso.Schema]`: the converted belso schema.
@@ -162,7 +162,7 @@ def from_ollama(
         if not isinstance(schema, dict) or "properties" not in schema:
             raise ValueError("Invalid Ollama schema format: missing 'properties'")
 
-        schema_class_name = f"{name_prefix}Schema"
+        schema_class_name = f"{schema_name}"
         ConvertedSchema = type(schema_class_name, (Schema,), {"fields": []})
 
         properties = schema.get("properties", {})
@@ -181,7 +181,10 @@ def from_ollama(
                     "properties": prop.get("properties", {}),
                     "required": prop.get("required", [])
                 }
-                nested_schema = from_ollama(nested_schema_dict, name_prefix=f"{name_prefix}_{name}")
+                nested_schema = from_ollama(
+                    schema=nested_schema_dict,
+                    schema_name=f"{name}"
+                )
                 ConvertedSchema.fields.append(
                     NestedField(
                         name=name,
@@ -200,7 +203,10 @@ def from_ollama(
                         "properties": items.get("properties", {}),
                         "required": items.get("required", [])
                     }
-                    item_schema = from_ollama(item_schema_dict, name_prefix=f"{name_prefix}_{name}")
+                    item_schema = from_ollama(
+                        item_schema_dict,
+                        schema_name=f"{name}"
+                    )
                     ConvertedSchema.fields.append(
                         ArrayField(
                             name=name,

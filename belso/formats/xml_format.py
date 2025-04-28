@@ -106,21 +106,21 @@ def _to_xml(
 def to_xml(
         schema: Type[Schema],
         file_path: Optional[Union[str, Path]] = None,
-        name_prefix: str = "") -> str:
+        schema_name: str = "") -> str:
     """
-    Serialise `schema` to XML. `name_prefix` is applied once to the
+    Serialise `schema` to XML. `schema_name` is applied once to the
     root schema only; children keep their own names untouched.\n
     ---
     ### Args
     - `schema` (`Type[Schema]`): schema to serialise.
     - `file_path` (`Optional[Union[str, Path]]`): path to save the XML file.
-    - `name_prefix` (`str`): prefix to apply to the root schema name.\n
+    - `schema_name` (`str`): prefix to apply to the root schema name.\n
     ---
     ### Returns
     - `str`: XML representation of `schema`.
     """
     try:
-        root = _to_xml(schema, root_prefix=name_prefix)
+        root = _to_xml(schema, root_prefix=schema_name)
         _indent(root)
         xml_text = ET.tostring(root, encoding="unicode")
         if file_path:
@@ -186,15 +186,15 @@ def _from_xml(elem: ET.Element) -> Type[Schema]:
 
 def from_xml(
         xml_input: Union[str, Path, ET.Element],
-        name_prefix: str = ""
+        schema_name: str = ""
     ) -> Type[Schema]:
     """
     Load XML (string / file / Element) into a belso Schema.
-    `name_prefix` is applied **only** to the root schema name.\n
+    `schema_name` is applied **only** to the root schema name.\n
     ---
     ### Args
     - `xml_input` (`Union[str, Path, ET.Element]`): XML input.
-    - `name_prefix` (`str`): prefix to apply to the root schema name.\n
+    - `schema_name` (`str`): prefix to apply to the root schema name.\n
     ---
     ### Returns
     - `Type[Schema]`: schema deserialised from `xml_input`.
@@ -207,7 +207,7 @@ def from_xml(
             root = xml_input
 
         schema_cls = _from_xml(root)
-        schema_cls.__name__ = _add_prefix(schema_cls.__name__, name_prefix)
+        schema_cls.__name__ = _add_prefix(schema_cls.__name__, schema_name)
         return schema_cls
 
     except Exception as e:  # pragma: no cover

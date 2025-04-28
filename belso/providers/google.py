@@ -131,14 +131,14 @@ def to_google(schema: Type[Schema]) -> content.Schema:
 
 def from_google(
         schema: content.Schema,
-        name_prefix: str = "Converted"
+        schema_name: str = "Schema"
     ) -> Type[Schema]:
     """
     Convert a Google Gemini schema to belso format.\n
     ---
     ### Args
     - `schema` (`content.Schema`): the Google schema.
-    - `name_prefix` (`str`, optional): the prefix to add to the schema name. Defaults to "Converted".\n
+    - `schema_name` (`str`, optional): the prefix to add to the schema name. Defaults to "Schema".\n
     ---
     ### Returns
     - `Type[Schema]`: the converted belso schema.
@@ -146,7 +146,7 @@ def from_google(
     try:
         _logger.debug("Starting conversion from Google schema to belso format...")
 
-        schema_class_name = f"{name_prefix}Schema"
+        schema_class_name = f"{schema_name}Schema"
         ConvertedSchema = type(schema_class_name, (Schema,), {"fields": []})
 
         required_fields = set(schema.required)
@@ -168,7 +168,7 @@ def from_google(
                 ConvertedSchema.fields.append(
                     NestedField(
                         name=name,
-                        schema=from_google(nested_schema, name_prefix=f"{name_prefix}_{name}"),
+                        schema=from_google(nested_schema, schema_name=f"{name}"),
                         description=description,
                         required=required
                     )

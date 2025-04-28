@@ -125,14 +125,14 @@ def to_mistral(schema: Type[Schema]) -> Dict[str, Any]:
 
 def from_mistral(
         schema: Dict[str, Any],
-        name_prefix: str = "Converted"
+        schema_name: str = "Schema"
     ) -> Type[Schema]:
     """
     Converts a JSON schema to a belso schema.\n
     ---
     ### Args
     - `schema` (`Dict[str, Any]`): the JSON schema to convert.\n
-    - `name_prefix` (`str`, optional): the prefix to add to the schema name.\n
+    - `schema_name` (`str`, optional): the prefix to add to the schema name.\n
     ---
     ### Returns
     - `Type[Schema]`: the belso schema.
@@ -140,7 +140,7 @@ def from_mistral(
     try:
         _logger.debug("Starting conversion from Mistral schema to belso format...")
 
-        schema_class_name = f"{name_prefix}Schema"
+        schema_class_name = f"{schema_name}Schema"
         ConvertedSchema = type(schema_class_name, (Schema,), {"fields": []})
 
         properties = schema.get("properties", {})
@@ -158,7 +158,7 @@ def from_mistral(
                     "properties": prop.get("properties", {}),
                     "required": prop.get("required", [])
                 }
-                nested_schema = from_mistral(nested_schema_dict, name_prefix=f"{name_prefix}_{name}")
+                nested_schema = from_mistral(nested_schema_dict, schema_name=f"{name}")
                 ConvertedSchema.fields.append(
                     NestedField(
                         name=name,
@@ -176,7 +176,7 @@ def from_mistral(
                         "properties": items.get("properties", {}),
                         "required": items.get("required", [])
                     }
-                    item_schema = from_mistral(item_schema_dict, name_prefix=f"{name_prefix}_{name}")
+                    item_schema = from_mistral(item_schema_dict, schema_name=f"{name}")
                     ConvertedSchema.fields.append(
                         ArrayField(
                             name=name,

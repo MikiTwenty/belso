@@ -1,14 +1,14 @@
-<schema name="ConvertedSchema">
+<schema name="Schema">
   <fields>
     <field name="Bedroom" type="dict" required="true">
       <description>The bedroom in the house</description>
       <nested_schema>
-        <schema name="Converted_BedroomSchema">
+        <schema name="Bedroom">
           <fields>
             <field name="Light" type="dict" required="true">
               <description>The light in the room</description>
               <nested_schema>
-                <schema name="Converted_Bedroom_LightSchema">
+                <schema name="Light">
                   <fields>
                     <field name="brightness" type="str" required="true">
                       <description>Brightness of the light, from 0 to 100 - 0 if light is off</description>
@@ -30,12 +30,12 @@
     <field name="Bathroom" type="dict" required="true">
       <description>The bathroom in the house</description>
       <nested_schema>
-        <schema name="Converted_BathroomSchema">
+        <schema name="Bathroom">
           <fields>
             <field name="Light" type="dict" required="true">
               <description>The light in the room</description>
               <nested_schema>
-                <schema name="Converted_Bathroom_LightSchema">
+                <schema name="Light">
                   <fields>
                     <field name="brightness" type="str" required="true">
                       <description>Brightness of the light, from 0 to 100 - 0 if light is off</description>
@@ -57,12 +57,12 @@
     <field name="Kitchen" type="dict" required="true">
       <description>The kitchen in the house</description>
       <nested_schema>
-        <schema name="Converted_KitchenSchema">
+        <schema name="Kitchen">
           <fields>
             <field name="Light" type="dict" required="true">
               <description>The light in the room</description>
               <nested_schema>
-                <schema name="Converted_Kitchen_LightSchema">
+                <schema name="Light">
                   <fields>
                     <field name="brightness" type="str" required="true">
                       <description>Brightness of the light, from 0 to 100 - 0 if light is off</description>

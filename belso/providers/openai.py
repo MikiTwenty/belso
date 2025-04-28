@@ -129,14 +129,14 @@ def to_openai(schema: Type[Schema]) -> Type[BaseModel]:
 
 def from_openai(
         schema: Type[BaseModel],
-        name_prefix: str = "Converted"
+        schema_name: str = "Schema"
     ) -> Type[Schema]:
     """
     Convert a Pydantic model into a belso Schema.\n
     ---
     ### Args
     - `schema` (`Type[pydantic.BaseModel]`): the Pydantic model.
-    - `name_prefix` (`str`, optional): the prefix to add to the schema name. Defaults to "Converted".\n
+    - `schema_name` (`str`, optional): the prefix to add to the schema name. Defaults to "Schema".\n
     ---
     ### Returns
     - `Type[belso.Schema]`: the belso schema.
@@ -144,7 +144,7 @@ def from_openai(
     try:
         _logger.debug("Starting conversion from Pydantic to belso schema...")
 
-        schema_class_name = f"{name_prefix}Schema"
+        schema_class_name = f"{schema_name}"
         ConvertedSchema = type(schema_class_name, (Schema,), {"fields": []})
 
         model_fields = getattr(schema, "__fields__", {})
@@ -159,7 +159,10 @@ def from_openai(
 
             # Handle nested models
             if isinstance(field_type, type) and issubclass(field_type, BaseModel):
-                nested_schema = from_openai(field_type, name_prefix=f"{name_prefix}_{name}")
+                nested_schema = from_openai(
+                    field_type,
+                    schema_name=f"{name}"
+                )
                 ConvertedSchema.fields.append(
                     NestedField(
                         name=name,
@@ -177,7 +180,10 @@ def from_openai(
 
                 # List di modelli (nested)
                 if isinstance(item_type, type) and issubclass(item_type, BaseModel):
-                    nested_schema = from_openai(item_type, name_prefix=f"{name_prefix}_{name}")
+                    nested_schema = from_openai(
+                        item_type,
+                        schema_name=f"{name}"
+                    )
                     ConvertedSchema.fields.append(
                         ArrayField(
                             name=name,

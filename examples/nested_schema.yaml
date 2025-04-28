@@ -1,18 +1,18 @@
-name: ConvertedSchema
+name: Schema
 fields:
 - name: Bedroom
   type: dict
   description: The bedroom in the house
   required: true
   schema:
-    name: Converted_BedroomSchema
+    name: Bedroom
     fields:
     - name: Light
       type: dict
       description: The light in the room
       required: true
       schema:
-        name: Converted_Bedroom_LightSchema
+        name: Light
         fields:
         - name: brightness
           type: str
@@ -31,14 +31,14 @@ fields:
   description: The bathroom in the house
   required: true
   schema:
-    name: Converted_BathroomSchema
+    name: Bathroom
     fields:
     - name: Light
       type: dict
       description: The light in the room
       required: true
       schema:
-        name: Converted_Bathroom_LightSchema
+        name: Light
         fields:
         - name: brightness
           type: str
@@ -57,14 +57,14 @@ fields:
   description: The kitchen in the house
   required: true
   schema:
-    name: Converted_KitchenSchema
+    name: Kitchen
     fields:
     - name: Light
       type: dict
       description: The light in the room
       required: true
       schema:
-        name: Converted_Kitchen_LightSchema
+        name: Light
         fields:
         - name: brightness
           type: str

@@ -1,7 +1,7 @@
 from belso.utils import FORMATS
 from belso import Schema, Field, SchemaProcessor
 
-class LightSchema(Schema):
+class Light(Schema):
     fields = [
         Field(
             name="is_on",
@@ -28,7 +28,7 @@ class Room(Schema):
     fields = [
         Field(
             name="Light",
-            type_=LightSchema,
+            type_=Light,
             description="The light in the room",
             required=True
         )

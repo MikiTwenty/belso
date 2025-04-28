@@ -85,7 +85,7 @@ def _to_json(
 def to_json(
         schema: Type[Schema],
         file_path: Optional[Union[str, Path]] = None,
-        name_prefix: str = "",
+        schema_name: str = "",
     ) -> Dict[str, Any]:
     """
     Serialize `schema` in JSON format.\n
@@ -93,13 +93,13 @@ def to_json(
     ### Args
     - `schema` (`Type[Schema]`): schema to serialize.
     - `file_path` (`Optional[Union[str, Path]]`, optional): path to save the JSON file.
-    - `name_prefix` (`str`, optional): prefix to apply to the root schema name.\n
+    - `schema_name` (`str`, optional): prefix to apply to the root schema name.\n
     ---
     ### Returns
     - `Dict[str, Any]`: dict JSON-ready representation of `schema`.
     """
     try:
-        data = _to_json(schema, root_prefix=name_prefix)
+        data = _to_json(schema, root_prefix=schema_name)
         if file_path:
             with open(file_path, "w", encoding="utf-8") as fp:
                 json.dump(data, fp, indent=2)
@@ -164,14 +164,14 @@ def _from_json(data: Dict[str, Any]) -> Type[Schema]:
 
 def from_json(
         json_input: Union[str, Path, Dict[str, Any]],
-        name_prefix: str = ""
+        schema_name: str = ""
     ) -> Type[Schema]:
     """
     Load JSON (string / file / dict) into a belso Schema.\n
     ---
     ### Args
     - `json_input` (`Union[str, Path, Dict[str, Any]]`): JSON input to load.
-    - `name_prefix` (`str`, optional): prefix to apply to the root schema name.\n
+    - `schema_name` (`str`, optional): prefix to apply to the root schema name.\n
     ---
     ### Returns
     - `Type[Schema]`: belso Schema loaded from JSON input.
@@ -184,7 +184,7 @@ def from_json(
             data = json_input
 
         schema_cls = _from_json(data)
-        schema_cls.__name__ = _add_prefix(schema_cls.__name__, name_prefix)
+        schema_cls.__name__ = _add_prefix(schema_cls.__name__, schema_name)
         return schema_cls
 
     except Exception as exc:  # pragma: no cover

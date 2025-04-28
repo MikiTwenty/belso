@@ -4,44 +4,32 @@ from pathlib import Path
 from typing import Any, Dict, Type, Union, Optional
 
 import json
-from rich import box
-from rich.table import Table
 from pydantic import BaseModel
-from rich.console import Console
 
 from belso.core.schema import Schema
-from belso.core.field import NestedField, ArrayField
-from belso.utils import detect_schema_format
+from belso.tools import display_schema
+from belso.utils import (
+    detect_schema_format,
+    FORMATS,
+    get_logger
+)
 from belso.providers import (
-    to_google,
-    to_ollama,
-    to_openai,
-    to_anthropic,
-    to_langchain,
-    to_huggingface,
-    to_mistral,
-    from_google,
-    from_ollama,
-    from_openai,
-    from_anthropic,
-    from_langchain,
-    from_huggingface,
-    from_mistral
+    to_google, from_google,
+    to_ollama, from_ollama,
+    to_openai, from_openai,
+    to_anthropic, from_anthropic,
+    to_langchain, from_langchain,
+    to_huggingface, from_huggingface,
+    to_mistral, from_mistral
 )
 from belso.formats import (
-    to_json,
-    from_json,
-    to_xml,
-    from_xml,
-    to_yaml,
-    from_yaml,
+    to_json, from_json,
+    to_xml, from_xml,
+    to_yaml, from_yaml
 )
-from belso.utils import FORMATS, FORMATS, get_logger
 
 # Get a module-specific logger
 _logger = get_logger(__name__)
-
-_console = Console()
 
 class SchemaProcessor:
     """
@@ -120,11 +108,11 @@ class SchemaProcessor:
             elif to == FORMATS.MISTRAL:
                 result = to_mistral(belso_schema)
             elif to == FORMATS.JSON:
-                result = to_json(belso_schema)           #  ←  **renamed**
+                result = to_json(belso_schema)
             elif to == FORMATS.XML:
-                result = to_xml(belso_schema)            #  ←  **renamed**
+                result = to_xml(belso_schema)
             elif to == FORMATS.YAML:
-                result = to_yaml(belso_schema)           #  ←  **renamed**
+                result = to_yaml(belso_schema)
             else:
                 _logger.error(f"Unsupported target format: '{to}'.")
                 raise ValueError(f"Provider {to} not supported.")
@@ -339,7 +327,6 @@ class SchemaProcessor:
     def display(
             schema: Any,
             format_type: Optional[str] = None,
-            depth: int = 0
         ) -> None:
         """
         Pretty-print a schema using colors and better layout, including nested fields.\n
@@ -347,63 +334,15 @@ class SchemaProcessor:
         ### Args
         - `schema` (`Any`): the schema to print.
         - `format_type` (`Optional[str]`): format of the schema. Defaults to `None`.
-        - `depth` (`int`): indentation level for nested display.
         """
-        try:
-            if format_type is None:
-                format_type = SchemaProcessor.detect_format(schema)
-                _logger.debug(f"Auto-detected schema format: '{format_type}'.")
+        if format_type is None:
+            format_type = SchemaProcessor.detect_format(schema)
+            _logger.debug(f"Auto-detected schema format: '{format_type}'.")
 
-            if format_type != FORMATS.BELSO:
-                _logger.debug(f"Converting from '{format_type}' to belso format for printing...")
-                belso_schema = SchemaProcessor.standardize(schema, format_type)
-            else:
-                belso_schema = schema
+        if format_type != FORMATS.BELSO:
+            _logger.debug(f"Converting from '{format_type}' to belso format for printing...")
+            belso_schema = SchemaProcessor.standardize(schema, format_type)
+        else:
+            belso_schema = schema
 
-            def display_schema(schema_cls: Type[Schema], indent: int = 0):
-                table = Table(
-                    title=f"\n[bold blue]Schema: {schema_cls.__name__}",
-                    box=box.ROUNDED,
-                    expand=False,
-                    show_lines=True
-                )
-
-                table.add_column("Field", style="cyan", no_wrap=True)
-                table.add_column("Type", style="magenta")
-                table.add_column("Required", style="green")
-                table.add_column("Default", style="yellow")
-                table.add_column("Description", style="white")
-
-                for field in schema_cls.fields:
-                    required = "✅" if field.required else "❌"
-                    default = str(field.default) if field.default is not None else "-"
-                    description = field.description or "-"
-
-                    # Nested field
-                    if isinstance(field, NestedField):
-                        nested_type = f"object ({field.schema.__name__})"
-                        table.add_row(field.name, nested_type, required, default, description)
-                    # Array of objects
-                    elif isinstance(field, ArrayField) and hasattr(field, "items_type") and isinstance(field.items_type, type) and issubclass(field.items_type, Schema):
-                        array_type = f"array[{field.items_type.__name__}]"
-                        table.add_row(field.name, array_type, required, default, description)
-                    # Primitive
-                    else:
-                        field_type = field.type_.__name__ if hasattr(field.type_, "__name__") else str(field.type_)
-                        table.add_row(field.name, field_type, required, default, description)
-
-                _console.print(table)
-
-                # Recursive printing of nested fields
-                for field in schema_cls.fields:
-                    if isinstance(field, NestedField):
-                        display_schema(field.schema, indent + 1)
-                    elif isinstance(field, ArrayField) and hasattr(field, "items_type") and isinstance(field.items_type, type) and issubclass(field.items_type, Schema):
-                        display_schema(field.items_type, indent + 1)
-
-            display_schema(belso_schema)
-
-        except Exception as e:
-            _logger.error(f"Error printing schema: {e}")
-            _logger.debug("Schema printing error details", exc_info=True)
-            _console.print(f"[bold red]Error printing schema: {e}")
+        display_schema(belso_schema)

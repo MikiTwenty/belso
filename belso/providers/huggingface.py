@@ -124,14 +124,14 @@ def to_huggingface(schema: Type[Schema]) -> Dict[str, Any]:
 
 def from_huggingface(
         schema: Dict[str, Any],
-        name_prefix: str = "Converted"
+        schema_name: str = "Schema"
     ) -> Type[Schema]:
     """
     Converts a Hugging Face schema into a belso schema.\n
     ---
     ### Args
     - `schema` (`dict`): the Hugging Face schema to convert.
-    - `name_prefix` (`str`, optional): the prefix to add to the converted schema name. Defaults to "Converted".\n
+    - `schema_name` (`str`, optional): the prefix to add to the converted schema name. Defaults to "Schema".\n
     ---
     ### Returns
     - `belso.core.Schema`: the converted belso schema.
@@ -139,7 +139,7 @@ def from_huggingface(
     try:
         _logger.debug("Starting conversion from Hugging Face schema to belso format...")
 
-        schema_class_name = f"{name_prefix}Schema"
+        schema_class_name = f"{schema_name}Schema"
         ConvertedSchema = type(schema_class_name, (Schema,), {"fields": []})
 
         properties = schema.get("properties", {})
@@ -157,7 +157,7 @@ def from_huggingface(
                     "properties": prop.get("properties", {}),
                     "required": prop.get("required", [])
                 }
-                nested_schema = from_huggingface(nested_schema_dict, name_prefix=f"{name_prefix}_{name}")
+                nested_schema = from_huggingface(nested_schema_dict, schema_name=f"{name}")
                 ConvertedSchema.fields.append(
                     NestedField(
                         name=name,
@@ -175,7 +175,7 @@ def from_huggingface(
                         "properties": items.get("properties", {}),
                         "required": items.get("required", [])
                     }
-                    item_schema = from_huggingface(item_schema_dict, name_prefix=f"{name_prefix}_{name}")
+                    item_schema = from_huggingface(item_schema_dict, schema_name=f"{name}")
                     ConvertedSchema.fields.append(
                         ArrayField(
                             name=name,

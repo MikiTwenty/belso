@@ -95,22 +95,22 @@ def _to_yaml(
 def to_yaml(
         schema: Type[Schema],
         file_path: Optional[Union[str, Path]] = None,
-        name_prefix: str = ""
+        schema_name: str = ""
     ) -> str:
     """
-    Serialise `schema` to YAML. `name_prefix` is applied once to the
+    Serialise `schema` to YAML. `schema_name` is applied once to the
     root schema only; children keep their own names untouched.\n
     ---
     ### Args
     - `schema` (`Type[Schema]`): schema to serialise.
     - `file_path` (`Optional[Union[str, Path]]`): path to save the YAML file.
-    - `name_prefix` (`str`): prefix to apply to the root schema name.\n
+    - `schema_name` (`str`): prefix to apply to the root schema name.\n
     ---
     ### Returns
     - `str`: YAML representation of `schema`.
     """
     try:
-        data = _to_yaml(schema, root_prefix=name_prefix)
+        data = _to_yaml(schema, root_prefix=schema_name)
         yaml_text = yaml.dump(data, sort_keys=False, allow_unicode=True)
         if file_path:
             Path(file_path).write_text(yaml_text, encoding="utf-8")
@@ -175,15 +175,15 @@ def _from_yaml(data: Dict[str, Any]) -> Type[Schema]:
 
 def from_yaml(
         yaml_input: Union[str, Path, Dict[str, Any]],
-        name_prefix: str = ""
+        schema_name: str = ""
     ) -> Type[Schema]:
     """
     Load YAML (string / file / dict) into a belso Schema.
-    `name_prefix` is applied only to the root schema name.\n
+    `schema_name` is applied only to the root schema name.\n
     ---
     ### Args
     - `yaml_input` (`Union[str, Path, Dict[str, Any]]`): YAML input.
-    - `name_prefix` (`str`): prefix to apply to the root schema name.\n
+    - `schema_name` (`str`): prefix to apply to the root schema name.\n
     ---
     ### Returns
     - `Type[Schema]`: schema deserialised from `yaml_input`.
@@ -196,7 +196,7 @@ def from_yaml(
             data = yaml_input
 
         schema_cls = _from_yaml(data)
-        schema_cls.__name__ = _add_prefix(schema_cls.__name__, name_prefix)
+        schema_cls.__name__ = _add_prefix(schema_cls.__name__, schema_name)
         return schema_cls
 
     except Exception as e:                                                   # pragma: no cover

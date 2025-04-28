@@ -122,14 +122,14 @@ def to_langchain(schema: Type[Schema]) -> Dict[str, Any]:
 
 def from_langchain(
         schema: Dict[str, Any],
-        name_prefix: str = "Converted"
+        schema_name: str = "Schema"
     ) -> Type[Schema]:
     """
     Converts a LangChain schema to a belso schema.\n
     ---
     ### Args
     - `schema` (`dict`): the LangChain schema.
-    - `name_prefix` (`str`, optional): the prefix to add to the schema name.\n
+    - `schema_name` (`str`, optional): the prefix to add to the schema name.\n
     ---
     ### Returns
     - `belso.core.Schema`: the converted belso schema.
@@ -137,7 +137,7 @@ def from_langchain(
     try:
         _logger.debug("Starting conversion from LangChain schema to belso format...")
 
-        schema_class_name = schema.get("title", f"{name_prefix}Schema")
+        schema_class_name = schema.get("title", f"{schema_name}Schema")
         ConvertedSchema = type(schema_class_name, (Schema,), {"fields": []})
 
         properties = schema.get("properties", {})
@@ -155,7 +155,10 @@ def from_langchain(
                     "properties": prop.get("properties", {}),
                     "required": prop.get("required", [])
                 }
-                nested_schema = from_langchain(nested_schema_dict, name_prefix=f"{name_prefix}_{name}")
+                nested_schema = from_langchain(
+                    nested_schema_dict,
+                    schema_name=f"{name}"
+                )
                 ConvertedSchema.fields.append(
                     NestedField(
                         name=name,
@@ -173,7 +176,10 @@ def from_langchain(
                         "properties": items.get("properties", {}),
                         "required": items.get("required", [])
                     }
-                    item_schema = from_langchain(item_schema_dict, name_prefix=f"{name_prefix}_{name}")
+                    item_schema = from_langchain(
+                        item_schema_dict,
+                        schema_name=f"{name}"
+                    )
                     ConvertedSchema.fields.append(
                         ArrayField(
                             name=name,
