@@ -1,5 +1,4 @@
-<?xml version="1.0" ?>
-<schema name="LoadedSchema">
+<schema name="ConvertedSchema">
   <fields>
     <field name="value" type="str" required="true">
       <description>Random boolean value</description>

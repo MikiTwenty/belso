@@ -1,5 +1,6 @@
 # belso.core.processor
 
+from pathlib import Path
 from typing import Any, Dict, Type, Union, Optional
 
 import json
@@ -28,10 +29,12 @@ from belso.providers import (
     from_mistral
 )
 from belso.formats import (
-    schema_to_json,
-    json_to_schema,
-    schema_to_xml,
-    xml_to_schema
+    to_json,
+    from_json,
+    to_xml,
+    from_xml,
+    to_yaml,
+    from_yaml,
 )
 from belso.utils import FORMATS, FORMATS, get_logger
 
@@ -117,9 +120,11 @@ class SchemaProcessor:
             elif to == FORMATS.MISTRAL:
                 result = to_mistral(belso_schema)
             elif to == FORMATS.JSON:
-                result = schema_to_json(belso_schema)
+                result = to_json(belso_schema)           #  ←  **renamed**
             elif to == FORMATS.XML:
-                result = schema_to_xml(belso_schema)
+                result = to_xml(belso_schema)            #  ←  **renamed**
+            elif to == FORMATS.YAML:
+                result = to_yaml(belso_schema)           #  ←  **renamed**
             else:
                 _logger.error(f"Unsupported target format: '{to}'.")
                 raise ValueError(f"Provider {to} not supported.")
@@ -186,10 +191,13 @@ class SchemaProcessor:
                 result = from_mistral(schema)
             elif from_format == FORMATS.JSON:
                 _logger.debug("Converting from JSON format...")
-                result = json_to_schema(schema)
+                result = from_json(schema)
             elif from_format == FORMATS.XML:
                 _logger.debug("Converting from XML format...")
-                result = xml_to_schema(schema)
+                result = from_xml(schema)
+            elif from_format == FORMATS.YAML:
+                _logger.debug("Converting from YAML format...")
+                result = from_yaml(schema)
             else:
                 _logger.error(f"Unsupported source format: '{from_format}'")
                 raise ValueError(f"Conversion from {from_format} format is not supported.")
@@ -202,145 +210,50 @@ class SchemaProcessor:
             _logger.debug("Standardization error details", exc_info=True)
             raise
 
-    # Serialization methods
     @staticmethod
-    def to_json(
-            schema: Type,
-            file_path: Optional[str] = None
-        ) -> Dict[str, Any]:
+    def save(
+            schema: Any,
+            path: Union[str, Path]
+        ) -> None:
         """
-        Convert a schema to standardized JSON format and optionally save to a file.\n
+        Save a schema to a file in the specified format.\n
         ---
         ### Args
-        - `schema` (`Type`): the schema to convert.\n
-        - `file_path` (`Optional[str]`): optional path to save the JSON to a file.\n
-        ---
-        ### Returns
-        - `Dict[str, Any]`: the converted schema.
+        - `schema` (`Any`): the schema to save.
+        - `path` (`Union[str, Path]`): the path to save the schema to.\n
         """
-        try:
-            _logger.debug("Converting schema to JSON format...")
-
-            # First ensure we have a belso schema
-            format_type = SchemaProcessor.detect_format(schema)
-            if format_type != FORMATS.BELSO:
-                _logger.debug(f"Schema is in '{format_type}' format, converting to belso format first...")
-                belso_schema = SchemaProcessor.standardize(schema, format_type)
-                _logger.info("Successfully converted to belso format.")
-            else:
-                _logger.debug("Schema is already in belso format, no conversion needed.")
-                belso_schema = schema
-
-            # Save path info for logging
-            path_info = f" and saving to '{file_path}'" if file_path else ""
-            _logger.debug(f"Converting belso schema to JSON{path_info}...")
-
-            result = schema_to_json(belso_schema, file_path)
-            _logger.info("Successfully converted belso schema to JSON format.")
-            return result
-
-        except Exception as e:
-            _logger.error(f"Error during schema to JSON conversion: {e}")
-            _logger.debug("JSON conversion error details", exc_info=True)
-            raise
+        from_format = detect_schema_format(schema)
+        if from_format != FORMATS.BELSO:
+            _logger.debug(f"Converting schema from '{from_format}' format to belso format...")
+            schema = SchemaProcessor.standardize(schema, from_format)
+        if path.endswith(".json"):
+            to_json(schema, path)
+        elif path.endswith(".xml"):
+            to_xml(schema, path)
+        elif path.endswith(".yaml") or path.endswith(".yml"):
+            to_yaml(schema, path)
+        else:
+            _logger.error(f"Unsupported format for saving: '{from_format}'")
 
     @staticmethod
-    def from_json(json_input: Union[Dict[str, Any], str]) -> Type[Schema]:
+    def load(path: Union[str, Path]) -> Any:
         """
-        Convert JSON data or a JSON file to a belso schema.\n
+        Load a schema from a file in the specified format.\n
         ---
         ### Args
-        - `json_input` (`Union[Dict[str, Any], str]`): either a JSON dictionary or a file path to a JSON file.\n
+        - `path` (`Union[str, Path]`): the path to the file to load.\n
         ---
         ### Returns
-        - `Type[belso.Schema]`: the converted belso schema.
+        - `Any`: the loaded schema.
         """
-        try:
-            # Log different message based on input type
-            if isinstance(json_input, str):
-                _logger.debug(f"Converting JSON from file '{json_input}' to belso schema...")
-            else:
-                _logger.debug("Converting JSON dictionary to belso schema...")
-
-            result = json_to_schema(json_input)
-            _logger.info("Successfully converted JSON to belso schema.")
-            return result
-
-        except Exception as e:
-            _logger.error(f"Error during JSON to schema conversion: {e}")
-            _logger.debug("JSON conversion error details", exc_info=True)
-            raise
-
-    @staticmethod
-    def to_xml(
-            schema: Type,
-            file_path: Optional[str] = None
-        ) -> str:
-        """
-        Convert a schema to XML format and optionally save to a file.\n
-        ---
-        ### Args
-        - `schema` (`Type[belso.Schema]`): the schema to convert.\n
-        - `file_path` (`Optional[str]`): optional path to save the XML to a file.\n
-        ---
-        ### Returns
-        - `str`: the converted schema.
-        """
-        try:
-            _logger.debug("Converting schema to XML format...")
-
-            # First ensure we have a belso schema
-            format_type = SchemaProcessor.detect_format(schema)
-            if format_type != FORMATS.BELSO:
-                _logger.debug(f"Schema is in '{format_type}' format, converting to belso format first...")
-                belso_schema = SchemaProcessor.standardize(schema, format_type)
-                _logger.info("Successfully converted to belso format.")
-            else:
-                _logger.debug("Schema is already in belso format, no conversion needed.")
-                belso_schema = schema
-
-            # Save path info for logging
-            path_info = f" and saving to '{file_path}'" if file_path else ""
-            _logger.debug(f"Converting belso schema to XML{path_info}...")
-
-            result = schema_to_xml(belso_schema, file_path)
-            _logger.info("Successfully converted belso schema to XML format.")
-            return result
-
-        except Exception as e:
-            _logger.error(f"Error during schema to XML conversion: {e}")
-            _logger.debug("XML conversion error details", exc_info=True)
-            raise
-
-    @staticmethod
-    def from_xml(xml_input: Union[str, Any]) -> Type[Schema]:
-        """
-        Convert XML data or an XML file to a belso schema.\n
-        ---
-        ### Args
-        - `xml_input` (`Union[str, Any]`): either an XML string, Element, or a file path to an XML file.\n
-        ---
-        ### Returns
-        - `Type[belso.Schema]`: the converted belso schema.
-        """
-        try:
-            # Log different message based on input type
-            if isinstance(xml_input, str):
-                if xml_input.strip().startswith("<"):
-                    _logger.debug("Converting XML string to belso schema...")
-                else:
-                    _logger.debug(f"Converting XML from file '{xml_input}' to belso schema...")
-            else:
-                _logger.debug("Converting XML Element to belso schema...")
-
-            result = xml_to_schema(xml_input)
-            _logger.info("Successfully converted XML to belso schema.")
-            return result
-
-        except Exception as e:
-            _logger.error(f"Error during XML to schema conversion: {e}")
-            _logger.debug("XML conversion error details", exc_info=True)
-            raise
+        if path.endswith(".json"):
+            return from_json(path)
+        elif path.endswith(".xml"):
+            return from_xml(path)
+        elif path.endswith(".yaml") or path.endswith(".yml"):
+            return from_yaml(path)
+        else:
+            _logger.error(f"Unsupported file format for loading: '{path}'")
 
     @staticmethod
     def validate(

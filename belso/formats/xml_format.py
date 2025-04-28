@@ -1,29 +1,44 @@
 # belso.formats.xml_format
 
-from os import PathLike
 from pathlib import Path
-from typing import Optional
-import xml.dom.minidom as minidom
-import xml.etree.ElementTree as ET
-from typing import Any, Type, Union
+from typing import Any, Optional, Type, Union
 
 from belso.utils import get_logger
+import xml.etree.ElementTree as ET
 from belso.core import Schema, BaseField
 from belso.core.field import NestedField, ArrayField
 from belso.utils.helpers import create_fallback_schema
 
-# Get a module-specific _logger
 _logger = get_logger(__name__)
 
-def _indent(elem: ET.Element, level: int = 0) -> None:
+_TYPE_MAP = {
+    "str": str,
+    "int": int,
+    "float": float,
+    "bool": bool,
+    "list": list,
+    "dict": dict,
+    "any": Any
+}
+
+def _add_prefix(
+        base: str,
+        prefix: str
+    ) -> str:
     """
-    Recursively add indentation to an ElementTree element, modifying it in place.\n
-    ---
-    ### Args
-    - `elem` (`ET.Element`): The root element.
-    - `level` (`int`): The current indentation level.
+    Add `prefix` only if `base` does **not** already start with it.
     """
-    i = "\n" + level * "  "  # 2 spaces per level
+    return base if (not prefix or base.startswith(prefix)) else f"{prefix}{base}"
+
+
+def _indent(
+        elem: ET.Element,
+        level: int = 0
+    ) -> None:
+    """
+    Pretty-print helper.
+    """
+    i = "\n" + level * "  "
     if len(elem):
         if not elem.text or not elem.text.strip():
             elem.text = i + "  "
@@ -33,275 +48,138 @@ def _indent(elem: ET.Element, level: int = 0) -> None:
                 child.tail = i + "  "
         if not elem[-1].tail or not elem[-1].tail.strip():
             elem[-1].tail = i
-    else:
-        if level and (not elem.tail or not elem.tail.strip()):
-            elem.tail = i
+    elif level and (not elem.tail or not elem.tail.strip()):
+        elem.tail = i
 
-def schema_to_xml(
+def _to_xml(
+        schema: Type[Schema], *,
+        root_prefix: str = ""
+    ) -> ET.Element:
+    root = ET.Element("schema", {"name": _add_prefix(schema.__name__, root_prefix)})
+    fields_el = ET.SubElement(root, "fields")
+
+    for fld in schema.fields:
+        f_el = ET.SubElement(fields_el, "field", {
+            "name": fld.name,
+            "type": fld.type_.__name__ if hasattr(fld.type_, "__name__") else str(fld.type_),
+            "required": str(fld.required).lower()
+        })
+        if fld.description:
+            ET.SubElement(f_el, "description").text = fld.description
+        if fld.default is not None:
+            ET.SubElement(f_el, "default").text = str(fld.default)
+
+        # nested object
+        if isinstance(fld, NestedField):
+            n_el = ET.SubElement(f_el, "nested_schema")
+            n_el.append(_to_xml(fld.schema, root_prefix=""))  # no extra prefix
+            continue
+
+        # array
+        if isinstance(fld, ArrayField):
+            a_el = ET.SubElement(f_el, "array_info")
+            ET.SubElement(a_el, "items_type").text = (
+                fld.items_type.__name__ if hasattr(fld.items_type, "__name__") else str(fld.items_type)
+            )
+            if fld.items_schema:
+                is_el = ET.SubElement(a_el, "items_schema")
+                is_el.append(_to_xml(fld.items_schema, root_prefix=""))  # no extra prefix
+            continue
+
+    return root
+
+def to_xml(
         schema: Type[Schema],
-        file_path: Optional[Union[str, Path, PathLike]] = None
-    ) -> str:
+        file_path: Optional[Union[str, Path]] = None,
+        name_prefix: str = "") -> str:
     """
-    Convert a belso Schema to XML format and optionally save to a file.\n
-    ---
-    ### Args
-    - `schema` (`Type[belso.Schema]`): the schema to convert.\n
-    - `file_path` (`Optional[Union[str, Path, PathLike]]`): path to save the XML to a file.\n
-    ---
-    ### Returns
-    - `str`: the converted schema.
+    Serialise `schema` to XML.  `name_prefix` is applied **once** to the
+    root schema only; children keep their own names untouched.
     """
     try:
-        schema_name = schema.__name__ if hasattr(schema, "__name__") else "unnamed"
-        _logger.debug(f"Starting conversion of schema '{schema_name}' to XML format...")
-
-        # Create root element
-        root = ET.Element("schema")
-        root.set("name", schema.__name__)
-        _logger.debug(f"Created root element with name: {schema.__name__}.")
-
-        # Add fields
-        fields_elem = ET.SubElement(root, "fields")
-        _logger.debug(f"Processing {len(schema.fields)} fields...")
-
-        for field in schema.fields:
-            _logger.debug(f"Processing field '{field.name}'...")
-            field_elem = ET.SubElement(fields_elem, "field")
-            field_elem.set("name", field.name)
-
-            # Convert Python type to string representation
-            type_str = field.type_.__name__ if hasattr(field.type_, "__name__") else str(field.type_)
-            field_elem.set("type", type_str)
-            _logger.debug(f"BaseField '{field.name}' has type: {type_str}.")
-
-            field_elem.set("required", str(field.required).lower())
-            required_status = "required" if field.required else "optional"
-            _logger.debug(f"BaseField '{field.name}' is {required_status}")
-
-            # Add description as a child element
-            if field.description:
-                desc_elem = ET.SubElement(field_elem, "description")
-                desc_elem.text = field.description
-                _logger.debug(f"BaseField '{field.name}' has description: '{field.description}'.")
-
-            # Add default value if it exists
-            if field.default is not None:
-                default_elem = ET.SubElement(field_elem, "default")
-                default_elem.text = str(field.default)
-                _logger.debug(f"BaseField '{field.name}' has default value: {field.default}.")
-
-            # Handle nested fields
-            if isinstance(field, NestedField):
-                _logger.debug(f"Field '{field.name}' is a nested field")
-                nested_schema_elem = ET.SubElement(field_elem, "nested_schema")
-                # Convert the nested schema to XML and embed it
-                nested_schema_str = schema_to_xml(field.schema)
-                # Parse the nested schema XML string and attach it
-                nested_root = ET.fromstring(nested_schema_str)
-                nested_schema_elem.append(nested_root)
-
-            # Handle array fields
-            elif isinstance(field, ArrayField):
-                _logger.debug(f"Field '{field.name}' is an array field")
-                array_info = ET.SubElement(field_elem, "array_info")
-
-                # Add items_type
-                items_type_str = field.items_type.__name__ if hasattr(field.items_type, "__name__") else str(field.items_type)
-                items_type_elem = ET.SubElement(array_info, "items_type")
-                items_type_elem.text = items_type_str
-
-                # If the array contains schema objects
-                if hasattr(field, 'items_schema') and field.items_schema:
-                    items_schema_elem = ET.SubElement(array_info, "items_schema")
-                    # Convert the items schema to XML and embed it
-                    items_schema_str = schema_to_xml(field.items_schema)
-                    # Parse the items schema XML string and attach it
-                    items_root = ET.fromstring(items_schema_str)
-                    items_schema_elem.append(items_root)
-
-        # Convert to string with pretty formatting
-        _logger.debug("Converting XML to string with pretty formatting...")
+        root = _to_xml(schema, root_prefix=name_prefix)
         _indent(root)
-        xml_str = ET.tostring(root, encoding="unicode")
-
-        # Save to file if path is provided
+        xml_text = ET.tostring(root, encoding="unicode")
         if file_path:
-            _logger.debug(f"Saving XML schema to file: {file_path}.")
-            try:
-                with open(file_path, 'w', encoding='utf-8') as f:
-                    f.write(xml_str)
-                _logger.debug(f"Successfully saved XML schema to {file_path}.")
-            except Exception as e:
-                _logger.error(f"Failed to save XML schema to file: {e}")
-                _logger.debug("File saving error details", exc_info=True)
-
-        _logger.debug("Successfully converted schema to XML format.")
-        return xml_str
-
-    except Exception as e:
-        _logger.error(f"Error converting schema to XML format: {e}")
-        _logger.debug("Conversion error details", exc_info=True)
+            Path(file_path).write_text(xml_text, encoding="utf-8")
+        return xml_text
+    except Exception as e:  # pragma: no cover
+        _logger.error(f"Error converting schema to XML: {e}", exc_info=True)
         return "<schema><fields></fields></schema>"
 
-def xml_to_schema(xml_input: Union[str, ET.Element]) -> Type[Schema]:
+def _from_xml(elem: ET.Element) -> Type[Schema]:
+    class DynamicSchema(Schema):
+        fields: list = []
+
+    DynamicSchema.__name__ = elem.get("name", "LoadedSchema")
+
+    for f_el in elem.find("fields").findall("field"):
+        fname = f_el.get("name")
+        ftype_str = f_el.get("type", "str")
+        ftype = _TYPE_MAP.get(ftype_str.lower(), str)
+        frequired = f_el.get("required", "true") == "true"
+        fdesc = f_el.findtext("description", "")
+        fdef_el = f_el.find("default")
+        fdefault = fdef_el.text if fdef_el is not None else None
+
+        # nested
+        nested_root = f_el.find("nested_schema/schema")
+        if nested_root is not None:
+            nested_schema = _from_xml(nested_root)
+            DynamicSchema.fields.append(
+                NestedField(name=fname, schema=nested_schema,
+                            description=fdesc, required=frequired, default=fdefault)
+            )
+            continue
+
+        # array
+        arr_info = f_el.find("array_info")
+        if arr_info is not None:
+            items_type_str = arr_info.findtext("items_type", "str")
+            items_type = _TYPE_MAP.get(items_type_str.lower(), str)
+            items_schema_root = arr_info.find("items_schema/schema")
+
+            if items_schema_root is not None:
+                items_schema = _from_xml(items_schema_root)
+                DynamicSchema.fields.append(
+                    ArrayField(name=fname, items_type=items_type,
+                               items_schema=items_schema, description=fdesc,
+                               required=frequired, default=fdefault)
+                )
+            else:
+                DynamicSchema.fields.append(
+                    ArrayField(name=fname, items_type=items_type,
+                               description=fdesc, required=frequired, default=fdefault)
+                )
+            continue
+
+        # primitive
+        DynamicSchema.fields.append(
+            BaseField(name=fname, type_=ftype, description=fdesc,
+                      required=frequired, default=fdefault)
+        )
+
+    return DynamicSchema
+
+def from_xml(
+        xml_input: Union[str, Path, ET.Element],
+        name_prefix: str = ""
+    ) -> Type[Schema]:
     """
-    Convert XML data or an XML file to a belso Schema.\n
-    ---
-    ### Args
-    - `xml_input` (`Union[str, ET.Element]`): either an XML string, Element, or a file path to an XML file.\n
-    ---
-    ### Returns
-    - `Type[belso.Schema]`: the converted belso schema.
+    Load XML (string / file / Element) into a belso Schema.
+    `name_prefix` is applied **only** to the root schema name.
     """
     try:
-        _logger.debug("Starting conversion from XML to belso Schema...")
-
-        # Parse input
-        if isinstance(xml_input, str):
-            # Check if it's a file path
-            if "<" not in xml_input:  # Simple heuristic to check if it's XML content
-                _logger.debug(f"Attempting to load XML from file: {xml_input}.")
-                try:
-                    tree = ET.parse(xml_input)
-                    root = tree.getroot()
-                    _logger.debug(f"Successfully loaded XML from file: {xml_input}.")
-                except (FileNotFoundError, ET.ParseError) as e:
-                    _logger.error(f"Failed to load XML from file: {e}")
-                    _logger.debug("File loading error details", exc_info=True)
-                    raise ValueError(f"Failed to load XML from file: {e}")
-            else:
-                # It's an XML string
-                _logger.debug("Parsing XML from string...")
-                try:
-                    root = ET.fromstring(xml_input)
-                    _logger.debug("Successfully parsed XML string.")
-                except ET.ParseError as e:
-                    _logger.error(f"Failed to parse XML string: {e}")
-                    _logger.debug("XML parsing error details", exc_info=True)
-                    raise ValueError(f"Failed to parse XML string: {e}")
+        if isinstance(xml_input, (str, Path)):
+            xml_text = Path(xml_input).read_text(encoding="utf-8") if Path(xml_input).exists() else xml_input
+            root = ET.fromstring(xml_text)
         else:
-            # Assume it's an ElementTree Element
-            _logger.debug("Using provided ElementTree Element...")
             root = xml_input
 
-        # Create a new Schema class
-        schema_name = root.get("name", "LoadedSchema")
-        _logger.debug(f"Creating new Schema class with name: {schema_name}.")
+        schema_cls = _from_xml(root)
+        schema_cls.__name__ = _add_prefix(schema_cls.__name__, name_prefix)
+        return schema_cls
 
-        class LoadedSchema(Schema):
-            fields = []
-
-        # Type mapping from string to Python types
-        type_mapping = {
-            "str": str,
-            "int": int,
-            "float": float,
-            "bool": bool,
-            "list": list,
-            "dict": dict,
-            "any": Any
-        }
-
-        # Process each field
-        fields_elem = root.find("fields")
-        if fields_elem is not None:
-            fields_count = len(fields_elem.findall("field"))
-            _logger.debug(f"Found {fields_count} fields in XML...")
-
-            for field_elem in fields_elem.findall("field"):
-                name = field_elem.get("name", "")
-                field_type_str = field_elem.get("type", "str")
-                field_type = type_mapping.get(field_type_str.lower(), str)
-
-                _logger.debug(f"Processing field '{name}' with type '{field_type_str}'...")
-
-                # Get required attribute (default to True)
-                required_str = field_elem.get("required", "true")
-                required = required_str.lower() == "true"
-                required_status = "required" if required else "optional"
-                _logger.debug(f"BaseField '{name}' is {required_status}.")
-
-                # Get description
-                desc_elem = field_elem.find("description")
-                description = desc_elem.text if desc_elem is not None and desc_elem.text else ""
-                if description:
-                    _logger.debug(f"BaseField '{name}' has description: '{description}'.")
-
-                # Get default value
-                default = None
-                default_elem = field_elem.find("default")
-                if default_elem is not None and default_elem.text:
-                    # Convert default value to the appropriate type
-                    if field_type == bool:
-                        default = default_elem.text.lower() == "true"
-                    elif field_type == int:
-                        default = int(default_elem.text)
-                    elif field_type == float:
-                        default = float(default_elem.text)
-                    else:
-                        default = default_elem.text
-                    _logger.debug(f"BaseField '{name}' has default value: {default}.")
-
-                # Add this to the xml_to_schema function where fields are processed
-                # Inside the loop that processes each field element:
-
-                # Handle nested fields
-                nested_schema_elem = field_elem.find("nested_schema/schema")
-                if nested_schema_elem is not None:
-                    # Convert the nested XML to a schema
-                    nested_schema_xml = ET.tostring(nested_schema_elem, encoding='utf-8').decode('utf-8')
-                    nested_schema = xml_to_schema(nested_schema_xml)
-                    field = NestedField(
-                        name=name,  # Fixed: was using field_name
-                        schema=nested_schema,
-                        description=description,
-                        required=required,
-                        default=default
-                    )
-                # Handle array fields
-                elif field_elem.find("array_info") is not None:
-                    array_info = field_elem.find("array_info")
-                    items_type_str = array_info.findtext("items_type", "str")
-                    items_type = type_mapping.get(items_type_str.lower(), str)
-
-                    # If the array contains schema objects
-                    items_schema_elem = array_info.find("items_schema/schema")
-                    if items_schema_elem is not None:
-                        items_schema_xml = ET.tostring(items_schema_elem, encoding='utf-8').decode('utf-8')
-                        items_schema = xml_to_schema(items_schema_xml)
-                        field = ArrayField(
-                            name=name,  # Fixed: was using field_name
-                            items_type=items_schema,
-                            description=description,
-                            required=required,
-                            default=default
-                        )
-                    else:
-                        field = ArrayField(
-                            name=name,  # Fixed: was using field_name
-                            items_type=items_type,
-                            description=description,
-                            required=required,
-                            default=default
-                        )
-                # Handle primitive fields
-                else:
-                    field = BaseField(
-                        name=name,  # Fixed: was using field_name
-                        type_=field_type,
-                        description=description,
-                        required=required,
-                        default=default
-                    )
-
-                LoadedSchema.fields.append(field)
-
-        _logger.debug(f"Successfully created Schema with {len(LoadedSchema.fields)} fields.")
-        return LoadedSchema
-
-    except Exception as e:
-        _logger.error(f"Error converting XML to schema: {e}")
-        _logger.debug("Conversion error details", exc_info=True)
-        # Return a minimal schema if conversion fails
-        _logger.warning("Returning fallback schema due to conversion error.")
+    except Exception as e:  # pragma: no cover
+        _logger.error(f"Error loading schema from XML: {e}", exc_info=True)
         return create_fallback_schema()

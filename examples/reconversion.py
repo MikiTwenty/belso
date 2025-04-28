@@ -23,6 +23,8 @@ SchemaProcessor.to_json(schema, "./examples/schema.json")
 schema = SchemaProcessor.from_json("./examples/schema.json")
 SchemaProcessor.to_xml(schema, "./examples/schema.xml")
 schema = SchemaProcessor.from_xml("./examples/schema.xml")
+SchemaProcessor.to_yaml(schema, "./examples/schema.yaml")
+schema = SchemaProcessor.from_yaml("./examples/schema.yaml")
 schema = SchemaProcessor.standardize(schema)
 
 SchemaProcessor.display(schema)

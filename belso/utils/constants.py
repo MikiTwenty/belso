@@ -20,6 +20,7 @@ class FORMATS:
     # Serialization formats
     JSON = "json"
     XML = "xml"
+    YAML = "yaml"
 
     @classmethod
     def get_all_formats(cls) -> list:
@@ -39,5 +40,6 @@ class FORMATS:
             cls.MISTRAL,
             cls.LANGCHAIN,
             cls.JSON,
-            cls.XML
+            cls.XML,
+            cls.YAML
         ]

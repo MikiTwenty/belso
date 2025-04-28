@@ -6,3 +6,5 @@ langchain
 mistralai
 pydantic
 pytest
+pyyaml
+rich

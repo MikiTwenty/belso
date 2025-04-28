@@ -1,218 +1,164 @@
 # belso.formats.json_format
 
 import json
-from os import PathLike
 from pathlib import Path
-from typing import Dict, Any, Optional, Type, Union
+from typing import Any, Dict, Optional, Type, Union
 
 from belso.utils import get_logger
 from belso.core import Schema, BaseField
 from belso.core.field import NestedField, ArrayField
 from belso.utils.helpers import create_fallback_schema
 
-# Get a module-specific _logger
 _logger = get_logger(__name__)
 
-def schema_to_json(
+_TYPE_MAP = {
+    "str": str,
+    "int": int,
+    "float": float,
+    "bool": bool,
+    "list": list,
+    "dict": dict,
+    "any": Any
+}
+
+def _add_prefix(
+        base: str,
+        prefix: str
+    ) -> str:
+    """
+    Applica `prefix` solo se `base` non lo possiede già in testa.
+    """
+    return base if not prefix or base.startswith(prefix) else f"{prefix}{base}"
+
+def _field_dict(field: BaseField) -> Dict[str, Any]:
+    d: Dict[str, Any] = {
+        "name": field.name,
+        "type": field.type_.__name__ if hasattr(field.type_, "__name__") else str(field.type_),
+        "description": field.description,
+        "required": field.required,
+    }
+    if field.default is not None:
+        d["default"] = field.default
+    return d
+
+def _to_json(
+        schema: Type[Schema], *,
+        root_prefix: str = ""
+    ) -> Dict[str, Any]:
+    schema_json: Dict[str, Any] = {
+        "name": _add_prefix(schema.__name__, root_prefix),
+        "fields": []
+    }
+
+    for fld in schema.fields:
+        # nested object
+        if isinstance(fld, NestedField):
+            fld_dict = _field_dict(fld)
+            # nessun nuovo prefisso – manteniamo il nome originale del nested schema
+            fld_dict["schema"] = _to_json(fld.schema, root_prefix="")
+            schema_json["fields"].append(fld_dict)
+            continue
+
+        # array
+        if isinstance(fld, ArrayField):
+            fld_dict = _field_dict(fld)
+            fld_dict["items_type"] = (
+                fld.items_type.__name__ if hasattr(fld.items_type, "__name__") else str(fld.items_type)
+            )
+            if fld.items_schema:
+                fld_dict["items_schema"] = _to_json(fld.items_schema, root_prefix="")
+            schema_json["fields"].append(fld_dict)
+            continue
+
+        # primitive
+        schema_json["fields"].append(_field_dict(fld))
+
+    return schema_json
+
+def to_json(
         schema: Type[Schema],
-        file_path: Optional[Union[str, Path, PathLike]] = None
+        file_path: Optional[Union[str, Path]] = None,
+        name_prefix: str = "",
     ) -> Dict[str, Any]:
     """
-    Convert a belso Schema to a standardized JSON format and optionally save to a file.\n
-    ---
-    ### Args
-    - `schema` (`Type[belso.Schema]`): the schema to convert.\n
-    - `file_path` (`Optional[Union[str, Path, PathLike]]`): path to save the JSON to a file.\n
-    ---
-    ### Returns
-    - `Dict[str, Any]`: the converted schema.
+    Serializza `schema` in un dizionario JSON-ready e, se indicato,
+    lo salva su disco.
     """
     try:
-        schema_name = schema.__name__ if hasattr(schema, "__name__") else "unnamed"
-        _logger.debug(f"Starting conversion of schema '{schema_name}' to JSON format...")
-
-        fields_json = []
-        _logger.debug(f"Processing {len(schema.fields)} fields...")
-
-        for field in schema.fields:
-            # Convert Python type to string representation
-            type_str = field.type_.__name__ if hasattr(field.type_, "__name__") else str(field.type_)
-            _logger.debug(f"Processing field '{field.name}' of type '{type_str}'...")
-
-            field_json = {
-                "name": field.name,
-                "type": type_str,
-                "description": field.description,
-                "required": field.required
-            }
-
-            # Only include default if it exists
-            if field.default is not None:
-                field_json["default"] = field.default
-                _logger.debug(f"BaseField '{field.name}' has default value: {field.default}.")
-
-            # Handle nested fields
-            if isinstance(field, NestedField):
-                _logger.debug(f"Field '{field.name}' is a nested field with schema '{field.schema.__name__}'")
-                field_json["schema"] = schema_to_json(field.schema)
-
-            # Handle array fields
-            elif isinstance(field, ArrayField):
-                _logger.debug(f"Field '{field.name}' is an array field with items_type '{field.items_type}'")
-                field_json["items_type"] = field.items_type.__name__ if hasattr(field.items_type, "__name__") else str(field.items_type)
-
-                # If the array contains schema objects
-                if hasattr(field, 'items_schema') and field.items_schema:
-                    _logger.debug(f"Array field '{field.name}' has items_schema")
-                    field_json["items_schema"] = schema_to_json(field.items_schema)
-
-            fields_json.append(field_json)
-
-        schema_json = {
-            "name": schema.__name__,
-            "fields": fields_json
-        }
-
-        # Save to file if path is provided
+        data = _to_json(schema, root_prefix=name_prefix)
         if file_path:
-            _logger.debug(f"Saving JSON schema to file: {file_path}.")
-            try:
-                with open(file_path, 'w', encoding='utf-8') as f:
-                    json.dump(schema_json, f, indent=2)
-                _logger.debug(f"Successfully saved JSON schema to {file_path}.")
-            except Exception as e:
-                _logger.error(f"Failed to save JSON schema to file: {e}")
-                _logger.debug("File saving error details", exc_info=True)
-
-        _logger.debug("Successfully converted schema to JSON format.")
-        return schema_json
-
-    except Exception as e:
-        _logger.error(f"Error converting schema to JSON format: {e}")
-        _logger.debug("Conversion error details", exc_info=True)
+            with open(file_path, "w", encoding="utf-8") as fp:
+                json.dump(data, fp, indent=2)
+        return data
+    except Exception as exc:  # pragma: no cover
+        _logger.error("Error converting schema to JSON: %s", exc, exc_info=True)
         return {"name": "ErrorSchema", "fields": []}
 
-def json_to_schema(json_input: Union[Dict[str, Any], str]) -> Type[Schema]:
+def _from_json(data: Dict[str, Any]) -> Type[Schema]:
+    class DynamicSchema(Schema):
+        fields: list = []
+
+    DynamicSchema.__name__ = data.get("name", "LoadedSchema")
+
+    for fld in data.get("fields", []):
+        name: str = fld["name"]
+        required: bool = fld.get("required", True)
+        default = fld.get("default")
+        descr = fld.get("description", "")
+
+        # ------- nested object ---------------------------------------------
+        if "schema" in fld:
+            nested_schema = _from_json(fld["schema"])
+            DynamicSchema.fields.append(
+                NestedField(name=name, schema=nested_schema, description=descr,
+                            required=required, default=default)
+            )
+            continue
+
+        # ------- array ------------------------------------------------------
+        if "items_schema" in fld:
+            items_schema = _from_json(fld["items_schema"])
+            DynamicSchema.fields.append(
+                ArrayField(name=name, items_type=list, items_schema=items_schema,
+                           description=descr, required=required, default=default)
+            )
+            continue
+        if fld.get("type", "").lower() == "list":
+            DynamicSchema.fields.append(
+                ArrayField(name=name, items_type=str,
+                           description=descr, required=required, default=default)
+            )
+            continue
+
+        # ------- primitive --------------------------------------------------
+        py_type = _TYPE_MAP.get(fld.get("type", "str").lower(), str)
+        DynamicSchema.fields.append(
+            BaseField(name=name, type_=py_type, description=descr,
+                      required=required, default=default)
+        )
+
+    return DynamicSchema
+
+def from_json(
+        json_input: Union[str, Path, Dict[str, Any]],
+        name_prefix: str = ""
+    ) -> Type[Schema]:
     """
-    Convert a standardized JSON format or JSON file to a belso Schema.\n
-    ---
-    ### Args
-    - `json_input` (`Union[Dict[str, Any], str]`): either a JSON dictionary or a file path to a JSON file.\n
-    ---
-    ### Returns
-    - `Type[belso.Schema]`: the converted belso schema.
+    Carica uno schema JSON (dict o file) in un `belso.Schema`.
+    Applica, se richiesto, un prefisso **solo** al nome dello
+    schema root, senza toccare i nomi già presenti nei nested.
     """
     try:
-        # Check if input is a file path
-        if isinstance(json_input, str):
-            # Try to load as a file
-            _logger.debug(f"Attempting to load JSON from file: {json_input}.")
-            try:
-                with open(json_input, 'r', encoding='utf-8') as f:
-                    json_data = json.load(f)
-                _logger.debug(f"Successfully loaded JSON from file: {json_input}.")
-            except (FileNotFoundError, json.JSONDecodeError) as e:
-                _logger.error(f"Failed to load JSON from file: {e}")
-                _logger.debug("File loading error details", exc_info=True)
-                raise ValueError(f"Failed to load JSON from file: {e}")
+        if isinstance(json_input, (str, Path)):
+            with open(json_input, "r", encoding="utf-8") as fp:
+                data = json.load(fp)
         else:
-            # Assume it's already a JSON dictionary
-            _logger.debug("Processing provided JSON dictionary...")
-            json_data = json_input
+            data = json_input
 
-        # Create a new Schema class
-        schema_name = json_data.get("name", "LoadedSchema")
-        _logger.debug(f"Creating new Schema class with name: {schema_name}.")
+        schema_cls = _from_json(data)
+        schema_cls.__name__ = _add_prefix(schema_cls.__name__, name_prefix)
+        return schema_cls
 
-        class LoadedSchema(Schema):
-            fields = []
-
-        # Type mapping from string to Python types
-        type_mapping = {
-            "str": str,
-            "int": int,
-            "float": float,
-            "bool": bool,
-            "list": list,
-            "dict": dict,
-            "any": Any
-        }
-
-        # Process each field
-        fields_data = json_data.get("fields", [])
-        _logger.debug(f"Processing {len(fields_data)} fields from JSON...")
-
-        for field_data in fields_data:
-            field_name = field_data.get("name", "")
-            field_type_str = field_data.get("type", "str")
-            field_type = type_mapping.get(field_type_str.lower(), str)
-
-            _logger.debug(f"Processing field '{field_name}' with type '{field_type_str}'...")
-
-            # Get required status
-            required = field_data.get("required", True)
-            required_status = "required" if required else "optional"
-            _logger.debug(f"BaseField '{field_name}' is {required_status}")
-
-            # Get default value if present
-            default = field_data.get("default")
-            if default is not None:
-                _logger.debug(f"BaseField '{field_name}' has default value: {default}")
-
-            # Handle nested fields
-            if "schema" in field_data:
-                _logger.debug(f"Field '{field_name}' is a nested field")
-                nested_schema = json_to_schema(field_data["schema"])
-                field = NestedField(
-                    name=field_name,
-                    schema=nested_schema,
-                    description=field_data.get("description", ""),
-                    required=required,
-                    default=default
-                )
-            # Handle array fields
-            elif field_type_str.lower() == "list" or field_type == list:
-                _logger.debug(f"Field '{field_name}' is an array field")
-                items_type_str = field_data.get("items_type", "str")
-                items_type = type_mapping.get(items_type_str.lower(), str)
-
-                # If the array contains schema objects
-                if "items_schema" in field_data:
-                    items_schema = json_to_schema(field_data["items_schema"])
-                    field = ArrayField(
-                        name=field_name,
-                        items_type=items_type,  # Keep the items_type
-                        items_schema=items_schema,  # Add the items_schema
-                        description=field_data.get("description", ""),
-                        required=required,
-                        default=default
-                    )
-                else:
-                    field = ArrayField(
-                        name=field_name,
-                        items_type=items_type,
-                        description=field_data.get("description", ""),
-                        required=required,
-                        default=default
-                    )
-            # Handle primitive fields
-            else:
-                field = BaseField(
-                    name=field_name,
-                    type_=field_type,
-                    description=field_data.get("description", ""),
-                    required=required,
-                    default=default
-                )
-
-            LoadedSchema.fields.append(field)
-
-        _logger.debug(f"Successfully created Schema with {len(LoadedSchema.fields)} fields.")
-        return LoadedSchema
-
-    except Exception as e:
-        _logger.error(f"Error converting JSON to schema: {e}")
-        _logger.debug("Conversion error details", exc_info=True)
-        # Return a minimal schema if conversion fails
-        _logger.warning("Returning fallback schema due to conversion error.")
+    except Exception as exc:  # pragma: no cover
+        _logger.error("Error loading schema from JSON: %s", exc, exc_info=True)
         return create_fallback_schema()
