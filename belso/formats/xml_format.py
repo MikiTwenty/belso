@@ -9,10 +9,33 @@ from typing import Any, Type, Union
 
 from belso.utils import get_logger
 from belso.core import Schema, BaseField
+from belso.core.field import NestedField, ArrayField
 from belso.utils.helpers import create_fallback_schema
 
 # Get a module-specific _logger
 _logger = get_logger(__name__)
+
+def _indent(elem: ET.Element, level: int = 0) -> None:
+    """
+    Recursively add indentation to an ElementTree element, modifying it in place.\n
+    ---
+    ### Args
+    - `elem` (`ET.Element`): The root element.
+    - `level` (`int`): The current indentation level.
+    """
+    i = "\n" + level * "  "  # 2 spaces per level
+    if len(elem):
+        if not elem.text or not elem.text.strip():
+            elem.text = i + "  "
+        for child in elem:
+            _indent(child, level + 1)
+            if not child.tail or not child.tail.strip():
+                child.tail = i + "  "
+        if not elem[-1].tail or not elem[-1].tail.strip():
+            elem[-1].tail = i
+    else:
+        if level and (not elem.tail or not elem.tail.strip()):
+            elem.tail = i
 
 def schema_to_xml(
         schema: Type[Schema],
@@ -67,11 +90,39 @@ def schema_to_xml(
                 default_elem.text = str(field.default)
                 _logger.debug(f"BaseField '{field.name}' has default value: {field.default}.")
 
+            # Handle nested fields
+            if isinstance(field, NestedField):
+                _logger.debug(f"Field '{field.name}' is a nested field")
+                nested_schema_elem = ET.SubElement(field_elem, "nested_schema")
+                # Convert the nested schema to XML and embed it
+                nested_schema_str = schema_to_xml(field.schema)
+                # Parse the nested schema XML string and attach it
+                nested_root = ET.fromstring(nested_schema_str)
+                nested_schema_elem.append(nested_root)
+
+            # Handle array fields
+            elif isinstance(field, ArrayField):
+                _logger.debug(f"Field '{field.name}' is an array field")
+                array_info = ET.SubElement(field_elem, "array_info")
+
+                # Add items_type
+                items_type_str = field.items_type.__name__ if hasattr(field.items_type, "__name__") else str(field.items_type)
+                items_type_elem = ET.SubElement(array_info, "items_type")
+                items_type_elem.text = items_type_str
+
+                # If the array contains schema objects
+                if hasattr(field, 'items_schema') and field.items_schema:
+                    items_schema_elem = ET.SubElement(array_info, "items_schema")
+                    # Convert the items schema to XML and embed it
+                    items_schema_str = schema_to_xml(field.items_schema)
+                    # Parse the items schema XML string and attach it
+                    items_root = ET.fromstring(items_schema_str)
+                    items_schema_elem.append(items_root)
+
         # Convert to string with pretty formatting
         _logger.debug("Converting XML to string with pretty formatting...")
-        rough_string = ET.tostring(root, 'utf-8')
-        reparsed = minidom.parseString(rough_string)
-        xml_str = reparsed.toprettyxml(indent="  ")
+        _indent(root)
+        xml_str = ET.tostring(root, encoding="unicode")
 
         # Save to file if path is provided
         if file_path:
@@ -191,13 +242,57 @@ def xml_to_schema(xml_input: Union[str, ET.Element]) -> Type[Schema]:
                         default = default_elem.text
                     _logger.debug(f"BaseField '{name}' has default value: {default}.")
 
-                field = BaseField(
-                    name=name,
-                    type_=field_type,
-                    description=description,
-                    required=required,
-                    default=default
-                )
+                # Add this to the xml_to_schema function where fields are processed
+                # Inside the loop that processes each field element:
+
+                # Handle nested fields
+                nested_schema_elem = field_elem.find("nested_schema/schema")
+                if nested_schema_elem is not None:
+                    # Convert the nested XML to a schema
+                    nested_schema_xml = ET.tostring(nested_schema_elem, encoding='utf-8').decode('utf-8')
+                    nested_schema = xml_to_schema(nested_schema_xml)
+                    field = NestedField(
+                        name=name,  # Fixed: was using field_name
+                        schema=nested_schema,
+                        description=description,
+                        required=required,
+                        default=default
+                    )
+                # Handle array fields
+                elif field_elem.find("array_info") is not None:
+                    array_info = field_elem.find("array_info")
+                    items_type_str = array_info.findtext("items_type", "str")
+                    items_type = type_mapping.get(items_type_str.lower(), str)
+
+                    # If the array contains schema objects
+                    items_schema_elem = array_info.find("items_schema/schema")
+                    if items_schema_elem is not None:
+                        items_schema_xml = ET.tostring(items_schema_elem, encoding='utf-8').decode('utf-8')
+                        items_schema = xml_to_schema(items_schema_xml)
+                        field = ArrayField(
+                            name=name,  # Fixed: was using field_name
+                            items_type=items_schema,
+                            description=description,
+                            required=required,
+                            default=default
+                        )
+                    else:
+                        field = ArrayField(
+                            name=name,  # Fixed: was using field_name
+                            items_type=items_type,
+                            description=description,
+                            required=required,
+                            default=default
+                        )
+                # Handle primitive fields
+                else:
+                    field = BaseField(
+                        name=name,  # Fixed: was using field_name
+                        type_=field_type,
+                        description=description,
+                        required=required,
+                        default=default
+                    )
 
                 LoadedSchema.fields.append(field)
 

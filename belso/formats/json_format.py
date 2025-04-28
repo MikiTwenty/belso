@@ -7,6 +7,7 @@ from typing import Dict, Any, Optional, Type, Union
 
 from belso.utils import get_logger
 from belso.core import Schema, BaseField
+from belso.core.field import NestedField, ArrayField
 from belso.utils.helpers import create_fallback_schema
 
 # Get a module-specific _logger
@@ -49,6 +50,21 @@ def schema_to_json(
             if field.default is not None:
                 field_json["default"] = field.default
                 _logger.debug(f"BaseField '{field.name}' has default value: {field.default}.")
+
+            # Handle nested fields
+            if isinstance(field, NestedField):
+                _logger.debug(f"Field '{field.name}' is a nested field with schema '{field.schema.__name__}'")
+                field_json["schema"] = schema_to_json(field.schema)
+
+            # Handle array fields
+            elif isinstance(field, ArrayField):
+                _logger.debug(f"Field '{field.name}' is an array field with items_type '{field.items_type}'")
+                field_json["items_type"] = field.items_type.__name__ if hasattr(field.items_type, "__name__") else str(field.items_type)
+
+                # If the array contains schema objects
+                if hasattr(field, 'items_schema') and field.items_schema:
+                    _logger.debug(f"Array field '{field.name}' has items_schema")
+                    field_json["items_schema"] = schema_to_json(field.items_schema)
 
             fields_json.append(field_json)
 
@@ -143,13 +159,51 @@ def json_to_schema(json_input: Union[Dict[str, Any], str]) -> Type[Schema]:
             if default is not None:
                 _logger.debug(f"BaseField '{field_name}' has default value: {default}")
 
-            field = BaseField(
-                name=field_name,
-                type_=field_type,
-                description=field_data.get("description", ""),
-                required=required,
-                default=default
-            )
+            # Handle nested fields
+            if "schema" in field_data:
+                _logger.debug(f"Field '{field_name}' is a nested field")
+                nested_schema = json_to_schema(field_data["schema"])
+                field = NestedField(
+                    name=field_name,
+                    schema=nested_schema,
+                    description=field_data.get("description", ""),
+                    required=required,
+                    default=default
+                )
+            # Handle array fields
+            elif field_type_str.lower() == "list" or field_type == list:
+                _logger.debug(f"Field '{field_name}' is an array field")
+                items_type_str = field_data.get("items_type", "str")
+                items_type = type_mapping.get(items_type_str.lower(), str)
+
+                # If the array contains schema objects
+                if "items_schema" in field_data:
+                    items_schema = json_to_schema(field_data["items_schema"])
+                    field = ArrayField(
+                        name=field_name,
+                        items_type=items_type,  # Keep the items_type
+                        items_schema=items_schema,  # Add the items_schema
+                        description=field_data.get("description", ""),
+                        required=required,
+                        default=default
+                    )
+                else:
+                    field = ArrayField(
+                        name=field_name,
+                        items_type=items_type,
+                        description=field_data.get("description", ""),
+                        required=required,
+                        default=default
+                    )
+            # Handle primitive fields
+            else:
+                field = BaseField(
+                    name=field_name,
+                    type_=field_type,
+                    description=field_data.get("description", ""),
+                    required=required,
+                    default=default
+                )
 
             LoadedSchema.fields.append(field)
 
