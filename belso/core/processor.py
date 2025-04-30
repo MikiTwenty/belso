@@ -294,14 +294,63 @@ class SchemaProcessor:
 
                     # Skip None values for non-required fields
                     if value is None and not field.required:
-                        _logger.debug(f"BaseField '{field.name}' has None value, which is allowed for optional fields.")
+                        _logger.debug(f"Field '{field.name}' has None value, which is allowed for optional fields.")
                         continue
 
                     # Log the field being validated
                     _logger.debug(f"Validating field '{field.name}' with value '{value}' against type '{field_type}'...")
 
-                    # Type validation
-                    if not isinstance(value, field.type_):
+                    # Handle array fields
+                    if hasattr(field, 'items_type') or (hasattr(field.type_, "__origin__") and field.type_.__origin__ is list):
+                        if not isinstance(value, list):
+                            value_type = type(value).__name__
+                            _logger.error(f"Type mismatch for field '{field.name}': expected list, got '{value_type}'.")
+                            raise TypeError(f"Field '{field.name}' expected type list, got {value_type}.")
+
+                        # Check array length constraints if specified
+                        if hasattr(field, 'items_range') and field.items_range:
+                            min_items, max_items = field.items_range
+                            if len(value) < min_items:
+                                _logger.error(f"Array field '{field.name}' has too few items: {len(value)} < {min_items}")
+                                raise ValueError(f"Array field '{field.name}' must have at least {min_items} items, got {len(value)}.")
+                            if len(value) > max_items:
+                                _logger.error(f"Array field '{field.name}' has too many items: {len(value)} > {max_items}")
+                                raise ValueError(f"Array field '{field.name}' must have at most {max_items} items, got {len(value)}.")
+
+                        # Get item type for validation
+                        item_type = getattr(field, 'items_type', None)
+                        if item_type is None and hasattr(field.type_, "__args__"):
+                            item_type = field.type_.__args__[0]
+
+                        # Validate each item in the array
+                        if item_type:
+                            for i, item in enumerate(value):
+                                # For nested schemas, recursively validate
+                                if isinstance(item_type, type) and issubclass(item_type, Schema):
+                                    try:
+                                        # This is where the fix is needed - we need to ensure the validation
+                                        # properly checks types and raises exceptions
+                                        SchemaProcessor.validate(item, item_type)
+                                    except Exception as e:
+                                        _logger.error(f"Validation failed for item {i} in array field '{field.name}': {e}")
+                                        raise ValueError(f"Invalid item at index {i} in array field '{field.name}': {e}")
+                                # For primitive types, check type
+                                elif not isinstance(item, item_type):
+                                    item_value_type = type(item).__name__
+                                    item_type_name = item_type.__name__ if hasattr(item_type, "__name__") else str(item_type)
+                                    _logger.error(f"Type mismatch for item {i} in array field '{field.name}': expected '{item_type_name}', got '{item_value_type}'.")
+                                    raise TypeError(f"Item at index {i} in array field '{field.name}' expected type {item_type_name}, got {item_value_type}.")
+
+                    # Handle nested schema fields
+                    elif hasattr(field, 'schema') and isinstance(value, dict):
+                        try:
+                            SchemaProcessor.validate(value, field.schema)
+                        except Exception as e:
+                            _logger.error(f"Validation failed for nested field '{field.name}': {e}")
+                            raise ValueError(f"Invalid data for nested field '{field.name}': {e}")
+
+                    # Type validation for primitive fields
+                    elif not isinstance(value, field.type_):
                         # Special case for int/float compatibility
                         if field.type_ == float and isinstance(value, int):
                             _logger.debug(f"Converting integer value {value} to float for field '{field.name}'...")
@@ -309,9 +358,9 @@ class SchemaProcessor:
                         else:
                             value_type = type(value).__name__
                             _logger.error(f"Type mismatch for field '{field.name}': expected '{field_type}', got '{value_type}'.")
-                            raise TypeError(f"BaseField '{field.name}' expected type {field_type}, got {value_type}.")
+                            raise TypeError(f"Field '{field.name}' expected type {field_type}, got {value_type}.")
                     else:
-                        _logger.debug(f"BaseField '{field.name}' passed type validation.")
+                        _logger.debug(f"Field '{field.name}' passed type validation.")
 
             _logger.debug("All fields passed validation.")
             return data

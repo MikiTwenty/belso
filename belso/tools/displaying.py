@@ -27,18 +27,19 @@ def display_schema(
         def _display_schema(schema_cls: Type[Schema], indent: int = 0, parent_path: str = ""):
             # Get clean schema name without parent prefixes
             schema_name = schema_cls.__name__
+            if "." in schema_name:
+                # Extract the last part of the name after the last underscore
+                parts = schema_name.split(".")
+                if len(parts) > 1 and parts[-1] == "Schema":
+                    clean_name = parts[-1]
+                else:
+                    clean_name = parts[-1]
+            else:
+                clean_name = schema_name
 
-            # Create display name with parent.child notation if there's a parent path
-            display_name = f"{parent_path}.{schema_name}" if parent_path else schema_name
-
-            # Remove any duplicate schema names in the path (like House.House)
-            if "." in display_name:
-                parts = display_name.split(".")
-                unique_parts = []
-                for i, part in enumerate(parts):
-                    if i == 0 or part != parts[i-1]:
-                        unique_parts.append(part)
-                display_name = ".".join(unique_parts)
+            # Create _display name with parent.child notation if there's a parent path
+            # Only include schema names, not field names
+            display_name = f"{parent_path}.{clean_name}" if parent_path else clean_name
 
             table = Table(
                 title=f"\n[bold blue]{display_name}",
@@ -60,14 +61,37 @@ def display_schema(
 
                 # Nested field
                 if isinstance(field, NestedField):
+                    # Get clean nested schema name
                     nested_name = field.schema.__name__
-                    nested_type = f"object ({nested_name})"
+                    if nested_name.endswith("Schema"):
+                        nested_clean_name = nested_name[:-6]  # Remove "Schema" suffix
+                    elif "." in nested_name:
+                        parts = nested_name.split(".")
+                        if len(parts) > 1 and parts[-1] == "Schema":
+                            nested_clean_name = parts[-2]  # Use the part before "Schema"
+                        else:
+                            nested_clean_name = parts[-1]
+                    else:
+                        nested_clean_name = nested_name
+
+                    nested_type = f"object ({nested_clean_name})"
                     table.add_row(field.name, nested_type, required, default, description)
                 # Array of objects
                 elif isinstance(field, ArrayField) and hasattr(field, "items_type") and isinstance(field.items_type, type) and issubclass(field.items_type, Schema):
                     # Get clean array item schema name
                     items_name = field.items_type.__name__
-                    array_type = f"array[{items_name}]"
+                    if items_name.endswith("Schema"):
+                        items_clean_name = items_name[:-6]  # Remove "Schema" suffix
+                    elif "." in items_name:
+                        parts = items_name.split(".")
+                        if len(parts) > 1 and parts[-1] == "Schema":
+                            items_clean_name = parts[-2]  # Use the part before "Schema"
+                        else:
+                            items_clean_name = parts[-1]
+                    else:
+                        items_clean_name = items_name
+
+                    array_type = f"array[{items_clean_name}]"
                     table.add_row(field.name, array_type, required, default, description)
                 # Primitive
                 else:
