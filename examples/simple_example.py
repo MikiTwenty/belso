@@ -10,8 +10,7 @@ class Lights(Schema):
         Field(
             name="lights_on",
             type=bool,
-            description="Whether the lights should be on or off",
-            required=True
+            description="Whether the lights should be on or off"
         )
     ]
 

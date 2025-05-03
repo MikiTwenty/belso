@@ -1,4 +1,4 @@
-rich
+beartype
 colorama
 google-generativeai
 google.ai.generativelanguage

@@ -6,21 +6,18 @@ class Light(Schema):
         Field(
             name="is_on",
             type=bool,
-            description="Whether the light should be on or off",
-            required=True
+            description="Whether the light should be on or off"
         ),
         Field(
             name="brightness",
             type=int,
-            description="Brightness of the light, from 0 to 100 - 0 if light is off",
-            required=True
+            description="Brightness of the light, from 0 to 100 - 0 if light is off"
         ),
         Field(
             name="temperature",
             type=str,
             enum=['warm', 'neutral', 'cold'],
-            description="The temperature of the light, from warm to cold",
-            required=True
+            description="The temperature of the light, from warm to cold"
         ),
     ]
 
@@ -29,8 +26,7 @@ class Room(Schema):
         Field(
             name="Light",
             type=Light,
-            description="The light in the room",
-            required=True
+            description="The light in the room"
         )
     ]
 
@@ -39,20 +35,17 @@ class House(Schema):
         Field(
             name="Kitchen",
             type=Room,
-            description="The kitchen in the house",
-            required=True
+            description="The kitchen in the house"
         ),
         Field(
             name="Bedroom",
             type=Room,
-            description="The bedroom in the house",
-            required=True
+            description="The bedroom in the house"
         ),
         Field(
             name="Bathroom",
             type=Room,
-            description="The bathroom in the house",
-            required=True
+            description="The bathroom in the house"
         ),
     ]
 

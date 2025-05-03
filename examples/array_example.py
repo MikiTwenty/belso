@@ -13,14 +13,12 @@ class ItemSchema(Schema):
         Field(
             name="id",
             type=int,
-            description="Unique identifier for the item",
-            required=True
+            description="Unique identifier for the item"
         ),
         Field(
             name="name",
             type=str,
-            description="Name of the item",
-            required=True
+            description="Name of the item"
         ),
         Field(
             name="active",
@@ -38,8 +36,7 @@ class ArrayFieldsTestSchema(Schema):
         Field(
             name="tags",
             type=List[str],
-            description="List of string tags",
-            required=True
+            description="List of string tags"
         ),
 
         # Array with range constraints
@@ -47,7 +44,6 @@ class ArrayFieldsTestSchema(Schema):
             name="scores",
             type=List[int],
             description="List of integer scores",
-            required=True,
             items_range=(1, 5)  # Min 1, max 5 items
         ),
 
@@ -55,8 +51,7 @@ class ArrayFieldsTestSchema(Schema):
         Field(
             name="items",
             type=List[ItemSchema],
-            description="List of item objects",
-            required=True
+            description="List of item objects"
         ),
 
         # Optional array

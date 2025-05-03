@@ -5,10 +5,67 @@ from __future__ import annotations   # keeps forward annotations as strings
 import builtins
 from typing import Type, Optional, Any, List, Dict, Union, get_origin, get_args
 
+from beartype import beartype
+
 from belso.utils import get_logger
 from belso.core.schema import Schema, BaseField
 
 _logger = get_logger(__name__)
+
+def _validate_field_params(type_: Type, **kwargs) -> Dict[str, Any]:
+    """
+    Validate field parameters based on the given type.\n
+    ---
+    ### Args
+    - `type_` (`Type`): type of the field.
+    - `**kwargs`: keyword arguments containing field parameters.\n
+    ---
+    ### Returns
+    - `Dict[str, Any]`: validated field parameters.
+    """
+    valid_params = {}
+
+    # Parametri comuni per tutti i tipi
+    common_params = ['name', 'description', 'required', 'default', 'enum']
+    for param in common_params:
+        if param in kwargs and kwargs[param] is not None:
+            valid_params[param] = kwargs[param]
+
+    # Validazione specifica per tipo
+    if type_ in (str, bytes):
+        # Parametri validi per stringhe
+        string_params = ['length_range', 'regex', 'format_']
+        for param in string_params:
+            if param in kwargs and kwargs[param] is not None:
+                valid_params[param] = kwargs[param]
+
+    if type_ in (int, float):
+        # Parametri validi per numeri
+        number_params = ['range_', 'exclusive_range', 'multiple_of']
+        for param in number_params:
+            if param in kwargs and kwargs[param] is not None:
+                valid_params[param] = kwargs[param]
+
+    if type_ == list or get_origin(type_) in (list, List):
+        # Parametri validi per liste
+        list_params = ['items_range']
+        for param in list_params:
+            if param in kwargs and kwargs[param] is not None:
+                valid_params[param] = kwargs[param]
+
+    if type_ == dict or (isinstance(type_, type) and issubclass(type_, Schema)):
+        # Parametri validi per oggetti/dizionari
+        object_params = ['properties_range']
+        for param in object_params:
+            if param in kwargs and kwargs[param] is not None:
+                valid_params[param] = kwargs[param]
+
+    # Logga eventuali parametri ignorati
+    for param, value in kwargs.items():
+        if param not in valid_params and param not in common_params and value is not None:
+            _logger.warning(f"Parametro '{param}' ignorato per il tipo {type_.__name__}")
+
+    return valid_params
 
 class NestedField(BaseField):
     """
@@ -40,9 +97,10 @@ class NestedField(BaseField):
             multiple_of: Optional[float] = None,
             format_: Optional[str] = None
         ) -> None:
-        super().__init__(
+        # Valida i parametri per il tipo dict
+        valid_params = _validate_field_params(
+            dict,
             name=name,
-            type_=dict,
             description=description,
             required=required,
             default=default,
@@ -55,6 +113,15 @@ class NestedField(BaseField):
             regex=regex,
             multiple_of=multiple_of,
             format_=format_
+        )
+
+        super().__init__(
+            name=name,
+            type_=dict,
+            description=description,
+            required=required,
+            default=default,
+            **{k: v for k, v in valid_params.items() if k not in ['name', 'description', 'required', 'default']}
         )
         self.schema = schema
 
@@ -89,9 +156,10 @@ class ArrayField(BaseField):
             format_: Optional[str] = None,
             not_: Optional[Dict] = None
         ) -> None:
-        super().__init__(
+        # Valida i parametri per il tipo list
+        valid_params = _validate_field_params(
+            list,
             name=name,
-            type_=list,
             description=description,
             required=required,
             default=default,
@@ -105,6 +173,15 @@ class ArrayField(BaseField):
             multiple_of=multiple_of,
             format_=format_
         )
+
+        super().__init__(
+            name=name,
+            type_=list,
+            description=description,
+            required=required,
+            default=default,
+            **{k: v for k, v in valid_params.items() if k not in ['name', 'description', 'required', 'default']}
+        )
         self.items_type = items_type
 
 class Field:
@@ -112,6 +189,7 @@ class Field:
     Factory class that returns the correct `BaseField` subtype
     (`BaseField`, `NestedField`, or `ArrayField`).
     """
+    @beartype
     def __new__(
             cls,
             name: str,
@@ -195,4 +273,20 @@ class Field:
 
         # Primitives or custom types
         _logger.debug(f"[Field] -> BaseField<{type}>")
-        return BaseField(type_=type, **kwargs)
+
+        # Valida i parametri per il tipo specifico
+        valid_params = _validate_field_params(
+            type,
+            **{k: v for k, v in kwargs.items() if k not in ['name', 'description', 'required', 'default']}
+        )
+
+        # Aggiungi i parametri base
+        valid_params.update({
+            'name': name,
+            'type_': type,
+            'description': description,
+            'required': required,
+            'default': default,
+        })
+
+        return BaseField(**valid_params)
