@@ -5,7 +5,7 @@ class CustomSchema(Schema):
     fields = [
         Field(
             name="value",
-            type_=bool,
+            type=bool,
             description="Random boolean value",
             required=True
         )

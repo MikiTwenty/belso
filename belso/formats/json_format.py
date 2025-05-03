@@ -101,8 +101,10 @@ def to_json(
     try:
         data = _to_json(schema, root_prefix=schema_name)
         if file_path:
+            _logger.debug(f"Saving JSON schema to \"{file_path}\"...")
             with open(file_path, "w", encoding="utf-8") as fp:
                 json.dump(data, fp, indent=2)
+            _logger.info(f"JSON schema saved to \"{file_path}\".")
         return data
     except Exception as exc:  # pragma: no cover
         _logger.error("Error converting schema to JSON: %s", exc, exc_info=True)
@@ -177,11 +179,15 @@ def from_json(
     - `Type[Schema]`: belso Schema loaded from JSON input.
     """
     try:
+        _logger.debug("Loading JSON schema...")
         if isinstance(json_input, (str, Path)):
+            _logger.debug(f"Loading JSON schema from \"{json_input}\"...")
             with open(json_input, "r", encoding="utf-8") as fp:
                 data = json.load(fp)
+            _logger.info(f"JSON schema loaded from \"{json_input}\".")
         else:
             data = json_input
+            _logger.info("JSON schema loaded from memory.")
 
         schema_cls = _from_json(data)
         schema_cls.__name__ = _add_prefix(schema_cls.__name__, schema_name)

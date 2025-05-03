@@ -12,19 +12,19 @@ class ItemSchema(Schema):
     fields = [
         Field(
             name="id",
-            type_=int,
+            type=int,
             description="Unique identifier for the item",
             required=True
         ),
         Field(
             name="name",
-            type_=str,
+            type=str,
             description="Name of the item",
             required=True
         ),
         Field(
             name="active",
-            type_=bool,
+            type=bool,
             description="Whether the item is active",
             required=False,
             default=True
@@ -37,7 +37,7 @@ class ArrayFieldsTestSchema(Schema):
         # Simple array of primitive types
         Field(
             name="tags",
-            type_=List[str],
+            type=List[str],
             description="List of string tags",
             required=True
         ),
@@ -45,7 +45,7 @@ class ArrayFieldsTestSchema(Schema):
         # Array with range constraints
         Field(
             name="scores",
-            type_=List[int],
+            type=List[int],
             description="List of integer scores",
             required=True,
             items_range=(1, 5)  # Min 1, max 5 items
@@ -54,7 +54,7 @@ class ArrayFieldsTestSchema(Schema):
         # Array of complex objects (nested schema)
         Field(
             name="items",
-            type_=List[ItemSchema],
+            type=List[ItemSchema],
             description="List of item objects",
             required=True
         ),
@@ -62,7 +62,7 @@ class ArrayFieldsTestSchema(Schema):
         # Optional array
         Field(
             name="optional_data",
-            type_=List[float],
+            type=List[float],
             description="Optional list of float values",
             required=False,
             default=[]

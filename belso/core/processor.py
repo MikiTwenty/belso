@@ -28,7 +28,6 @@ from belso.formats import (
     to_yaml, from_yaml
 )
 
-# Get a module-specific logger
 _logger = get_logger(__name__)
 
 class SchemaProcessor:

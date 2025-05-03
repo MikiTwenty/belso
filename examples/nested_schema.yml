@@ -1,6 +1,0 @@
-name: FallbackSchema
-fields:
-- name: text
-  type: str
-  description: Fallback field
-  required: true

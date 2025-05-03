@@ -1,5 +1,8 @@
 # belso.core.field
 
+from __future__ import annotations   # keeps forward annotations as strings
+
+import builtins
 from typing import Type, Optional, Any, List, Dict, Union, get_origin, get_args
 
 from belso.utils import get_logger
@@ -106,50 +109,54 @@ class ArrayField(BaseField):
 
 class Field:
     """
-    Factory class that returns BaseField, NestedField, or ArrayField instances,
-    depending on the type provided by the user.
+    Factory class that returns the correct `BaseField` subtype
+    (`BaseField`, `NestedField`, or `ArrayField`).
     """
     def __new__(
             cls,
             name: str,
-            type_: Any,
+            type: Any,
             description: str = "",
             required: bool = True,
             default: Optional[Any] = None,
             enum: Optional[List[Any]] = None,
-            range_: Optional[tuple] = None,
+            range: Optional[tuple] = None,
             exclusive_range: Optional[tuple] = None,
             length_range: Optional[tuple] = None,
             items_range: Optional[tuple] = None,
             properties_range: Optional[tuple] = None,
             regex: Optional[str] = None,
             multiple_of: Optional[float] = None,
-            format_: Optional[str] = None
-        ) -> Union['belso.core.BaseField', 'belso.core.NestedField', 'belso.core.ArrayField']:
+            format: Optional[str] = None,
+        ) -> Union[
+            "belso.core.BaseField",
+            "belso.core.NestedField",
+            "belso.core.ArrayField",
+        ]:
         """
-        Create a new Field instance based on the provided type hint.\n
+        Decide which concrete *Field* class to instantiate.\n
         ---
         ### Args
-        - `name` (`str`): the name of the field.
-        - `type_` (`Type`): the expected Python type.
-        - `description` (`str`): a user-facing description of the field.
-        - `required` (`bool`): marks the field as required. Defaults to `True`.
-        - `default` (`Optional[Any]`): the default value, if any.
-        - `enum` (`Optional[List[Any]]`): enumeration of accepted values.
-        - `range_` (`Optional[Tuple]`): min and max for numbers or comparable types (inclusive).
-        - `exclusive_range` (`Optional[Tuple[bool, bool]]`): exclusivity of min and max bounds.
-        - `length_range` (`Optional[Tuple[int, int]]`): valid length for strings/arrays.
-        - `items_range` (`Optional[Tuple[int, int]]`): number of elements for arrays.
-        - `properties_range` (`Optional[Tuple[int, int]]`): number of keys for objects.
-        - `regex` (`Optional[str]`): regex the value must match.
-        - `multiple_of` (`Optional[float]`): value must be a multiple of this number.
-        - `format_` (`Optional[str]`): semantic hints (e.g., 'email', 'date-time').\n
+        - `name` (`str`): field name shown to the user.
+        - `type` (`Type`): annotation or runtime type hint.
+        - `description` (`str`, optional): description of the field.
+        - `required` (`bool`, optional): whether the field is required.
+        - `default` (`Any`, optional): default value for the field.
+        - `enum` (`List[Any]`, optional): list of valid values for the field.
+        - `range` (`tuple`, optional): range of valid values for the field.
+        - `exclusive_range` (`tuple`, optional): range of valid values for the field.
+        - `length_range` (`tuple`, optional): range of valid values for the field.
+        - `items_range` (`tuple`, optional): range of valid values for the field.
+        - `properties_range` (`tuple`, optional): range of valid values for the field.
+        - `regex` (`str`, optional): regular expression for validating the field.
+        - `multiple_of` (`float`, optional): multiple of valid values for the field.
+        - `format` (`str`, optional): format of valid values for the field.\n
         ---
         ### Returns
-        - `Union[belso.core.BaseField, belso.core.NestedField, belso.core.ArrayField]`: the created field instance.
+        - `Union[BaseField, NestedField, ArrayField]`: the new field.
         """
-        origin = get_origin(type_)
-        args = get_args(type_)
+        origin = get_origin(type)
+        args = get_args(type)
 
         kwargs = dict(
             name=name,
@@ -157,28 +164,35 @@ class Field:
             required=required,
             default=default,
             enum=enum,
-            range_=range_,
+            range_=range,
             exclusive_range=exclusive_range,
             length_range=length_range,
             items_range=items_range,
             properties_range=properties_range,
             regex=regex,
             multiple_of=multiple_of,
-            format_=format_
+            format_=format,
         )
 
-        # Handle list types (e.g., List[str], List[MySchema])
-        if origin is list or origin is List:
+        # Lists
+        if origin in (list, List):
             item_type = args[0] if args else str
-            kwargs['items_type'] = dict if isinstance(item_type, type) and issubclass(item_type, Schema) else item_type
+            is_schema = (
+                isinstance(item_type, builtins.type)
+                and issubclass(item_type, Schema)
+            )
+            kwargs["items_type"] = dict if is_schema else item_type
             _logger.debug(f"[Field] -> ArrayField<{item_type}>")
             return ArrayField(**kwargs)
 
-        # Handle nested schemas
-        if isinstance(type_, type) and issubclass(type_, Schema):
-            _logger.debug(f"[Field] -> NestedField<{type_.__name__}>")
-            return NestedField(schema=type_, **kwargs)
+        # Schemas
+        if (
+            isinstance(type, builtins.type)
+            and issubclass(type, Schema)
+        ):
+            _logger.debug(f"[Field] -> NestedField<{type.__name__}>")
+            return NestedField(schema=type, **kwargs)
 
-        # Default: primitive type field
-        _logger.debug(f"[Field] -> BaseField<{type_}>")
-        return BaseField(type_=type_, **kwargs)
+        # Primitives or custom types
+        _logger.debug(f"[Field] -> BaseField<{type}>")
+        return BaseField(type_=type, **kwargs)

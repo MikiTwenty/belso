@@ -124,7 +124,9 @@ def to_xml(
         _indent(root)
         xml_text = ET.tostring(root, encoding="unicode")
         if file_path:
+            _logger.debug(f"Saving XML schema to \"{file_path}\"...")
             Path(file_path).write_text(xml_text, encoding="utf-8")
+            _logger.info(f"XML schema saved to \"{file_path}\".")
         return xml_text
     except Exception as e:  # pragma: no cover
         _logger.error(f"Error converting schema to XML: {e}", exc_info=True)
@@ -200,11 +202,15 @@ def from_xml(
     - `Type[Schema]`: schema deserialised from `xml_input`.
     """
     try:
+        _logger.debug(f"Loading XML schema...")
         if isinstance(xml_input, (str, Path)):
+            _logger.debug(f"Loading XML schema from \"{xml_input}\"...")
             xml_text = Path(xml_input).read_text(encoding="utf-8") if Path(xml_input).exists() else xml_input
             root = ET.fromstring(xml_text)
+            _logger.info(f"XML schema loaded from \"{xml_input}\".")
         else:
             root = xml_input
+            _logger.debug(f"XML schema loaded from memory.")
 
         schema_cls = _from_xml(root)
         schema_cls.__name__ = _add_prefix(schema_cls.__name__, schema_name)
