@@ -38,7 +38,7 @@ Define your schema and convert it to a target provider format:
            Field(name="age", type=int, description="User's age")
        ]
 
-   openai_schema = SchemaProcessor.translate(UserSchema, to=FORMATS.OPENAI)
+   openai_schema = SchemaProcessor.convert(UserSchema, to=FORMATS.OPENAI)
 
 Documentation Structure
 ------------------------

@@ -6,12 +6,12 @@
 
 ## Overview
 
-Belso (Better LLMs Structured Outputs) is a Python library designed to simplify working with structured outputs from Large Language Models (LLMs). It provides a unified interface for validating, translating, and processing structured data across multiple LLM providers.
+Belso (Better LLMs Structured Outputs) is a Python library designed to simplify working with structured outputs from Large Language Models (LLMs). It provides a unified interface for defining, validating, translating, and processing structured data across multiple LLM providers.
 
 ## Key Features
 
-- **Schema Validation**: Validate LLM outputs against predefined schemas
-- **Multi-Provider Support**: Seamlessly work with outputs from:
+- **Unified Schema Interface**: define schemas once using Python classes and use them everywhere.
+- **Multi-Provider Support**: seamlessly work with outputs from:
   - OpenAI
   - Anthropic
   - Google AI
@@ -19,11 +19,26 @@ Belso (Better LLMs Structured Outputs) is a Python library designed to simplify 
   - Hugging Face
   - Ollama
   - LangChain
-- **Format Translation**: Convert between different schema formats
-- **Robust Error Handling**: Comprehensive logging and error management
+- **Format Translation**: bi-directional conversion between provider formats.
+- **Nested Structures**: support for complex nested fields and array types.
+- **Validation & Visualization**: tools for validating and inspecting schemas.
+- **Serialization**: export/import schemas to/from JSON, XML, and YAML formats.
+- **Minimal Dependencies**: lightweight with fast runtime performance.
 
 ## Installation
 
 ```bash
 pip install belso
 ```
+
+## Quick Start
+
+For a quick start, check out the [examples](examples/) directory.
+
+## Documentation
+
+For more details, please refer to the [official documentation](https://MikiTwenty.github.io/belso/).
+
+## License
+
+This project is licensed under the terms of the [MIT license](LICENSE).

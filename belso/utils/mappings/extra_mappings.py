@@ -16,7 +16,7 @@ from belso.serialization import (
 )
 from belso.utils.formats import FORMATS
 
-_TRANSLATE_TO_MAP = {
+_CONVERT_TO_MAP = {
     FORMATS.GOOGLE: to_google,
     FORMATS.OLLAMA: to_ollama,
     FORMATS.OPENAI: to_openai,
@@ -29,7 +29,7 @@ _TRANSLATE_TO_MAP = {
     FORMATS.YAML: to_yaml,
 }
 
-_TRANSLATE_FROM_MAP = {
+_CONVERT_FROM_MAP = {
     FORMATS.GOOGLE: from_google,
     FORMATS.OLLAMA: from_ollama,
     FORMATS.OPENAI: from_openai,

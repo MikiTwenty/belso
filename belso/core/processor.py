@@ -13,8 +13,8 @@ from belso.utils import (
     get_logger
 )
 from belso.utils.mappings.extra_mappings import (
-    _TRANSLATE_TO_MAP,
-    _TRANSLATE_FROM_MAP,
+    _CONVERT_TO_MAP,
+    _CONVERT_FROM_MAP,
     _SAVE_TO_MAP,
     _LOAD_FROM_MAP
 )
@@ -50,12 +50,12 @@ class SchemaProcessor:
             from_format: Optional[str] = None
         ) -> Union[Dict[str, Any], Type[BaseModel], str]:
         """
-        Translate a schema to a specific format.
+        Convert a schema to a specific format.
         This method can automatically detect the input schema format and convert it
         to our internal format before translating to the target format.\n
         ---
         ### Args
-        - `schema` (`Any`): the schema to translate.
+        - `schema` (`Any`): the schema to conver.
         - `to` (`str`): the target format. Can be a string or a `belso.utils.FORMATS` attribute.
         - `from_format` (`Optional[str]`): optional format hint for the input schema. If `None`, the format will be auto-detected. Defaults to `None`.\n
         ---
@@ -82,17 +82,17 @@ class SchemaProcessor:
                 _logger.debug("Schema is already in 'belso' format, no conversion needed.")
                 belso_schema = schema
 
-            # Translate to target format
+            # Convert to target format
             _logger.debug(f"Translating from belso format to '{to}' format...")
             try:
-                translator = _TRANSLATE_TO_MAP[to]
+                translator = _CONVERT_TO_MAP[to]
             except KeyError:
                 _logger.error(f"Unsupported target format: '{to}'.")
                 raise ValueError(f"Provider {to} not supported.")
 
             result = translator(belso_schema)
 
-            _logger.info(f"Successfully translated schema to '{to}' format.")
+            _logger.info(f"Successfully converted schema to '{to}' format.")
             return result
 
         except Exception as e:
@@ -130,7 +130,7 @@ class SchemaProcessor:
                 return schema
 
             _logger.debug(f"Standardizing schema from '{from_format}' format to 'belso' format...")
-            translator = _TRANSLATE_FROM_MAP.get(from_format)
+            translator = _CONVERT_FROM_MAP.get(from_format)
             if not translator:
                 _logger.error(f"Unsupported source format: '{from_format}'")
                 raise ValueError(f"Conversion from {from_format} format is not supported.")

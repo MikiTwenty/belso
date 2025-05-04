@@ -16,13 +16,12 @@ First, define your schema using belso's Schema and Field classes:
    from belso import Schema, Field
 
    class UserSchema(Schema):
-       name = "UserSchema"
        fields = [
            Field(name="name", type_=str, description="User's name"),
            Field(name="age", type_=int, description="User's age")
        ]
 
-2. Translate to Provider Format
+2. Convert to Provider Format
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Convert your schema to a specific provider format:

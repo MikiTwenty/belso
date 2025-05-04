@@ -11,7 +11,6 @@ Basic Schema Example
    from belso import Schema, Field
 
    class WeatherSchema(Schema):
-       name = "WeatherSchema"
        fields = [
            Field(name="temperature", type=float, description="Temperature in Celsius"),
            Field(name="humidity", type=float, description="Humidity percentage"),
@@ -26,7 +25,6 @@ Nested Schema Example
    from belso import Schema, Field
 
    class AddressSchema(Schema):
-       name = "AddressSchema"
        fields = [
            Field(name="street", type=str, description="Street address"),
            Field(name="city", type=str, description="City name"),
@@ -34,7 +32,6 @@ Nested Schema Example
        ]
 
    class PersonSchema(Schema):
-       name = "PersonSchema"
        fields = [
            Field(name="name", type=str, description="Person's name"),
            Field(name="age", type=int, description="Person's age"),

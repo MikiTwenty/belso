@@ -3,7 +3,7 @@
 class FORMATS:
     """
     A class that provides constants for supported schema providers.
-    This allows for more readable code when specifying providers in the translate method.
+    This allows for more readable code when specifying providers in the convert method.
     """
     # Core providers
     BELSO = "belso"
