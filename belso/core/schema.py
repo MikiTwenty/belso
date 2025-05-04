@@ -1,11 +1,32 @@
 # belso.core.schema
 
 from belso.utils import get_logger
-from typing import Any, List, Optional, Type, ClassVar, Tuple
+from typing import Any, List, Optional, Type, ClassVar, Tuple, final
 
 _logger = get_logger(__name__)
 
+@final
 class BaseField:
+    """
+    A base class for defining fields in a schema.
+    """
+    __slots__ = (
+        "name",
+        "type_",
+        "description",
+        "required",
+        "default",
+        "enum",
+        "range_",
+        "exclusive_range",
+        "length_range",
+        "items_range",
+        "properties_range",
+        "regex",
+        "multiple_of",
+        "format_",
+    )
+
     def __init__(
             self,
             name: str,

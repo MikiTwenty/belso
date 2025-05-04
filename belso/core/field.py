@@ -12,7 +12,10 @@ from belso.core.schema import Schema, BaseField
 
 _logger = get_logger(__name__)
 
-def _validate_field_params(type_: Type, **kwargs) -> Dict[str, Any]:
+def _validate_field_params(
+        type_: Type,
+        **kwargs
+    ) -> Dict[str, Any]:
     """
     Validate field parameters based on the given type.\n
     ---
@@ -80,6 +83,8 @@ class NestedField(BaseField):
     - LangChain
     - HuggingFace
     """
+    __slots__ = BaseField.__slots__ + ("schema",)
+
     def __init__(
             self,
             name: str,
@@ -138,6 +143,8 @@ class ArrayField(BaseField):
     - LangChain
     - HuggingFace
     """
+    __slots__ = BaseField.__slots__ + ("items_typ",)
+
     def __init__(
             self,
             name: str,
@@ -153,8 +160,7 @@ class ArrayField(BaseField):
             properties_range: Optional[tuple] = None,
             regex: Optional[str] = None,
             multiple_of: Optional[float] = None,
-            format_: Optional[str] = None,
-            not_: Optional[Dict] = None
+            format_: Optional[str] = None
         ) -> None:
         # Valida i parametri per il tipo list
         valid_params = _validate_field_params(
@@ -207,9 +213,9 @@ class Field:
             multiple_of: Optional[float] = None,
             format: Optional[str] = None,
         ) -> Union[
-            "belso.core.BaseField",
-            "belso.core.NestedField",
-            "belso.core.ArrayField",
+            BaseField,
+            NestedField,
+            ArrayField,
         ]:
         """
         Decide which concrete *Field* class to instantiate.\n

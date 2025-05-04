@@ -3,7 +3,6 @@
 from pathlib import Path
 from typing import Any, Dict, Type, Union, Optional
 
-import json
 from pydantic import BaseModel
 
 from belso.core.schema import Schema
@@ -241,6 +240,7 @@ class SchemaProcessor:
             return from_yaml(path)
         else:
             _logger.error(f"Unsupported file format for loading: '{path}'")
+            raise ValueError(f"File format not supported for loading: '{path}'")
 
     @staticmethod
     def validate(
