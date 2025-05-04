@@ -8,7 +8,8 @@ from pydantic import BaseModel
 import xml.etree.ElementTree as ET
 from google.ai.generativelanguage_v1beta.types import content
 
-from belso.utils import FORMATS, get_logger
+from belso.utils.formats import FORMATS
+from belso.utils.logging import get_logger
 
 # Get a module-specific _logger
 _logger = get_logger(__name__)

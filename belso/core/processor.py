@@ -44,7 +44,7 @@ class SchemaProcessor:
         return format_type
 
     @staticmethod
-    def translate(
+    def convert(
             schema: Any,
             to: str,
             from_format: Optional[str] = None

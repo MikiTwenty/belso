@@ -16,31 +16,38 @@ _console = Console()
 
 def _display_schema(
         schema_cls: Type[Schema],
-        indent: int = 0,
         parent_path: str = "",
-        seen_counter: Optional[Dict[int, int]] = None
+        seen_counter: Optional[Dict[str, int]] = None,
+        visited_ids: Optional[Dict[int, str]] = None
     ) -> None:
     """
-    Recursive function to display a schema with nested fields.
+    Recursive function to display a schema with nested fields.\n
     ---
     ### Args
-    - `schema_cls` (`Type[Schema]`): the belso schema to print.
-    - `indent` (`int`, optional): the indentation level. Defaults to 0.
-    - `parent_path` (`str`, optional): the parent path of the schema. Defaults to "".
-    - `seen_counter` (`Dict[int, int]`, optional): keeps track of schema instances to detect duplication.
+    - `schema_cls` (Type[Schema]): The schema class to display.
+    - `parent_path` (str): The parent path of the schema. Defaults to "".
+    - `seen_counter` (Optional[Dict[str, int]], optional): Counter for duplicate contexts. Defaults to None.
+    - `visited_ids` (Optional[Dict[int, str]], optional): Dictionary of visited schema IDs. Defaults to None.\n
     """
     if seen_counter is None:
         seen_counter = {}
+    if visited_ids is None:
+        visited_ids = {}
 
-    # Count repeated schema usage
     schema_id = id(schema_cls)
-    count = seen_counter.get(schema_id, 0)
-    seen_counter[schema_id] = count + 1
 
-    # Base schema name
-    schema_name = schema_cls.__name__
-    display_base = f"{parent_path}.{schema_name}" if parent_path else schema_name
-    display_name = f"{display_base}[{count}]" if count > 0 else display_base
+    # Usa il path intero per identificare contesti duplicati
+    path_key = parent_path or schema_cls.__name__
+    count = seen_counter.get(path_key, 0)
+    seen_counter[path_key] = count + 1
+
+    # Aggiungi l'indice solo se il path è ricorrente
+    display_name = f"{path_key}[{count}]" if count > 1 else path_key
+
+    # Salta stampa duplicata se già visitato con stesso path
+    if visited_ids.get(schema_id) == path_key:
+        return
+    visited_ids[schema_id] = path_key
 
     table = Table(
         title=f"\n[bold blue]{display_name}",
@@ -48,7 +55,6 @@ def _display_schema(
         expand=False,
         show_lines=True
     )
-
     table.add_column("Field", style="cyan", no_wrap=True)
     table.add_column("Type", style="magenta")
     table.add_column("Required", style="green")
@@ -71,22 +77,23 @@ def _display_schema(
 
     _console.print(table)
 
-    # Recursively display nested schemas
+    # Visita ricorsiva per Nested e ArrayField
     for field in schema_cls.fields:
+        field_path = f"{path_key}.{field.name}"
         if isinstance(field, NestedField):
-            _display_schema(field.schema, indent + 1, display_name, seen_counter)
+            _display_schema(field.schema, field_path, seen_counter, visited_ids)
         elif isinstance(field, ArrayField) and isinstance(field.items_type, type) and issubclass(field.items_type, Schema):
-            _display_schema(field.items_type, indent + 1, display_name, seen_counter)
+            _display_schema(field.items_type, field_path, seen_counter, visited_ids)
 
 def display_schema(schema: Type[Schema]) -> None:
     """
-    Pretty-print a schema using colors and better layout, including nested fields.
+    Display a schema with nested fields.\n
     ---
     ### Args
-    - `schema` (`Type[Schema]`): the belso schema to print.
+    - `schema` (Type[Schema]): The schema to display.\n
     """
     try:
-        _display_schema(schema, seen_counter={})
+        _display_schema(schema, seen_counter={}, visited_ids={})
     except Exception as e:
         _logger.error(f"Error printing schema: {e}")
         _logger.debug("Schema printing error details", exc_info=True)

@@ -9,19 +9,19 @@ from belso import Schema, Field, SchemaProcessor
 class ContactInfo(Schema):
     fields = [
         Field(
-            name="email",
+            "email",
             type=str,
             description="Email address",
             regex=r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
         ),
         Field(
-            name="phone",
+            "phone",
             type=str,
             description="Phone number",
             default="N/A"
         ),
         Field(
-            name="preferred_contact",
+            "preferred_contact",
             type=str,
             description="Preferred contact method",
             enum=["email", "phone", "mail"]
@@ -32,23 +32,23 @@ class ContactInfo(Schema):
 class Address(Schema):
     fields = [
         Field(
-            name="street",
+            "street",
             type=str,
             description="Street address",
             length_range=(5, 100)
         ),
         Field(
-            name="city",
+            "city",
             type=str,
             description="City name"
         ),
         Field(
-            name="postal_code",
+            "postal_code",
             type=str,
             description="Postal code"
         ),
         Field(
-            name="country",
+            "country",
             type=str,
             description="Country name"
         )
@@ -58,25 +58,25 @@ class Address(Schema):
 class Skill(Schema):
     fields = [
         Field(
-            name="name",
+            "name",
             type=str,
             description="Name of the skill"
         ),
         Field(
-            name="level",
+            "level",
             type=int,
             description="Proficiency level from 1 to 5",
             range=(1, 5)
         ),
         Field(
-            name="years_experience",
+            "years_experience",
             type=float,
             description="Years of experience with this skill",
             range=(0, 50),
             multiple_of=0.5
         ),
         Field(
-            name="certified",
+            "certified",
             type=bool,
             description="Whether the person is certified in this skill",
             default=False
@@ -88,68 +88,68 @@ class ComprehensiveProfile(Schema):
     fields = [
         # Basic primitive types
         Field(
-            name="id",
+            "id",
             type=int,
             description="Unique identifier"
         ),
         Field(
-            name="name",
+            "name",
             type=str,
             description="Full name",
             length_range=(2, 50)
         ),
         Field(
-            name="age",
+            "age",
             type=int,
             description="Age in years",
             range=(18, 120)
         ),
         Field(
-            name="height",
+            "height",
             type=float,
             description="Height in meters",
             range=(0.5, 2.5)
         ),
         Field(
-            name="is_active",
+            "is_active",
             type=bool,
             description="Whether the profile is active"
         ),
 
         # Nested object fields
         Field(
-            name="contact",
+            "contact",
             type=ContactInfo,
             description="Contact information"
         ),
         Field(
-            name="address",
+            "address",
             type=Address,
             description="Physical address"
         ),
 
         # Array fields with primitive types
         Field(
-            name="interests",
+            "interests",
             type=List[str],
             description="List of interests",
             default=[]
         ),
         Field(
-            name="scores",
+            "scores",
             type=List[int],
             description="List of test scores",
             items_range=(1, 10)  # Min 1, max 10 items
         ),
         Field(
-            name="measurements",
+            "measurements",
             type=List[float],
             description="Various measurements"
         ),
 
         # Array of complex objects
         Field(
-            name="skills",
+            "skills",
             type=List[Skill],
             description="List of skills",
             items_range=(1, 5)  # Min 1, max 5 skills
@@ -157,7 +157,7 @@ class ComprehensiveProfile(Schema):
 
         # Enum field
         Field(
-            name="status",
+            "status",
             type=str,
             description="Current status",
             enum=["available", "busy", "away", "offline"]
@@ -165,7 +165,7 @@ class ComprehensiveProfile(Schema):
 
         # Field with regex pattern
         Field(
-            name="username",
+            "username",
             type=str,
             description="Username (alphanumeric, 3-15 chars)",
             regex=r"^[a-zA-Z0-9_]{3,15}$"
@@ -173,7 +173,7 @@ class ComprehensiveProfile(Schema):
 
         # Field with exclusive range
         Field(
-            name="rating",
+            "rating",
             type=float,
             description="Rating score (exclusive range)",
             exclusive_range=(0, 10)  # Greater than 0, less than 10
@@ -181,7 +181,7 @@ class ComprehensiveProfile(Schema):
 
         # Field with format
         Field(
-            name="created_at",
+            "created_at",
             type=str,
             description="Creation date (ISO format)",
             format="date-time"
@@ -194,7 +194,7 @@ def main():
     SchemaProcessor.display(ComprehensiveProfile)
 
     # Convert to Ollama format
-    ollama_schema = SchemaProcessor.translate(ComprehensiveProfile, to=FORMATS.OLLAMA)
+    ollama_schema = SchemaProcessor.convert(ComprehensiveProfile, to=FORMATS.OLLAMA)
 
     print("\nConverted schema to Ollama format:")
     print(json.dumps(ollama_schema, indent=4))

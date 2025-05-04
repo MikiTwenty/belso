@@ -44,7 +44,7 @@ def configure_logger(
     - `log_file` (`Optional[str]`): the path to the log file. Defaults to `None`.
     - `log_format` (`Optional[str]`): the log format. Defaults to `None`.
     - `propagate` (`bool`): whether to propagate logs to parent loggers. Defaults to `true`.
-    - `handler_config` (`Optional[Dict[str, Any]]`): additional configuration for handlers. Defaults to `None`.\n
+    - `handler_config` (`Optional[Dict[str, Any]]`): additional configuration for handlers. Defaults to `None`.
     """
     # Set propagation (whether logs should be passed to parent loggers)
     logger.propagate = propagate

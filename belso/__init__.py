@@ -1,7 +1,7 @@
 # belso.__init__
 
 from belso.version import __version__
-from belso.utils.logging import configure_logger, get_logger
+from belso.utils import configure_logger, get_logger
 
 # Initialize logger with default settings
 configure_logger()

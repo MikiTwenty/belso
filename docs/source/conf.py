@@ -5,7 +5,7 @@ import sys
 sys.path.insert(0, os.path.abspath('../..'))
 sys.path.append(os.path.abspath('./_ext'))
 
-# -- Project information -----------------------------------------------------
+# Project information
 
 project = 'belso'
 copyright = '2025, Michele Ventimiglia'
@@ -17,7 +17,7 @@ try:
 except ImportError:
     release = "unknown"
 
-# -- General configuration ---------------------------------------------------
+# General configuration
 
 extensions = [
     'sphinx.ext.autodoc',

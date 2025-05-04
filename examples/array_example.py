@@ -11,21 +11,20 @@ from belso.core.processor import SchemaProcessor
 class ItemSchema(Schema):
     fields = [
         Field(
-            name="id",
+            "id",
             type=int,
             description="Unique identifier for the item"
         ),
         Field(
-            name="name",
+            "name",
             type=str,
             description="Name of the item"
         ),
         Field(
-            name="active",
+            "active",
             type=bool,
             description="Whether the item is active",
-            required=False,
-            default=True
+            required=False
         )
     ]
 
@@ -34,14 +33,14 @@ class ArrayFieldsTestSchema(Schema):
     fields = [
         # Simple array of primitive types
         Field(
-            name="tags",
+            "tags",
             type=List[str],
             description="List of string tags"
         ),
 
         # Array with range constraints
         Field(
-            name="scores",
+            "scores",
             type=List[int],
             description="List of integer scores",
             items_range=(1, 5)  # Min 1, max 5 items
@@ -49,14 +48,14 @@ class ArrayFieldsTestSchema(Schema):
 
         # Array of complex objects (nested schema)
         Field(
-            name="items",
+            "items",
             type=List[ItemSchema],
             description="List of item objects"
         ),
 
         # Optional array
         Field(
-            name="optional_data",
+            "optional_data",
             type=List[float],
             description="Optional list of float values",
             required=False,
@@ -68,9 +67,10 @@ def main():
     # Display the schema
     SchemaProcessor.display(ArrayFieldsTestSchema)
 
-    # Convert to Ollama format
-    ollama_schema = SchemaProcessor.translate(ArrayFieldsTestSchema, to=FORMATS.OLLAMA)
+    # Convert the schema to Ollama format
+    ollama_schema = SchemaProcessor.convert(ArrayFieldsTestSchema, to=FORMATS.OLLAMA)
 
+    # Display the converted schema
     print("\nConverted schema to Ollama format:")
     print(json.dumps(ollama_schema, indent=4))
 
@@ -79,6 +79,7 @@ def main():
         default_prompt = "Generate an array of 3 items with tags, scores, and item details"
         print(f"\nDefault prompt:\n\"{default_prompt}\"")
 
+        # Ask the user for a prompt
         user_prompt = input(f"\n>> Type a prompt (press Enter to use default prompt): ")
         prompt = user_prompt or default_prompt
 
@@ -88,9 +89,9 @@ def main():
             messages=[{"role": "user", "content": prompt}],
             format=ollama_schema  # Our converted schema
         )
-
-        # Process the structured response
         result = response['message']['content']
+
+        # Display the response
         print("\nReceived response from Ollama:")
         print(json.dumps(json.loads(result), indent=4))
 

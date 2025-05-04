@@ -6,59 +6,34 @@ from belso import Schema, Field, SchemaProcessor
 
 class Light(Schema):
     fields = [
+        Field("is_on", type=bool, description="Whether the light should be on or off"),
+        Field("brightness", type=int, description="Brightness of the light, from 0 to 100 - 0 if light is off"),
         Field(
-            name="is_on",
-            type=bool,
-            description="Whether the light should be on or off"
-        ),
-        Field(
-            name="brightness",
-            type=int,
-            description="Brightness of the light, from 0 to 100 - 0 if light is off"
-        ),
-        Field(
-            name="temperature",
+            "temperature",
             type=str,
-            enum=['warm', 'neutral', 'cold'],
+            enum=['warm', 'neutral', 'cold'],  # Predefined output values
             description="The temperature of the light, from warm to cold"
         ),
     ]
 
 class Room(Schema):
-    fields = [
-        Field(
-            name="Light",
-            type=Light,
-            description="The light in the room"
-        )
-    ]
+    fields = [Field("Light", type=Light, description="The light in the room")]
 
 class House(Schema):
     fields = [
-        Field(
-            name="Kitchen",
-            type=Room,
-            description="The kitchen in the house"
-        ),
-        Field(
-            name="Bedroom",
-            type=Room,
-            description="The bedroom in the house"
-        ),
-        Field(
-            name="Bathroom",
-            type=Room,
-            description="The bathroom in the house"
-        ),
+        Field("Kitchen", type=Room, description="The kitchen in the house"),
+        Field("Bedroom", type=Room, description="The bedroom in the house"),
+        Field("Bathroom", type=Light, description="The bathroom in the house"),
     ]
 
 def main():
     # Display the schema
     SchemaProcessor.display(House)
 
-    # Convert to Ollama format
-    ollama_schema = SchemaProcessor.translate(House, to=FORMATS.OLLAMA)
+    # Convert the schema to Ollama format
+    ollama_schema = SchemaProcessor.convert(House, to=FORMATS.OLLAMA)
 
+    # Display the converted schema
     print("\nConverted schema to Ollama format:")
     print(json.dumps(ollama_schema, indent=4))
 
@@ -69,6 +44,8 @@ def main():
             " set the brightness at 50% and the temperature to warm."
         )
         print(f"\nDefault prompt:\n\"{default_prompt}\"")
+
+        # Ask the user for a prompt
         user_prompt = input(f"\n>> Type a prompt (press Enter to use default prompt): ")
         prompt = user_prompt or default_prompt
 
@@ -78,9 +55,9 @@ def main():
             messages=[{"role": "user", "content": prompt}],
             format=ollama_schema  # Our converted schema
         )
-
-        # Process the structured response
         result: dict = response['message']['content']
+
+        # Display the response
         print("\nReceived response from Ollama:")
         print(json.dumps(json.loads(result), indent=4))
 

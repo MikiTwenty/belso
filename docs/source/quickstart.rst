@@ -18,8 +18,8 @@ First, define your schema using belso's Schema and Field classes:
    class UserSchema(Schema):
        name = "UserSchema"
        fields = [
-           Field(name="name", type_=str, description="User's name", required=True),
-           Field(name="age", type_=int, description="User's age", required=True)
+           Field(name="name", type_=str, description="User's name"),
+           Field(name="age", type_=int, description="User's age")
        ]
 
 2. Translate to Provider Format
@@ -33,7 +33,7 @@ Convert your schema to a specific provider format:
     from belso.utils import FORMATS
 
     # Convert to OpenAI format
-    openai_schema = SchemaProcessor.translate(UserSchema, to=FORMATS.OPENAI)
+    openai_schema = SchemaProcessor.convert(UserSchema, to=FORMATS.OPENAI)
 
     # Convert to Anthropic format
-    anthropic_schema = SchemaProcessor.translate(UserSchema, to=FORMATS.ANTHROPIC)
+    anthropic_schema = SchemaProcessor.convert(UserSchema, to=FORMATS.ANTHROPIC)
