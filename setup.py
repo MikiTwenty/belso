@@ -20,7 +20,7 @@ VERSION = read_version()
 with open("requirements.txt") as requirements:
     requirements = requirements.read().splitlines()
 
-with open("README.md") as readme:
+with open("README.md", encoding="utf-8") as readme:
     long_description = readme.read()
 
 setup(
