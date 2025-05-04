@@ -1,9 +1,9 @@
 {
-  "name": "ConvertedSchema",
+  "name": "SchemaSchema",
   "fields": [
     {
       "name": "value",
-      "type": "str",
+      "type": "bool",
       "description": "Random boolean value",
       "required": true
     }

@@ -1,6 +1,6 @@
-<schema name="ConvertedSchema">
+<schema name="SchemaSchema">
   <fields>
-    <field name="value" type="str" required="true">
+    <field name="value" type="bool" required="true">
       <description>Random boolean value</description>
     </field>
   </fields>
