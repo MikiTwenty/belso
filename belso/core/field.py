@@ -143,7 +143,7 @@ class ArrayField(BaseField):
     - LangChain
     - HuggingFace
     """
-    __slots__ = BaseField.__slots__ + ("items_typ",)
+    __slots__ = BaseField.__slots__ + ("items_type",)
 
     def __init__(
             self,

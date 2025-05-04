@@ -27,6 +27,47 @@ from belso.formats import (
     to_yaml, from_yaml
 )
 
+_TRANSLATE_TO_MAP = {
+    FORMATS.GOOGLE: to_google,
+    FORMATS.OLLAMA: to_ollama,
+    FORMATS.OPENAI: to_openai,
+    FORMATS.ANTHROPIC: to_anthropic,
+    FORMATS.LANGCHAIN: to_langchain,
+    FORMATS.HUGGINGFACE: to_huggingface,
+    FORMATS.MISTRAL: to_mistral,
+    FORMATS.JSON: to_json,
+    FORMATS.XML: to_xml,
+    FORMATS.YAML: to_yaml,
+}
+
+_TRANSLATE_FROM_MAP = {
+    FORMATS.GOOGLE: from_google,
+    FORMATS.OLLAMA: from_ollama,
+    FORMATS.OPENAI: from_openai,
+    FORMATS.ANTHROPIC: from_anthropic,
+    FORMATS.LANGCHAIN: from_langchain,
+    FORMATS.HUGGINGFACE: from_huggingface,
+    FORMATS.MISTRAL: from_mistral,
+    FORMATS.JSON: from_json,
+    FORMATS.XML: from_xml,
+    FORMATS.YAML: from_yaml,
+}
+
+_SAVE_TO_MAP = {
+    ".json": to_json,
+    ".xml": to_xml,
+    ".yaml": to_yaml,
+    ".yml": to_yaml,
+}
+
+_LOAD_FROM_MAP = {
+    ".json": from_json,
+    ".xml": from_xml,
+    ".yaml": from_yaml,
+    ".yml": from_yaml,
+}
+
+
 _logger = get_logger(__name__)
 
 class SchemaProcessor:
@@ -91,29 +132,13 @@ class SchemaProcessor:
 
             # Translate to target format
             _logger.debug(f"Translating from belso format to '{to}' format...")
-            if to == FORMATS.GOOGLE:
-                result = to_google(belso_schema)
-            elif to == FORMATS.OLLAMA:
-                result = to_ollama(belso_schema)
-            elif to == FORMATS.OPENAI:
-                result = to_openai(belso_schema)
-            elif to == FORMATS.ANTHROPIC:
-                result = to_anthropic(belso_schema)
-            elif to == FORMATS.LANGCHAIN:
-                result = to_langchain(belso_schema)
-            elif to == FORMATS.HUGGINGFACE:
-                result = to_huggingface(belso_schema)
-            elif to == FORMATS.MISTRAL:
-                result = to_mistral(belso_schema)
-            elif to == FORMATS.JSON:
-                result = to_json(belso_schema)
-            elif to == FORMATS.XML:
-                result = to_xml(belso_schema)
-            elif to == FORMATS.YAML:
-                result = to_yaml(belso_schema)
-            else:
+            try:
+                translator = _TRANSLATE_TO_MAP[to]
+            except KeyError:
                 _logger.error(f"Unsupported target format: '{to}'.")
                 raise ValueError(f"Provider {to} not supported.")
+
+            result = translator(belso_schema)
 
             _logger.info(f"Successfully translated schema to '{to}' format.")
             return result
@@ -153,40 +178,12 @@ class SchemaProcessor:
                 return schema
 
             _logger.debug(f"Standardizing schema from '{from_format}' format to 'belso' format...")
-
-            if from_format == FORMATS.GOOGLE:
-                _logger.debug("Converting from Google format...")
-                result = from_google(schema)
-            elif from_format == FORMATS.OLLAMA:
-                _logger.debug("Converting from Ollama format...")
-                result = from_ollama(schema)
-            elif from_format == FORMATS.OPENAI:
-                _logger.debug("Converting from OpenAI format...")
-                result = from_openai(schema)
-            elif from_format == FORMATS.ANTHROPIC:
-                _logger.debug("Converting from Anthropic format...")
-                result = from_anthropic(schema)
-            elif from_format == FORMATS.LANGCHAIN:
-                _logger.debug("Converting from Langchain format...")
-                result = from_langchain(schema)
-            elif from_format == FORMATS.HUGGINGFACE:
-                _logger.debug("Converting from Hugging Face format...")
-                result = from_huggingface(schema)
-            elif from_format == FORMATS.MISTRAL:
-                _logger.debug("Converting from Mistral format...")
-                result = from_mistral(schema)
-            elif from_format == FORMATS.JSON:
-                _logger.debug("Converting from JSON format...")
-                result = from_json(schema)
-            elif from_format == FORMATS.XML:
-                _logger.debug("Converting from XML format...")
-                result = from_xml(schema)
-            elif from_format == FORMATS.YAML:
-                _logger.debug("Converting from YAML format...")
-                result = from_yaml(schema)
-            else:
+            translator = _TRANSLATE_FROM_MAP.get(from_format)
+            if not translator:
                 _logger.error(f"Unsupported source format: '{from_format}'")
                 raise ValueError(f"Conversion from {from_format} format is not supported.")
+
+            result = translator(schema)
 
             _logger.info(f"Successfully standardized schema to 'belso' format.")
             return result
@@ -210,37 +207,40 @@ class SchemaProcessor:
         """
         from_format = detect_schema_format(schema)
         if from_format != FORMATS.BELSO:
-            _logger.debug(f"Converting schema from '{from_format}' format to 'belso' format...")
             schema = SchemaProcessor.standardize(schema, from_format)
-        if path.endswith(".json"):
-            to_json(schema, path)
-        elif path.endswith(".xml"):
-            to_xml(schema, path)
-        elif path.endswith(".yaml") or path.endswith(".yml"):
-            to_yaml(schema, path)
+
+        ext = Path(path).suffix.lower()
+        if ext in _SAVE_TO_MAP:
+            _SAVE_TO_MAP[ext](schema, path)
         else:
-            _logger.error(f"Unsupported format for saving: '{from_format}'")
+            _logger.error(f"Unsupported format for saving: '{ext}'")
+
 
     @staticmethod
-    def load(path: Union[str, Path]) -> Any:
+    def load(
+            path: Union[str, Path],
+            standardize: bool = True
+        ) -> Any:
         """
         Load a schema from a file in the specified format.\n
         ---
         ### Args
-        - `path` (`Union[str, Path]`): the path to the file to load.\n
+        - `path` (`Union[str, Path]`): the path to the file to load.
+        - `standardize` (`bool`): whether to convert the schema to our internal 'belso' format. Defaults to `True`.\n
         ---
         ### Returns
         - `Any`: the loaded schema.
         """
-        if path.endswith(".json"):
-            return from_json(path)
-        elif path.endswith(".xml"):
-            return from_xml(path)
-        elif path.endswith(".yaml") or path.endswith(".yml"):
-            return from_yaml(path)
+        ext = Path(path).suffix.lower()
+        if ext in _LOAD_FROM_MAP:
+            _logger.debug(f"Loading schema from '{ext}' format...")
         else:
-            _logger.error(f"Unsupported file format for loading: '{path}'")
-            raise ValueError(f"File format not supported for loading: '{path}'")
+            _logger.error(f"Unsupported format for loading: '{ext}'")
+            raise ValueError(f"Loading from {ext} format is not supported.")
+        if standardize:
+            _logger.debug("Standardizing loaded schema to 'belso' format...")
+            return SchemaProcessor.standardize(_LOAD_FROM_MAP[ext](path))
+        return _LOAD_FROM_MAP[ext](path)
 
     @staticmethod
     def validate(
