@@ -2,9 +2,9 @@
 
 from typing import Any, Dict, Type, Callable, Optional
 
-from belso.utils import get_logger
-from belso.core import Schema, BaseField
-from belso.utils.constants import _JSON_FIELD_MAP
+from belso.utils.logging import get_logger
+from belso.core.schema import Schema, BaseField
+from belso.utils.mappings.field_mappings import _JSON_FIELD_MAP
 from belso.core.field import NestedField, ArrayField
 from belso.utils.helpers import (
     map_json_to_python_type,

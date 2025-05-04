@@ -4,11 +4,11 @@ from typing import Type
 
 from google.ai.generativelanguage_v1beta.types import content
 
-from belso.utils import get_logger
-from belso.core import Schema, BaseField
+from belso.utils.logging import get_logger
+from belso.core.schema import Schema, BaseField
 from belso.core.field import NestedField, ArrayField
 from belso.utils.helpers import create_fallback_schema
-from belso.utils.constants import _GOOGLE_TYPE_MAP, _REVERSE_GOOGLE_TYPE_MAP
+from belso.utils.mappings.type_mappings import _GOOGLE_TYPE_MAP, _REVERSE_GOOGLE_TYPE_MAP
 
 _logger = get_logger(__name__)
 

@@ -1,4 +1,4 @@
-# belso.formats.xml_format
+# belso.serialization.xml_format
 
 from pathlib import Path
 from typing import Optional, Type, Union
@@ -6,9 +6,9 @@ from typing import Optional, Type, Union
 from belso.utils import get_logger
 import xml.etree.ElementTree as ET
 from belso.core import Schema, BaseField
-from belso.utils.constants import _XML_TYPE_MAP
 from belso.core.field import NestedField, ArrayField
 from belso.utils.helpers import create_fallback_schema
+from belso.utils.mappings.type_mappings import _FILE_TYPE_MAP
 
 _logger = get_logger(__name__)
 
@@ -151,7 +151,7 @@ def _from_xml(elem: ET.Element) -> Type[Schema]:
     for f_el in elem.find("fields").findall("field"):
         fname = f_el.get("name")
         ftype_str = f_el.get("type", "str")
-        ftype = _XML_TYPE_MAP.get(ftype_str.lower(), str)
+        ftype = _FILE_TYPE_MAP.get(ftype_str.lower(), str)
         frequired = f_el.get("required", "true") == "true"
         fdesc = f_el.findtext("description", "")
         fdef_el = f_el.find("default")
@@ -162,8 +162,12 @@ def _from_xml(elem: ET.Element) -> Type[Schema]:
         if nested_root is not None:
             nested_schema = _from_xml(nested_root)
             DynamicSchema.fields.append(
-                NestedField(name=fname, schema=nested_schema,
-                            description=fdesc, required=frequired, default=fdefault)
+                NestedField(
+                    name=fname,
+                    schema=nested_schema,
+                    description=fdesc,
+                    required=frequired,
+                    default=fdefault)
             )
             continue
 
@@ -171,27 +175,39 @@ def _from_xml(elem: ET.Element) -> Type[Schema]:
         arr_info = f_el.find("array_info")
         if arr_info is not None:
             items_type_str = arr_info.findtext("items_type", "str")
-            items_type = _XML_TYPE_MAP.get(items_type_str.lower(), str)
+            items_type = _FILE_TYPE_MAP.get(items_type_str.lower(), str)
             items_schema_root = arr_info.find("items_schema/schema")
 
             if items_schema_root is not None:
                 items_schema = _from_xml(items_schema_root)
                 DynamicSchema.fields.append(
-                    ArrayField(name=fname, items_type=items_type,
-                               items_schema=items_schema, description=fdesc,
-                               required=frequired, default=fdefault)
+                    ArrayField(
+                        name=fname,
+                        items_type=items_type,
+                        items_schema=items_schema,
+                        description=fdesc,
+                        required=frequired,
+                        default=fdefault)
                 )
             else:
                 DynamicSchema.fields.append(
-                    ArrayField(name=fname, items_type=items_type,
-                               description=fdesc, required=frequired, default=fdefault)
+                    ArrayField(
+                        name=fname,
+                        items_type=items_type,
+                        description=fdesc,
+                        required=frequired,
+                        default=fdefault)
                 )
             continue
 
         # primitive
         DynamicSchema.fields.append(
-            BaseField(name=fname, type_=ftype, description=fdesc,
-                      required=frequired, default=fdefault)
+            BaseField(
+                name=fname,
+                type_=ftype,
+                description=fdesc,
+                required=frequired,
+                default=fdefault)
         )
 
     return DynamicSchema

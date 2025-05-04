@@ -1,13 +1,15 @@
 # belso.providers.base.pydantic_model
 
+from future import __annotations__
+
 from typing import Dict, Any, Callable, List, Optional, Tuple, Type, get_origin
 
 from pydantic import BaseModel, Field as PydanticField, create_model
 
-from belso.utils import get_logger
-from belso.core import Schema, BaseField
+from belso.utils.logging import get_logger
+from belso.core.schema import Schema, BaseField
 from belso.core.field import NestedField, ArrayField
-from belso.utils.constants import _PYDANTIC_FIELD_MAP
+from belso.utils.mappings.field_mappings import _PYDANTIC_FIELD_MAP
 
 import pydantic.fields
 

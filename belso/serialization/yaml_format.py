@@ -1,14 +1,14 @@
-# belso.formats.yaml_format
+# belso.serialization.yaml_format
 
 import yaml
 from pathlib import Path
 from typing import Any, Dict, Optional, Type, Union
 
 from belso.utils import get_logger
-from belso.core import Schema, BaseField
-from belso.utils.constants import _YAML_TYPE_MAP
+from belso.core.schema import Schema, BaseField
 from belso.core.field import NestedField, ArrayField
 from belso.utils.helpers import create_fallback_schema
+from belso.utils.mappings.type_mappings import _FILE_TYPE_MAP
 
 _logger = get_logger(__name__)
 
@@ -146,8 +146,12 @@ def _from_yaml(data: Dict[str, Any]) -> Type[Schema]:
         if "schema" in fld:
             nested_schema = _from_yaml(fld["schema"])
             DynamicSchema.fields.append(
-                NestedField(name=name, schema=nested_schema,
-                            description=descr, required=required, default=default)
+                NestedField(
+                    name=name,
+                    schema=nested_schema,
+                    description=descr,
+                    required=required,
+                    default=default)
             )
             continue
 
@@ -155,22 +159,35 @@ def _from_yaml(data: Dict[str, Any]) -> Type[Schema]:
         if "items_schema" in fld:
             items_schema = _from_yaml(fld["items_schema"])
             DynamicSchema.fields.append(
-                ArrayField(name=name, items_type=list, items_schema=items_schema,
-                           description=descr, required=required, default=default)
+                ArrayField(
+                    name=name,
+                    items_type=list,
+                    items_schema=items_schema,
+                    description=descr,
+                    required=required,
+                    default=default)
             )
             continue
         if fld.get("type", "").lower() == "list":
             DynamicSchema.fields.append(
-                ArrayField(name=name, items_type=str,
-                           description=descr, required=required, default=default)
+                ArrayField(
+                    name=name,
+                    items_type=str,
+                    description=descr,
+                    required=required,
+                    default=default)
             )
             continue
 
         # primitive
-        py_type = _YAML_TYPE_MAP.get(fld.get("type", "str").lower(), str)
+        py_type = _FILE_TYPE_MAP.get(fld.get("type", "str").lower(), str)
         DynamicSchema.fields.append(
-            BaseField(name=name, type_=py_type, description=descr,
-                      required=required, default=default)
+            BaseField(
+                name=name,
+                type_=py_type,
+                description=descr,
+                required=required,
+                default=default)
         )
 
     return DynamicSchema
