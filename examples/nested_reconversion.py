@@ -20,7 +20,7 @@ class House(Schema):
     fields = [
         Field("Kitchen", type=Room, description="The kitchen in the house"),
         Field("Bedroom", type=Room, description="The bedroom in the house"),
-        Field("Bathroom", type=Light, description="The bathroom in the house"),
+        Field("Bathroom", type=Room, description="The bathroom in the house"),
     ]
 
 def main():
