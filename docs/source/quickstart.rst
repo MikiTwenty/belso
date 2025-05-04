@@ -1,7 +1,7 @@
 Quick Start Guide
 =================
 
-This guide will help you get started with belso quickly.
+This guide will help you get started with Belso quickly.
 
 Basic Usage
 -----------
@@ -9,31 +9,26 @@ Basic Usage
 1. Define a Schema
 ~~~~~~~~~~~~~~~~~~
 
-First, define your schema using belso's Schema and Field classes:
-
 .. code-block:: python
 
    from belso import Schema, Field
 
    class UserSchema(Schema):
-       name = "UserSchema"
        fields = [
-           Field(name="name", type_=str, description="User's name", required=True),
-           Field(name="age", type_=int, description="User's age", required=True)
+           Field(name="name", type_=str, description="User's name"),
+           Field(name="age", type_=int, description="User's age")
        ]
 
-2. Translate to Provider Format
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Convert your schema to a specific provider format:
+2. Convert to Provider Format
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: python
 
-    from belso import SchemaProcessor
-    from belso.utils import PROVIDERS
+   from belso import SchemaProcessor
+   from belso.utils import FORMATS
 
-    # Convert to OpenAI format
-    openai_schema = SchemaProcessor.translate(UserSchema, to=PROVIDERS.OPENAI)
+   # Convert to OpenAI format
+   openai_schema = SchemaProcessor.convert(UserSchema, to=FORMATS.OPENAI)
 
-    # Convert to Anthropic format
-    anthropic_schema = SchemaProcessor.translate(UserSchema, to=PROVIDERS.ANTHROPIC)
+   # Convert to Anthropic format
+   anthropic_schema = SchemaProcessor.convert(UserSchema, to=FORMATS.ANTHROPIC)

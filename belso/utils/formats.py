@@ -1,9 +1,9 @@
-# belso.utils.constants
+# belso.utils.formats
 
-class PROVIDERS:
+class FORMATS:
     """
     A class that provides constants for supported schema providers.
-    This allows for more readable code when specifying providers in the translate method.
+    This allows for more readable code when specifying providers in the convert method.
     """
     # Core providers
     BELSO = "belso"
@@ -20,9 +20,10 @@ class PROVIDERS:
     # Serialization formats
     JSON = "json"
     XML = "xml"
+    YAML = "yaml"
 
     @classmethod
-    def get_all_providers(cls) -> list:
+    def get_all_formats(cls) -> list:
         """
         Get a list of all supported providers.\n
         ---
@@ -39,5 +40,6 @@ class PROVIDERS:
             cls.MISTRAL,
             cls.LANGCHAIN,
             cls.JSON,
-            cls.XML
+            cls.XML,
+            cls.YAML
         ]

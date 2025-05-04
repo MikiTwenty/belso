@@ -1,0 +1,11 @@
+{
+  "name": "SchemaSchema",
+  "fields": [
+    {
+      "name": "value",
+      "type": "bool",
+      "description": "Random boolean value",
+      "required": true
+    }
+  ]
+}

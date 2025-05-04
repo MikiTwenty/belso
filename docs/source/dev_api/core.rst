@@ -40,3 +40,11 @@ Field
    :members:
    :show-inheritance:
    :undoc-members:
+
+SchemaProcessor
+---------------
+
+.. autoclass:: belso.core.processor.SchemaProcessor
+   :members:
+   :show-inheritance:
+   :undoc-members:

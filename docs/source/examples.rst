@@ -1,7 +1,7 @@
 Examples
 ========
 
-Here are some examples of how to use belso in different scenarios.
+Explore these practical examples to understand how Belso can be used in different scenarios.
 
 Basic Schema Example
 --------------------
@@ -11,11 +11,10 @@ Basic Schema Example
    from belso import Schema, Field
 
    class WeatherSchema(Schema):
-       name = "WeatherSchema"
        fields = [
-           Field(name="temperature", type_=float, description="Temperature in Celsius"),
-           Field(name="humidity", type_=float, description="Humidity percentage"),
-           Field(name="conditions", type_=str, description="Weather conditions")
+           Field(name="temperature", type=float, description="Temperature in Celsius"),
+           Field(name="humidity", type=float, description="Humidity percentage"),
+           Field(name="conditions", type=str, description="Weather conditions")
        ]
 
 Nested Schema Example
@@ -26,17 +25,15 @@ Nested Schema Example
    from belso import Schema, Field
 
    class AddressSchema(Schema):
-       name = "AddressSchema"
        fields = [
-           Field(name="street", type_=str, description="Street address"),
-           Field(name="city", type_=str, description="City name"),
-           Field(name="zip_code", type_=str, description="Postal code")
+           Field(name="street", type=str, description="Street address"),
+           Field(name="city", type=str, description="City name"),
+           Field(name="zip_code", type=str, description="Postal code")
        ]
 
    class PersonSchema(Schema):
-       name = "PersonSchema"
        fields = [
-           Field(name="name", type_=str, description="Person's name"),
-           Field(name="age", type_=int, description="Person's age"),
-           Field(name="address", type_=AddressSchema, description="Person's address")
+           Field(name="name", type=str, description="Person's name"),
+           Field(name="age", type=int, description="Person's age"),
+           Field(name="address", type=AddressSchema, description="Person's address")
        ]

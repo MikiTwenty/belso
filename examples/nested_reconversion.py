@@ -1,70 +1,57 @@
-from belso.utils import PROVIDERS
+from belso.utils import FORMATS
 from belso import Schema, Field, SchemaProcessor
 
-class LightSchema(Schema):
+class Light(Schema):
     fields = [
+        Field("is_on", type=bool, description="Whether the light should be on or off"),
+        Field("brightness", type=int, description="Brightness of the light, from 0 to 100 - 0 if light is off"),
         Field(
-            name="is_on",
-            type_=bool,
-            description="Whether the light should be on or off",
-            required=True
-        ),
-        Field(
-            name="brightness",
-            type_=int,
-            description="Brightness of the light, from 0 to 100 - 0 if light is off",
-            required=True
-        ),
-        Field(
-            name="temperature",
-            type_=str,
-            enum=['warm', 'neutral', 'cold'],
-            description="The temperature of the light, from warm to cold",
-            required=True
+            "temperature",
+            type=str,
+            enum=['warm', 'neutral', 'cold'],  # Predefined output values
+            description="The temperature of the light, from warm to cold"
         ),
     ]
 
 class Room(Schema):
-    fields = [
-        Field(
-            name="Light",
-            type_=LightSchema,
-            description="The light in the room",
-            required=True
-        )
-    ]
+    fields = [Field("Light", type=Light, description="The light in the room")]
 
 class House(Schema):
     fields = [
-        Field(
-            name="Kitchen",
-            type_=Room,
-            description="The kitchen in the house",
-            required=True
-        ),
-        Field(
-            name="Bedroom",
-            type_=Room,
-            description="The bedroom in the house",
-            required=True
-        ),
-        Field(
-            name="Bathroom",
-            type_=Room,
-            description="The bathroom in the house",
-            required=True
-        ),
+        Field("Kitchen", type=Room, description="The kitchen in the house"),
+        Field("Bedroom", type=Room, description="The bedroom in the house"),
+        Field("Bathroom", type=Room, description="The bathroom in the house"),
     ]
 
-SchemaProcessor.display(House)
+def main():
+    # Display the schema
+    SchemaProcessor.display(House)
 
-schema = SchemaProcessor.translate(House, to=PROVIDERS.OLLAMA)
-schema = SchemaProcessor.translate(schema, to=PROVIDERS.OPENAI)
-schema = SchemaProcessor.translate(schema, to=PROVIDERS.GOOGLE)
-schema = SchemaProcessor.translate(schema, to=PROVIDERS.ANTHROPIC)
-schema = SchemaProcessor.translate(schema, to=PROVIDERS.HUGGINGFACE)
-schema = SchemaProcessor.translate(schema, to=PROVIDERS.LANGCHAIN)
-schema = SchemaProcessor.translate(schema, to=PROVIDERS.MISTRAL)
-schema = SchemaProcessor.standardize(schema)
+    # Convert the schema to multiple formats
+    schema = SchemaProcessor.convert(House, to=FORMATS.OLLAMA)
+    schema = SchemaProcessor.convert(schema, to=FORMATS.OPENAI)
+    schema = SchemaProcessor.convert(schema, to=FORMATS.GOOGLE)
+    schema = SchemaProcessor.convert(schema, to=FORMATS.ANTHROPIC)
+    schema = SchemaProcessor.convert(schema, to=FORMATS.HUGGINGFACE)
+    schema = SchemaProcessor.convert(schema, to=FORMATS.LANGCHAIN)
+    schema = SchemaProcessor.convert(schema, to=FORMATS.MISTRAL)
+    schema = SchemaProcessor.convert(schema, to=FORMATS.JSON)
 
-SchemaProcessor.display(schema)
+    # Save and load the schema using different formats
+    SchemaProcessor.save(schema, path="./examples/schemas/nested_schema.json")
+    schema = SchemaProcessor.load(path="./examples/schemas/nested_schema.json")
+    schema = SchemaProcessor.convert(schema, to=FORMATS.XML)
+    SchemaProcessor.save(schema, path="./examples/schemas/nested_schema.xml")
+    schema = SchemaProcessor.load(path="./examples/schemas/nested_schema.xml")
+    schema = SchemaProcessor.convert(schema, to=FORMATS.YAML)
+    SchemaProcessor.save(schema, path="./examples/schemas/nested_schema.yaml")
+    schema = SchemaProcessor.load(path="./examples/schemas/nested_schema.yaml")
+
+    # Standardize the schema
+    schema = SchemaProcessor.standardize(schema)
+
+    # Display the standardized schema to check the consistency with the original schema
+    SchemaProcessor.display(schema)
+
+if __name__ == "__main__":
+    main()

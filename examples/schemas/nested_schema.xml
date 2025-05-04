@@ -1,0 +1,85 @@
+<schema name="SchemaSchema">
+  <fields>
+    <field name="Bedroom" type="dict" required="true">
+      <description>The bedroom in the house</description>
+      <nested_schema>
+        <schema name="BedroomSchema">
+          <fields>
+            <field name="Light" type="dict" required="true">
+              <description>The light in the room</description>
+              <nested_schema>
+                <schema name="LightSchema">
+                  <fields>
+                    <field name="brightness" type="int" required="true">
+                      <description>Brightness of the light, from 0 to 100 - 0 if light is off</description>
+                    </field>
+                    <field name="temperature" type="str" required="true">
+                      <description>The temperature of the light, from warm to cold</description>
+                    </field>
+                    <field name="is_on" type="bool" required="true">
+                      <description>Whether the light should be on or off</description>
+                    </field>
+                  </fields>
+                </schema>
+              </nested_schema>
+            </field>
+          </fields>
+        </schema>
+      </nested_schema>
+    </field>
+    <field name="Bathroom" type="dict" required="true">
+      <description>The bathroom in the house</description>
+      <nested_schema>
+        <schema name="BathroomSchema">
+          <fields>
+            <field name="Light" type="dict" required="true">
+              <description>The light in the room</description>
+              <nested_schema>
+                <schema name="LightSchema">
+                  <fields>
+                    <field name="brightness" type="int" required="true">
+                      <description>Brightness of the light, from 0 to 100 - 0 if light is off</description>
+                    </field>
+                    <field name="temperature" type="str" required="true">
+                      <description>The temperature of the light, from warm to cold</description>
+                    </field>
+                    <field name="is_on" type="bool" required="true">
+                      <description>Whether the light should be on or off</description>
+                    </field>
+                  </fields>
+                </schema>
+              </nested_schema>
+            </field>
+          </fields>
+        </schema>
+      </nested_schema>
+    </field>
+    <field name="Kitchen" type="dict" required="true">
+      <description>The kitchen in the house</description>
+      <nested_schema>
+        <schema name="KitchenSchema">
+          <fields>
+            <field name="Light" type="dict" required="true">
+              <description>The light in the room</description>
+              <nested_schema>
+                <schema name="LightSchema">
+                  <fields>
+                    <field name="brightness" type="int" required="true">
+                      <description>Brightness of the light, from 0 to 100 - 0 if light is off</description>
+                    </field>
+                    <field name="temperature" type="str" required="true">
+                      <description>The temperature of the light, from warm to cold</description>
+                    </field>
+                    <field name="is_on" type="bool" required="true">
+                      <description>Whether the light should be on or off</description>
+                    </field>
+                  </fields>
+                </schema>
+              </nested_schema>
+            </field>
+          </fields>
+        </schema>
+      </nested_schema>
+    </field>
+  </fields>
+</schema>

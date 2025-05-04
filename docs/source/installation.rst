@@ -1,7 +1,7 @@
 Installation
 ============
 
-You can install belso using pip:
+You can install Belso using pip:
 
 .. code-block:: bash
 
@@ -11,4 +11,4 @@ Requirements
 ------------
 
 - Python 3.10 or higher
-- Required dependencies are automatically installed with pip
+- Dependencies are automatically installed with pip

@@ -1,12 +1,15 @@
 # belso.utils.detecting
 
+import json
 from typing import Any
-import xml.etree.ElementTree as ET
 
+import yaml
 from pydantic import BaseModel
+import xml.etree.ElementTree as ET
 from google.ai.generativelanguage_v1beta.types import content
 
-from belso.utils import get_logger
+from belso.utils.formats import FORMATS
+from belso.utils.logging import get_logger
 
 # Get a module-specific _logger
 _logger = get_logger(__name__)
@@ -27,55 +30,70 @@ def detect_schema_format(schema: Any) -> str:
         # Import Schema locally to avoid circular imports
         from belso.core import Schema
 
-        # Check if it's our custom Schema format
+        # Direct object type checks
         if isinstance(schema, type) and issubclass(schema, Schema):
             _logger.debug("Detected belso schema format.")
-            return "belso"
+            return FORMATS.BELSO
 
-        # Check if it's a Google Gemini schema
+        if isinstance(schema, type) and issubclass(schema, BaseModel):
+            _logger.debug("Detected OpenAI schema format (Pydantic).")
+            return FORMATS.OPENAI
+
         if isinstance(schema, content.Schema):
             _logger.debug("Detected Google Gemini schema format.")
-            return "google"
+            return FORMATS.GOOGLE
 
-        # Check if it's a Pydantic model (OpenAI)
-        if isinstance(schema, type) and issubclass(schema, BaseModel):
-            _logger.debug("Detected OpenAI (Pydantic) schema format.")
-            return "openai"
-
-        # Check if it's an XML Element
         if isinstance(schema, ET.Element):
-            _logger.debug("Detected XML Element schema format.")
-            return "xml"
+            _logger.debug("Detected XML ElementTree schema format.")
+            return FORMATS.XML
 
-        # Check if it's a string (could be XML or a file path)
-        if isinstance(schema, str):
-            # Check if it looks like XML
-            if schema.strip().startswith("<") and schema.strip().endswith(">"):
-                _logger.debug("Detected XML string schema format.")
-                return "xml"
-            _logger.debug("String input detected, but not recognized as XML. Might be a file path.")
-
-        # Check if it's a JSON Schema-based format (Anthropic, Ollama, Mistral, etc.)
         if isinstance(schema, dict):
-            # Check for Anthropic-style $schema
+            # Detect based on structure
             if "$schema" in schema and "json-schema.org" in schema["$schema"]:
-                _logger.debug("Detected JSON Schema format (Anthropic/Mistral).")
-                return "anthropic"
-
-            # Check for Ollama-like structure
+                _logger.debug("Detected JSON Schema format (Anthropic or Mistral).")
+                return FORMATS.ANTHROPIC
             if "type" in schema and schema["type"] == "object" and "properties" in schema:
                 if "title" in schema:
                     _logger.debug("Detected LangChain schema format.")
-                    return "langchain"
+                    return FORMATS.LANGCHAIN
                 elif "format" in schema and schema["format"] == "huggingface":
                     _logger.debug("Detected Hugging Face schema format.")
-                    return "huggingface"
+                    return FORMATS.HUGGINGFACE
                 else:
                     _logger.debug("Detected Ollama schema format.")
-                    return "ollama"
+                    return FORMATS.OLLAMA
+            _logger.debug("Generic JSON object detected, assuming JSON format.")
+            return FORMATS.JSON
 
-                _logger.warning("Unable to detect schema format. Returning 'unknown'.")
-                return "unknown"
+        if isinstance(schema, str):
+            schema_str = schema.strip()
+            # Quick detection: XML
+            if schema_str.startswith("<") and schema_str.endswith(">"):
+                _logger.debug("Detected XML string schema format.")
+                return FORMATS.XML
+
+            # Try parsing as JSON
+            try:
+                json.loads(schema_str)
+                _logger.debug("Successfully parsed JSON string.")
+                return FORMATS.JSON
+            except json.JSONDecodeError:
+                _logger.debug("String is not valid JSON.")
+
+            # Try parsing as YAML
+            try:
+                parsed_yaml = yaml.safe_load(schema_str)
+                if isinstance(parsed_yaml, dict):
+                    _logger.debug("Successfully parsed YAML string.")
+                    return FORMATS.YAML
+            except yaml.YAMLError:
+                _logger.debug("String is not valid YAML.")
+
+            _logger.warning("String format could not be recognized.")
+            return "unknown"
+
+        _logger.warning("Input schema format could not be detected.")
+        return "unknown"
 
     except Exception as e:
         _logger.error(f"Error during schema format detection: {e}")
