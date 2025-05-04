@@ -60,7 +60,6 @@ def _convert_nested_field(field: NestedField) -> content.Schema:
         required=nested_schema.required
     )
 
-
 def _convert_array_field(field: ArrayField) -> content.Schema:
     """
     Converts an ArrayField to a Google content.Schema object.\n
@@ -127,7 +126,6 @@ def to_google(schema: Type[Schema]) -> content.Schema:
         _logger.error(f"Error translating schema to Google format: {e}")
         _logger.debug("Translation error details", exc_info=True)
         return content.Schema()
-
 
 def from_google(
         schema: content.Schema,

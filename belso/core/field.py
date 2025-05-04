@@ -1,6 +1,6 @@
 # belso.core.field
 
-from __future__ import annotations   # keeps forward annotations as strings
+from __future__ import annotations
 
 import builtins
 from typing import Type, Optional, Any, List, Dict, Union, get_origin, get_args

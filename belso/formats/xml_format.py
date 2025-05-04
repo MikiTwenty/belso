@@ -1,7 +1,7 @@
 # belso.formats.xml_format
 
 from pathlib import Path
-from typing import Any, Optional, Type, Union
+from typing import Optional, Type, Union
 
 from belso.utils import get_logger
 import xml.etree.ElementTree as ET

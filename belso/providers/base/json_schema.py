@@ -15,15 +15,13 @@ from belso.utils.helpers import (
 _logger = get_logger(__name__)
 
 def convert_field_to_property(
-        field: BaseField,
-        field_map: Dict[str, Any]
+        field: BaseField
     ) -> Dict[str, Any]:
     """
     Converts a base field into a JSON schema property using a specific mapping.\n
     ---
     ### Args
-    - `field` (`BaseField`): the field to convert.
-    - `field_map` (`Dict[str, Any]`): the mapping to apply.\n
+    - `field` (`BaseField`): the field to convert.\n
     ---
     ### Returns
     - `dict`: the property dictionary.
@@ -124,7 +122,7 @@ def to_json_schema(
             elif isinstance(field, ArrayField):
                 properties[field.name] = convert_array_field(field, lambda s: to_json_schema(s, _JSON_FIELD_MAP))
             else:
-                properties[field.name] = convert_field_to_property(field, _JSON_FIELD_MAP)
+                properties[field.name] = convert_field_to_property(field)
 
         schema_dict = {
             "type": "object",

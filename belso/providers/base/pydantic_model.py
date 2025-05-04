@@ -1,6 +1,7 @@
 # belso.providers.base.pydantic_model
 
-from typing import List, Optional, Tuple, Type, get_origin
+from typing import Dict, Any, Callable, List, Optional, Tuple, Type, get_origin
+
 from pydantic import BaseModel, Field as PydanticField, create_model
 
 from belso.utils import get_logger
@@ -38,12 +39,16 @@ def _convert_field_to_pydantic(field: BaseField) -> Tuple[Type, PydanticField]:
     else:
         return field_type, PydanticField(..., **metadata)
 
-def _convert_nested_field(field: NestedField, to_func) -> Tuple[Type, PydanticField]:
+def _convert_nested_field(
+        field: NestedField,
+        to_func: Callable[[Type[Schema]], Dict[str, Any]]
+    ) -> Tuple[Type, PydanticField]:
     """
     Converts a NestedField to a Pydantic field definition.\n
     ---
     ### Args
-    - `field` (`NestedField`): the nested field to convert.\n
+    - `field` (`NestedField`): the nested field to convert.
+    - `to_func` (`Callable[[Type[Schema]], Dict[str, Any]]`): the function to convert nested schemas.\n
     ---
     ### Returns
     - `Tuple[Type, PydanticField]`: the nested field type and PydanticField instance.
@@ -59,12 +64,16 @@ def _convert_nested_field(field: NestedField, to_func) -> Tuple[Type, PydanticFi
         )
     )
 
-def _convert_array_field(field: ArrayField, to_func) -> Tuple[Type, PydanticField]:
+def _convert_array_field(
+        field: ArrayField,
+        to_func: Callable[[Type[Schema]], Dict[str, Any]]
+    ) -> Tuple[Type, PydanticField]:
     """
     Converts an ArrayField to a Pydantic field definition.\n
     ---
     ### Args
-    - `field` (`ArrayField`): the array field to convert.\n
+    - `field` (`ArrayField`): the array field to convert.
+    - `to_func` (`Callable[[Type[Schema]], Dict[str, Any]]`): the function to convert nested schemas.
     ---
     ### Returns
     - `Tuple[Type, PydanticField]`: the array field type and PydanticField instance.

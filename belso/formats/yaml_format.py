@@ -209,6 +209,6 @@ def from_yaml(
         schema_cls.__name__ = _add_prefix(schema_cls.__name__, schema_name)
         return schema_cls
 
-    except Exception as e:                                                   # pragma: no cover
+    except Exception as e:
         _logger.error(f"Error loading schema from YAML: {e}", exc_info=True)
         return create_fallback_schema()
