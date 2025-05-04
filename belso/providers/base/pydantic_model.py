@@ -1,6 +1,6 @@
 # belso.providers.base.pydantic_model
 
-from future import __annotations__
+from __future__ import annotations
 
 from typing import Dict, Any, Callable, List, Optional, Tuple, Type, get_origin
 
