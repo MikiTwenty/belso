@@ -124,15 +124,25 @@ def to_xml(
         _indent(root)
         xml_text = ET.tostring(root, encoding="unicode")
         if file_path:
-            _logger.debug(f"Saving XML schema to \"{file_path}\"...")
+            _logger.debug(f"Saving XML schema to file \"{file_path}\"...")
             Path(file_path).write_text(xml_text, encoding="utf-8")
-            _logger.info(f"XML schema saved to \"{file_path}\".")
+            _logger.info(f"XML schema saved to file \"{file_path}\".")
+            return str(file_path)
         return xml_text
     except Exception as e:  # pragma: no cover
         _logger.error(f"Error converting schema to XML: {e}", exc_info=True)
         return "<schema><fields></fields></schema>"
 
 def _from_xml(elem: ET.Element) -> Type[Schema]:
+    """
+    Deserialise XML into a belso Schema.\n
+    ---
+    ### Args
+    - `elem` (`ET.Element`): root element of the XML representation of a schema.\n
+    ---
+    ### Returns
+    - `Type[Schema]`: schema deserialised from `elem`.
+    """
     class DynamicSchema(Schema):
         fields: list = []
 
@@ -207,7 +217,12 @@ def from_xml(
             _logger.debug(f"Loading XML schema from \"{xml_input}\"...")
             xml_text = Path(xml_input).read_text(encoding="utf-8") if Path(xml_input).exists() else xml_input
             root = ET.fromstring(xml_text)
-            _logger.info(f"XML schema loaded from \"{xml_input}\".")
+            if isinstance(xml_input, Path) or (isinstance(xml_input, str) and Path(xml_input).exists()):
+                _logger.info(f"XML schema loaded from file: \"{xml_input}\".")
+            elif isinstance(xml_input, str):
+                _logger.debug("XML schema loaded from string input.")
+            else:
+                _logger.debug("XML schema loaded from ElementTree memory object.")
         else:
             root = xml_input
             _logger.debug(f"XML schema loaded from memory.")

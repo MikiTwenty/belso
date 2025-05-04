@@ -83,11 +83,11 @@ class SchemaProcessor:
 
             # Convert to our internal format if needed
             if from_format != FORMATS.BELSO:
-                _logger.debug(f"Converting from '{from_format}' to internal belso format...")
+                _logger.debug(f"Converting from '{from_format}' to internal 'belso' format...")
                 belso_schema = SchemaProcessor.standardize(schema, from_format)
-                _logger.info("Successfully converted to belso format.")
+                _logger.debug(f"Successfully converted from '{from_format}' to 'belso' format.")
             else:
-                _logger.debug("Schema is already in belso format, no conversion needed.")
+                _logger.debug("Schema is already in 'belso' format, no conversion needed.")
                 belso_schema = schema
 
             # Translate to target format
@@ -130,7 +130,7 @@ class SchemaProcessor:
             from_format: Optional[str] = None
         ) -> Type[Schema]:
         """
-        Convert a schema from a specific format to our internal belso format.
+        Convert a schema from a specific format to our internal 'belso' format.
         If from_format is not specified, it will be auto-detected.\n
         ---
         ### Args
@@ -150,10 +150,10 @@ class SchemaProcessor:
                 _logger.debug(f"Using provided source format: '{from_format}'.")
 
             if from_format == FORMATS.BELSO:
-                _logger.debug("Schema is already in belso format, no conversion needed.")
+                _logger.debug("Schema is already in 'belso' format, no conversion needed.")
                 return schema
 
-            _logger.debug(f"Standardizing schema from '{from_format}' format to belso format...")
+            _logger.debug(f"Standardizing schema from '{from_format}' format to 'belso' format...")
 
             if from_format == FORMATS.GOOGLE:
                 _logger.debug("Converting from Google format...")
@@ -189,7 +189,7 @@ class SchemaProcessor:
                 _logger.error(f"Unsupported source format: '{from_format}'")
                 raise ValueError(f"Conversion from {from_format} format is not supported.")
 
-            _logger.info(f"Successfully standardized schema to belso format.")
+            _logger.info(f"Successfully standardized schema to 'belso' format.")
             return result
 
         except Exception as e:
@@ -211,7 +211,7 @@ class SchemaProcessor:
         """
         from_format = detect_schema_format(schema)
         if from_format != FORMATS.BELSO:
-            _logger.debug(f"Converting schema from '{from_format}' format to belso format...")
+            _logger.debug(f"Converting schema from '{from_format}' format to 'belso' format...")
             schema = SchemaProcessor.standardize(schema, from_format)
         if path.endswith(".json"):
             to_json(schema, path)
@@ -388,7 +388,7 @@ class SchemaProcessor:
             _logger.debug(f"Auto-detected schema format: '{format_type}'.")
 
         if format_type != FORMATS.BELSO:
-            _logger.debug(f"Converting from '{format_type}' to belso format for printing...")
+            _logger.debug(f"Converting from '{format_type}' to 'belso' format for printing...")
             belso_schema = SchemaProcessor.standardize(schema, format_type)
         else:
             belso_schema = schema

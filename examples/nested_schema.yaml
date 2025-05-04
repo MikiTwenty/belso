@@ -1,21 +1,21 @@
-name: Schema
+name: SchemaSchema
 fields:
 - name: Bedroom
   type: dict
   description: The bedroom in the house
   required: true
   schema:
-    name: Bedroom
+    name: BedroomSchema
     fields:
     - name: Light
       type: dict
       description: The light in the room
       required: true
       schema:
-        name: Light
+        name: LightSchema
         fields:
         - name: brightness
-          type: str
+          type: int
           description: Brightness of the light, from 0 to 100 - 0 if light is off
           required: true
         - name: temperature
@@ -23,7 +23,7 @@ fields:
           description: The temperature of the light, from warm to cold
           required: true
         - name: is_on
-          type: str
+          type: bool
           description: Whether the light should be on or off
           required: true
 - name: Bathroom
@@ -31,17 +31,17 @@ fields:
   description: The bathroom in the house
   required: true
   schema:
-    name: Bathroom
+    name: BathroomSchema
     fields:
     - name: Light
       type: dict
       description: The light in the room
       required: true
       schema:
-        name: Light
+        name: LightSchema
         fields:
         - name: brightness
-          type: str
+          type: int
           description: Brightness of the light, from 0 to 100 - 0 if light is off
           required: true
         - name: temperature
@@ -49,7 +49,7 @@ fields:
           description: The temperature of the light, from warm to cold
           required: true
         - name: is_on
-          type: str
+          type: bool
           description: Whether the light should be on or off
           required: true
 - name: Kitchen
@@ -57,17 +57,17 @@ fields:
   description: The kitchen in the house
   required: true
   schema:
-    name: Kitchen
+    name: KitchenSchema
     fields:
     - name: Light
       type: dict
       description: The light in the room
       required: true
       schema:
-        name: Light
+        name: LightSchema
         fields:
         - name: brightness
-          type: str
+          type: int
           description: Brightness of the light, from 0 to 100 - 0 if light is off
           required: true
         - name: temperature
@@ -75,6 +75,6 @@ fields:
           description: The temperature of the light, from warm to cold
           required: true
         - name: is_on
-          type: str
+          type: bool
           description: Whether the light should be on or off
           required: true

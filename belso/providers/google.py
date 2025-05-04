@@ -1,6 +1,6 @@
 # belso.providers.google
 
-from typing import Any, Type
+from typing import Type
 
 from google.ai.generativelanguage_v1beta.types import content
 

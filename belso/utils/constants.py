@@ -57,7 +57,7 @@ _JSON_TYPE_MAP = _XML_TYPE_MAP = _YAML_TYPE_MAP = {
     "any": Any
 }
 
-_OLLAMA_FIELD_MAP = _MISTRAL_FIELD_MAP = _LANGCHAIN_FIELD_MAP = _HUGGINGFACE_FIELD_MAP = _ANTHROPIC_FIELD_MAP =   {
+_JSON_FIELD_MAP =   {
     "default": ("default", None),
     "enum": ("enum", None),
     "regex": ("pattern", None),
@@ -70,7 +70,7 @@ _OLLAMA_FIELD_MAP = _MISTRAL_FIELD_MAP = _LANGCHAIN_FIELD_MAP = _HUGGINGFACE_FIE
     "properties_range": [("minProperties", lambda r: r[0]), ("maxProperties", lambda r: r[1])]
 }
 
-_OPENAI_FIELD_MAP = {
+_PYDANTIC_FIELD_MAP = {
     "enum": ("enum", None),
     "regex": ("pattern", None),
     "multiple_of": ("multipleOf", None),

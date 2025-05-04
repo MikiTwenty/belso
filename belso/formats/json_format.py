@@ -29,6 +29,15 @@ def _add_prefix(
     return base if not prefix or base.startswith(prefix) else f"{prefix}{base}"
 
 def _field_dict(field: BaseField) -> Dict[str, Any]:
+    """
+    Convert `field` to a dict.\n
+    ---
+    ### Args
+    - `field` (`BaseField`): field to convert.\n
+    ---
+    ### Returns
+    - `Dict[str, Any]`: dict representation of `field`.
+    """
     d: Dict[str, Any] = {
         "name": field.name,
         "type": field.type_.__name__ if hasattr(field.type_, "__name__") else str(field.type_),
@@ -101,10 +110,10 @@ def to_json(
     try:
         data = _to_json(schema, root_prefix=schema_name)
         if file_path:
-            _logger.debug(f"Saving JSON schema to \"{file_path}\"...")
+            _logger.debug(f"Saving JSON schema to file \"{file_path}\"...")
             with open(file_path, "w", encoding="utf-8") as fp:
                 json.dump(data, fp, indent=2)
-            _logger.info(f"JSON schema saved to \"{file_path}\".")
+            _logger.info(f"JSON schema saved to file \"{file_path}\".")
         return data
     except Exception as exc:  # pragma: no cover
         _logger.error("Error converting schema to JSON: %s", exc, exc_info=True)

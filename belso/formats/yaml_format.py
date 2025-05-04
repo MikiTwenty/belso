@@ -113,9 +113,9 @@ def to_yaml(
         data = _to_yaml(schema, root_prefix=schema_name)
         yaml_text = yaml.dump(data, sort_keys=False, allow_unicode=True)
         if file_path:
-            _logger.debug(f"Saving YAML schema to \"{file_path}\"...")
+            _logger.debug(f"Saving YAML schema to file \"{file_path}\"...")
             Path(file_path).write_text(yaml_text, encoding="utf-8")
-            _logger.info(f"YAML schema saved to \"{file_path}\".")
+            _logger.info(f"YAML schema saved to file \"{file_path}\".")
         return yaml_text
     except Exception as e: # pragma: no cover
         _logger.error(f"Error converting schema to YAML: {e}", exc_info=True)
@@ -192,14 +192,18 @@ def from_yaml(
     """
     try:
         _logger.debug(f"Loading YAML...")
-        if isinstance(yaml_input, (str, Path)):
-            _logger.debug(f"Loading YAML schema from \"{yaml_input}\"...")
-            text = Path(yaml_input).read_text(encoding="utf-8") if Path(yaml_input).exists() else yaml_input
+        if isinstance(yaml_input, Path) or (isinstance(yaml_input, str) and Path(yaml_input).exists()):
+            _logger.debug(f"Reading YAML from file: \"{yaml_input}\"...")
+            text = Path(yaml_input).read_text(encoding="utf-8")
             data = yaml.safe_load(text)
-            _logger.info(f"YAML schema loaded from \"{yaml_input}\".")
+            _logger.info(f"YAML schema loaded from file: \"{yaml_input}\".")
+        elif isinstance(yaml_input, str):
+            _logger.debug("Parsing YAML from raw string input.")
+            data = yaml.safe_load(yaml_input)
+            _logger.info("YAML schema loaded from string input.")
         else:
             data = yaml_input
-            _logger.info(f"YAML schema loaded from memory.")
+            _logger.info("YAML schema loaded from memory.")
 
         schema_cls = _from_yaml(data)
         schema_cls.__name__ = _add_prefix(schema_cls.__name__, schema_name)
