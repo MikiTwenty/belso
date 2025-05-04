@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to belso’s documentation! &mdash; belso 0.0.2 documentation</title>
+  <title>Welcome to Belso’s documentation! &mdash; belso unknown documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/custom.css?v=f471ba65" />
@@ -14,7 +14,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=e3a6060d"></script>
+      <script src="_static/documentation_options.js?v=3f1b9271"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -50,9 +50,10 @@
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_api/index.html">User</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev_api/index.html">Developer</a></li>
 </ul>
 
         </div>
@@ -69,7 +70,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Welcome to belso’s documentation!</li>
+      <li class="breadcrumb-item active">Welcome to Belso’s documentation!</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -80,42 +81,44 @@
            <div itemprop="articleBody">
              
   <section id="welcome-to-belso-s-documentation">
-<h1>Welcome to belso’s documentation!<a class="headerlink" href="#welcome-to-belso-s-documentation" title="Link to this heading"></a></h1>
-<p><strong>belso</strong> (Better LLMs Structured Outputs) is a Python library designed to simplify working with structured outputs from various LLM providers.</p>
+<h1>Welcome to Belso’s documentation!<a class="headerlink" href="#welcome-to-belso-s-documentation" title="Link to this heading"></a></h1>
+<p><strong>Belso</strong> (Better LLMs Structured Outputs) is a Python library for managing structured schema definitions across multiple LLM providers.
+It simplifies the <strong>definition</strong>, <strong>translation</strong>, <strong>validation</strong>, and <strong>visualization</strong> of deeply nested data models used in tools like OpenAI function calling, Google PAI, Anthropic tools, LangChain, and others.</p>
 <section id="features">
 <h2>Features<a class="headerlink" href="#features" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>Convert between different LLM provider schema formats</p></li>
-<li><p>Support for nested schemas</p></li>
-<li><p>Support for multiple providers including OpenAI, Google, Anthropic, Mistral, and more</p></li>
+<li><p>✅ Define schemas using Python classes with a unified interface</p></li>
+<li><p>🔁 Bi-directional conversion between provider formats (OpenAI, Google, Ollama, Anthropic, Mistral, HuggingFace, LangChain)</p></li>
+<li><p>📦 Support for nested fields and array types</p></li>
+<li><p>📋 Validation and visualization tools for human-readable schema inspection</p></li>
+<li><p>⚡ Minimal dependencies and fast runtime</p></li>
 </ul>
 </section>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<p>Install <cite>belso</cite> from PyPI:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>belso
 </pre></div>
 </div>
 </section>
 <section id="quick-start">
 <h2>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading"></a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">belso.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">PROVIDERS</span>
+<p>This minimal example shows how to define a schema and convert it to an OpenAI-compatible format:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">belso.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">FORMATS</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">belso</span><span class="w"> </span><span class="kn">import</span> <span class="n">Schema</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">SchemaProcessor</span>
 
-<span class="c1"># Define your schema</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">UserSchema</span><span class="p">(</span><span class="n">Schema</span><span class="p">):</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;UserSchema&quot;</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">Field</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;User&#39;s name&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-        <span class="n">Field</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;User&#39;s age&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">Field</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;User&#39;s name&quot;</span><span class="p">),</span>
+        <span class="n">Field</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;User&#39;s age&quot;</span><span class="p">)</span>
     <span class="p">]</span>
 
-<span class="c1"># Translate to OpenAI format</span>
-<span class="n">openai_schema</span> <span class="o">=</span> <span class="n">SchemaProcessor</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">UserSchema</span><span class="p">,</span> <span class="n">PROVIDERS</span><span class="o">.</span><span class="n">OPENAI</span><span class="p">)</span>
+<span class="n">openai_schema</span> <span class="o">=</span> <span class="n">SchemaProcessor</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">UserSchema</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">FORMATS</span><span class="o">.</span><span class="n">OPENAI</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
-<section id="contents">
-<h2>Contents<a class="headerlink" href="#contents" title="Link to this heading"></a></h2>
+<section id="documentation-structure">
+<h2>Documentation Structure<a class="headerlink" href="#documentation-structure" title="Link to this heading"></a></h2>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul>
@@ -137,44 +140,43 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id1">[0.0.2] - 2025-04-25</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id2">[0.0.1] - 2025-04-22</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id1">[0.0.3] - 2025-05-04</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id2">[0.0.2] - 2025-04-25</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id6">[0.0.1] - 2025-04-22</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </section>
-</section>
-<section id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading"></a></h1>
-<ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
-<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
-</ul>
-<section id="api-documentation">
-<h2>API Documentation<a class="headerlink" href="#api-documentation" title="Link to this heading"></a></h2>
+<section id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h2>
 <div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/core.html">Core</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/providers.html">Providers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/formats.html">Formats</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_api/index.html">User</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user_api/core.html">Core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_api/utils.html">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dev_api/index.html">Developer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dev_api/core.html">Core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_api/providers.html">Providers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_api/serialization.html">Serialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_api/tools.html">Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_api/utils.html">Utilities</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </section>
-</section>
-<section id="id1">
-<h1>Indices and tables<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<section id="search-index">
+<h2>Search &amp; Index<a class="headerlink" href="#search-index" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
 <li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
+</section>
 </section>
 
 

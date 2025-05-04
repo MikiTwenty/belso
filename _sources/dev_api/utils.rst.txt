@@ -4,10 +4,10 @@ Utilities
 Constants
 ---------
 
-PROVIDERS
-~~~~~~~~~
+FORMATS
+~~~~~~~
 
-.. autoclass:: belso.utils.constants.PROVIDERS
+.. autoclass:: belso.utils.formats.FORMATS
    :members:
    :show-inheritance:
    :undoc-members:
@@ -16,6 +16,7 @@ Logging
 -------
 
 .. autofunction:: belso.utils.logging.get_logger
+.. autofunction:: belso.utils.logging.configure_logger
 
 Detecting
 ---------
@@ -23,7 +24,7 @@ Detecting
 .. autofunction:: belso.utils.detecting.detect_schema_format
 
 Helpers
---------------
+-------
 
 Mapping
 ~~~~~~~

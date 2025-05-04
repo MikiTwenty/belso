@@ -1,0 +1,214 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>belso.tools.displaying &mdash; belso unknown documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=f471ba65" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=3f1b9271"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            belso
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_api/index.html">User</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev_api/index.html">Developer</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">belso</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">belso.tools.displaying</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for belso.tools.displaying</h1><div class="highlight"><pre>
+<span></span><span class="c1"># belso.tools.displaying</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Dict</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich</span><span class="w"> </span><span class="kn">import</span> <span class="n">box</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.table</span><span class="w"> </span><span class="kn">import</span> <span class="n">Table</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.console</span><span class="w"> </span><span class="kn">import</span> <span class="n">Console</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">belso.core.schema</span><span class="w"> </span><span class="kn">import</span> <span class="n">Schema</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">belso.core.field</span><span class="w"> </span><span class="kn">import</span> <span class="n">NestedField</span><span class="p">,</span> <span class="n">ArrayField</span>
+
+<span class="n">_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">_console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_display_schema</span><span class="p">(</span>
+        <span class="n">schema_cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">Schema</span><span class="p">],</span>
+        <span class="n">parent_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">seen_counter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">visited_ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Recursive function to display a schema with nested fields.\n</span>
+<span class="sd">    ---</span>
+<span class="sd">    ### Args</span>
+<span class="sd">    - `schema_cls` (Type[Schema]): The schema class to display.</span>
+<span class="sd">    - `parent_path` (str): The parent path of the schema. Defaults to &quot;&quot;.</span>
+<span class="sd">    - `seen_counter` (Optional[Dict[str, int]], optional): Counter for duplicate contexts. Defaults to None.</span>
+<span class="sd">    - `visited_ids` (Optional[Dict[int, str]], optional): Dictionary of visited schema IDs. Defaults to None.\n</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">seen_counter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">seen_counter</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">visited_ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">visited_ids</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">schema_id</span> <span class="o">=</span> <span class="nb">id</span><span class="p">(</span><span class="n">schema_cls</span><span class="p">)</span>
+
+    <span class="c1"># Usa il path intero per identificare contesti duplicati</span>
+    <span class="n">path_key</span> <span class="o">=</span> <span class="n">parent_path</span> <span class="ow">or</span> <span class="n">schema_cls</span><span class="o">.</span><span class="vm">__name__</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="n">seen_counter</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">path_key</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">seen_counter</span><span class="p">[</span><span class="n">path_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">count</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="c1"># Aggiungi l&#39;indice solo se il path è ricorrente</span>
+    <span class="n">display_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path_key</span><span class="si">}</span><span class="s2">[</span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2">]&quot;</span> <span class="k">if</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">path_key</span>
+
+    <span class="c1"># Salta stampa duplicata se già visitato con stesso path</span>
+    <span class="k">if</span> <span class="n">visited_ids</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">schema_id</span><span class="p">)</span> <span class="o">==</span> <span class="n">path_key</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="n">visited_ids</span><span class="p">[</span><span class="n">schema_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">path_key</span>
+
+    <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[bold blue]</span><span class="si">{</span><span class="n">display_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">box</span><span class="o">=</span><span class="n">box</span><span class="o">.</span><span class="n">ROUNDED</span><span class="p">,</span>
+        <span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">show_lines</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Field&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;cyan&quot;</span><span class="p">,</span> <span class="n">no_wrap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Type&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;magenta&quot;</span><span class="p">)</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Required&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Default&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;yellow&quot;</span><span class="p">)</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Description&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">schema_cls</span><span class="o">.</span><span class="n">fields</span><span class="p">:</span>
+        <span class="n">required</span> <span class="o">=</span> <span class="s2">&quot;✅&quot;</span> <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">required</span> <span class="k">else</span> <span class="s2">&quot;❌&quot;</span>
+        <span class="n">default</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">default</span><span class="p">)</span> <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;-&quot;</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">description</span> <span class="ow">or</span> <span class="s2">&quot;-&quot;</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">NestedField</span><span class="p">):</span>
+            <span class="n">type_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;object (</span><span class="si">{</span><span class="n">field</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">ArrayField</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">items_type</span><span class="p">,</span> <span class="nb">type</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">items_type</span><span class="p">,</span> <span class="n">Schema</span><span class="p">):</span>
+            <span class="n">type_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;array[</span><span class="si">{</span><span class="n">field</span><span class="o">.</span><span class="n">items_type</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">]&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">type_name</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">type_</span><span class="o">.</span><span class="vm">__name__</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">type_</span><span class="p">,</span> <span class="s2">&quot;__name__&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">type_</span><span class="p">)</span>
+
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">type_name</span><span class="p">,</span> <span class="n">required</span><span class="p">,</span> <span class="n">default</span><span class="p">,</span> <span class="n">description</span><span class="p">)</span>
+
+    <span class="n">_console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+
+    <span class="c1"># Visita ricorsiva per Nested e ArrayField</span>
+    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">schema_cls</span><span class="o">.</span><span class="n">fields</span><span class="p">:</span>
+        <span class="n">field_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path_key</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">NestedField</span><span class="p">):</span>
+            <span class="n">_display_schema</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">schema</span><span class="p">,</span> <span class="n">field_path</span><span class="p">,</span> <span class="n">seen_counter</span><span class="p">,</span> <span class="n">visited_ids</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">ArrayField</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">items_type</span><span class="p">,</span> <span class="nb">type</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">items_type</span><span class="p">,</span> <span class="n">Schema</span><span class="p">):</span>
+            <span class="n">_display_schema</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">items_type</span><span class="p">,</span> <span class="n">field_path</span><span class="p">,</span> <span class="n">seen_counter</span><span class="p">,</span> <span class="n">visited_ids</span><span class="p">)</span>
+
+<div class="viewcode-block" id="display_schema">
+<a class="viewcode-back" href="../../../dev_api/tools.html#belso.tools.displaying.display_schema">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">display_schema</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">Schema</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Display a schema with nested fields.\n</span>
+<span class="sd">    ---</span>
+<span class="sd">    ### Args</span>
+<span class="sd">    - `schema` (Type[Schema]): The schema to display.\n</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">_display_schema</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">seen_counter</span><span class="o">=</span><span class="p">{},</span> <span class="n">visited_ids</span><span class="o">=</span><span class="p">{})</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error printing schema: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Schema printing error details&quot;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">_console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[bold red]Error printing schema: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Michele Ventimiglia.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

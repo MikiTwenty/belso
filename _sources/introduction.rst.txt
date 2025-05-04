@@ -1,7 +1,7 @@
 Introduction
 ============
 
-**belso** (Better LLMs Structured Outputs) is a Python library designed to simplify working with structured outputs from Large Language Models (LLMs). It provides a unified interface for validating, translating, and processing structured data across multiple LLM providers.
+**Belso** (Better LLMs Structured Outputs) is a Python library designed to simplify working with structured outputs from Large Language Models (LLMs). It provides a unified interface for validating, translating, and processing structured data across multiple LLM providers.
 
 Key Features
 ------------
@@ -17,3 +17,6 @@ Key Features
   - LangChain
 
 - **Format Translation**: Convert between different schema formats
+- **Nested Schemas**: Easily define and validate deeply nested structures
+- **Export Formats**: JSON, YAML, XML support out of the box
+- **Simple API**: Developer-friendly and extensible

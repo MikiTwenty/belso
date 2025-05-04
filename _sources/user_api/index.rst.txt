@@ -1,5 +1,5 @@
-API Reference
-=============
+User
+====
 
 This section provides detailed API documentation for belso.
 
@@ -7,6 +7,4 @@ This section provides detailed API documentation for belso.
    :maxdepth: 3
 
    core
-   providers
-   formats
    utils

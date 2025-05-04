@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>API Reference &mdash; belso 0.0.2 documentation</title>
+  <title>Developer &mdash; belso unknown documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=f471ba65" />
@@ -14,14 +14,14 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=e3a6060d"></script>
+      <script src="../_static/documentation_options.js?v=3f1b9271"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Core" href="core.html" />
-    <link rel="prev" title="Changelog" href="../changelog.html" /> 
+    <link rel="prev" title="Utilities" href="../user_api/utils.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -51,12 +51,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="../user_api/index.html">User</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Developer</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="core.html">Core</a></li>
 <li class="toctree-l2"><a class="reference internal" href="providers.html">Providers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="formats.html">Formats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="serialization.html">Serialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools.html">Tools</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html">Utilities</a></li>
 </ul>
 </li>
@@ -76,9 +78,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">API Reference</li>
+      <li class="breadcrumb-item active">Developer</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/api/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/dev_api/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -86,8 +88,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="api-reference">
-<h1>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h1>
+  <section id="developer">
+<h1>Developer<a class="headerlink" href="#developer" title="Link to this heading"></a></h1>
 <p>This section provides detailed API documentation for belso.</p>
 <div class="toctree-wrapper compound">
 <ul>
@@ -112,66 +114,44 @@
 <li class="toctree-l3"><a class="reference internal" href="core.html#belso.core.field.Field"><code class="docutils literal notranslate"><span class="pre">Field</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#schemaprocessor">SchemaProcessor</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="providers.html">Providers</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="providers.html#openai">OpenAI</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="providers.html#belso.providers.to_openai"><code class="docutils literal notranslate"><span class="pre">to_openai()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="providers.html#belso.providers.from_openai"><code class="docutils literal notranslate"><span class="pre">from_openai()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="providers.html#openai">OpenAI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="providers.html#anthropic">Anthropic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="providers.html#google">Google</a></li>
+<li class="toctree-l2"><a class="reference internal" href="providers.html#mistral">Mistral</a></li>
+<li class="toctree-l2"><a class="reference internal" href="providers.html#ollama">Ollama</a></li>
+<li class="toctree-l2"><a class="reference internal" href="providers.html#huggingface">HuggingFace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="providers.html#langchain">LangChain</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="providers.html#anthropic">Anthropic</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="providers.html#belso.providers.to_anthropic"><code class="docutils literal notranslate"><span class="pre">to_anthropic()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="providers.html#belso.providers.from_anthropic"><code class="docutils literal notranslate"><span class="pre">from_anthropic()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="serialization.html">Serialization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="serialization.html#json">JSON</a></li>
+<li class="toctree-l2"><a class="reference internal" href="serialization.html#yaml">YAML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="serialization.html#xml">XML</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="providers.html#google">Google</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="providers.html#belso.providers.to_google"><code class="docutils literal notranslate"><span class="pre">to_google()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="providers.html#belso.providers.from_google"><code class="docutils literal notranslate"><span class="pre">from_google()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tools.html#display">Display</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tools.html#belso.tools.displaying.display_schema"><code class="docutils literal notranslate"><span class="pre">display_schema()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="providers.html#mistral">Mistral</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="providers.html#belso.providers.to_mistral"><code class="docutils literal notranslate"><span class="pre">to_mistral()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="providers.html#belso.providers.from_mistral"><code class="docutils literal notranslate"><span class="pre">from_mistral()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="providers.html#ollama">Ollama</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="providers.html#belso.providers.to_ollama"><code class="docutils literal notranslate"><span class="pre">to_ollama()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="providers.html#belso.providers.from_ollama"><code class="docutils literal notranslate"><span class="pre">from_ollama()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="providers.html#huggingface">HuggingFace</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="providers.html#belso.providers.to_huggingface"><code class="docutils literal notranslate"><span class="pre">to_huggingface()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="providers.html#belso.providers.from_huggingface"><code class="docutils literal notranslate"><span class="pre">from_huggingface()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="providers.html#langchain">LangChain</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="providers.html#belso.providers.to_langchain"><code class="docutils literal notranslate"><span class="pre">to_langchain()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="providers.html#belso.providers.from_langchain"><code class="docutils literal notranslate"><span class="pre">from_langchain()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="formats.html">Formats</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="formats.html#json">JSON</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="formats.html#belso.formats.json_format.schema_to_json"><code class="docutils literal notranslate"><span class="pre">schema_to_json()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="formats.html#belso.formats.json_format.json_to_schema"><code class="docutils literal notranslate"><span class="pre">json_to_schema()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="formats.html#xml">XML</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="formats.html#belso.formats.xml_format.schema_to_xml"><code class="docutils literal notranslate"><span class="pre">schema_to_xml()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="formats.html#belso.formats.xml_format.xml_to_schema"><code class="docutils literal notranslate"><span class="pre">xml_to_schema()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools.html#validation">Validation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tools.html#belso.tools.validating.validate_schema"><code class="docutils literal notranslate"><span class="pre">validate_schema()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="utils.html">Utilities</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="utils.html#constants">Constants</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="utils.html#providers">PROVIDERS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#formats">FORMATS</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html#logging">Logging</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="utils.html#belso.utils.logging.get_logger"><code class="docutils literal notranslate"><span class="pre">get_logger()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#belso.utils.logging.configure_logger"><code class="docutils literal notranslate"><span class="pre">configure_logger()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html#detecting">Detecting</a><ul>
@@ -194,7 +174,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../changelog.html" class="btn btn-neutral float-left" title="Changelog" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../user_api/utils.html" class="btn btn-neutral float-left" title="Utilities" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="core.html" class="btn btn-neutral float-right" title="Core" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

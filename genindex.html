@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; belso 0.0.2 documentation</title>
+  <title>Index &mdash; belso unknown documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/custom.css?v=f471ba65" />
@@ -13,7 +13,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=e3a6060d"></script>
+      <script src="_static/documentation_options.js?v=3f1b9271"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -48,9 +48,10 @@
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_api/index.html">User</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev_api/index.html">Developer</a></li>
 </ul>
 
         </div>
@@ -84,28 +85,37 @@
  | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
  | <a href="#H"><strong>H</strong></a>
+ | <a href="#I"><strong>I</strong></a>
  | <a href="#J"><strong>J</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
  | <a href="#O"><strong>O</strong></a>
  | <a href="#P"><strong>P</strong></a>
+ | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
+ | <a href="#V"><strong>V</strong></a>
  | <a href="#X"><strong>X</strong></a>
+ | <a href="#Y"><strong>Y</strong></a>
  
 </div>
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/utils.html#belso.utils.constants.PROVIDERS.ANTHROPIC">ANTHROPIC (belso.utils.constants.PROVIDERS attribute)</a>
+      <li><a href="user_api/utils.html#belso.utils.FORMATS.ANTHROPIC">ANTHROPIC (belso.utils.FORMATS attribute)</a>
+
+      <ul>
+        <li><a href="dev_api/utils.html#belso.utils.formats.FORMATS.ANTHROPIC">(belso.utils.formats.FORMATS attribute)</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/core.html#belso.core.field.ArrayField">ArrayField (class in belso.core.field)</a>
+      <li><a href="dev_api/core.html#belso.core.field.ArrayField">ArrayField (class in belso.core.field)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -113,13 +123,17 @@
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/core.html#belso.core.schema.BaseField">BaseField (class in belso.core.schema)</a>
+      <li><a href="dev_api/core.html#belso.core.schema.BaseField">BaseField (class in belso.core.schema)</a>
 </li>
+      <li><a href="user_api/utils.html#belso.utils.FORMATS.BELSO">BELSO (belso.utils.FORMATS attribute)</a>
+
+      <ul>
+        <li><a href="dev_api/utils.html#belso.utils.formats.FORMATS.BELSO">(belso.utils.formats.FORMATS attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/utils.html#belso.utils.constants.PROVIDERS.BELSO">BELSO (belso.utils.constants.PROVIDERS attribute)</a>
-</li>
-      <li><a href="api/utils.html#belso.utils.helpers.build_properties_dict">build_properties_dict() (in module belso.utils.helpers)</a>
+      <li><a href="dev_api/utils.html#belso.utils.helpers.build_properties_dict">build_properties_dict() (in module belso.utils.helpers)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -127,7 +141,15 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/utils.html#belso.utils.helpers.create_fallback_schema">create_fallback_schema() (in module belso.utils.helpers)</a>
+      <li><a href="user_api/utils.html#belso.utils.configure_logger">configure_logger() (in module belso.utils)</a>
+
+      <ul>
+        <li><a href="dev_api/utils.html#belso.utils.logging.configure_logger">(in module belso.utils.logging)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="dev_api/utils.html#belso.utils.helpers.create_fallback_schema">create_fallback_schema() (in module belso.utils.helpers)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -135,59 +157,137 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/utils.html#belso.utils.detecting.detect_schema_format">detect_schema_format() (in module belso.utils.detecting)</a>
+      <li><a href="dev_api/core.html#belso.core.field.ArrayField.default">default (belso.core.field.ArrayField attribute)</a>
+
+      <ul>
+        <li><a href="dev_api/core.html#belso.core.field.NestedField.default">(belso.core.field.NestedField attribute)</a>
 </li>
+        <li><a href="dev_api/core.html#belso.core.schema.BaseField.default">(belso.core.schema.BaseField attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="dev_api/core.html#belso.core.field.ArrayField.description">description (belso.core.field.ArrayField attribute)</a>
+
+      <ul>
+        <li><a href="dev_api/core.html#belso.core.field.NestedField.description">(belso.core.field.NestedField attribute)</a>
+</li>
+        <li><a href="dev_api/core.html#belso.core.schema.BaseField.description">(belso.core.schema.BaseField attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="dev_api/utils.html#belso.utils.detecting.detect_schema_format">detect_schema_format() (in module belso.utils.detecting)</a>
+</li>
+      <li><a href="dev_api/tools.html#belso.tools.displaying.display_schema">display_schema() (in module belso.tools.displaying)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="dev_api/core.html#belso.core.field.ArrayField.enum">enum (belso.core.field.ArrayField attribute)</a>
+
+      <ul>
+        <li><a href="dev_api/core.html#belso.core.field.NestedField.enum">(belso.core.field.NestedField attribute)</a>
+</li>
+        <li><a href="dev_api/core.html#belso.core.schema.BaseField.enum">(belso.core.schema.BaseField attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="dev_api/core.html#belso.core.field.ArrayField.exclusive_range">exclusive_range (belso.core.field.ArrayField attribute)</a>
+
+      <ul>
+        <li><a href="dev_api/core.html#belso.core.field.NestedField.exclusive_range">(belso.core.field.NestedField attribute)</a>
+</li>
+        <li><a href="dev_api/core.html#belso.core.schema.BaseField.exclusive_range">(belso.core.schema.BaseField attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/core.html#belso.core.field.Field">Field (class in belso.core.field)</a>
+      <li><a href="dev_api/core.html#belso.core.field.Field">Field (class in belso.core.field)</a>
 </li>
-      <li><a href="api/core.html#belso.core.schema.Schema.fields">fields (belso.core.schema.Schema attribute)</a>
+      <li><a href="dev_api/core.html#belso.core.schema.Schema.fields">fields (belso.core.schema.Schema attribute)</a>
 </li>
-      <li><a href="api/providers.html#belso.providers.from_anthropic">from_anthropic() (in module belso.providers)</a>
+      <li><a href="dev_api/core.html#belso.core.field.ArrayField.format_">format_ (belso.core.field.ArrayField attribute)</a>
+
+      <ul>
+        <li><a href="dev_api/core.html#belso.core.field.NestedField.format_">(belso.core.field.NestedField attribute)</a>
 </li>
-      <li><a href="api/providers.html#belso.providers.from_google">from_google() (in module belso.providers)</a>
+        <li><a href="dev_api/core.html#belso.core.schema.BaseField.format_">(belso.core.schema.BaseField attribute)</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/providers.html#belso.providers.from_huggingface">from_huggingface() (in module belso.providers)</a>
+      <li><a href="user_api/utils.html#belso.utils.FORMATS">FORMATS (class in belso.utils)</a>
+
+      <ul>
+        <li><a href="dev_api/utils.html#belso.utils.formats.FORMATS">(class in belso.utils.formats)</a>
 </li>
-      <li><a href="api/providers.html#belso.providers.from_langchain">from_langchain() (in module belso.providers)</a>
-</li>
-      <li><a href="api/providers.html#belso.providers.from_mistral">from_mistral() (in module belso.providers)</a>
-</li>
-      <li><a href="api/providers.html#belso.providers.from_ollama">from_ollama() (in module belso.providers)</a>
-</li>
-      <li><a href="api/providers.html#belso.providers.from_openai">from_openai() (in module belso.providers)</a>
-</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/utils.html#belso.utils.constants.PROVIDERS.get_all_providers">get_all_providers() (belso.utils.constants.PROVIDERS class method)</a>
+      <li><a href="user_api/utils.html#belso.utils.FORMATS.get_all_formats">get_all_formats() (belso.utils.FORMATS class method)</a>
+
+      <ul>
+        <li><a href="dev_api/utils.html#belso.utils.formats.FORMATS.get_all_formats">(belso.utils.formats.FORMATS class method)</a>
 </li>
-      <li><a href="api/core.html#belso.core.schema.Schema.get_field_by_name">get_field_by_name() (belso.core.schema.Schema class method)</a>
+      </ul></li>
+      <li><a href="dev_api/core.html#belso.core.schema.Schema.get_field_by_name">get_field_by_name() (belso.core.schema.Schema class method)</a>
 </li>
+      <li><a href="user_api/utils.html#belso.utils.get_logger">get_logger() (in module belso.utils)</a>
+
+      <ul>
+        <li><a href="dev_api/utils.html#belso.utils.logging.get_logger">(in module belso.utils.logging)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/utils.html#belso.utils.logging.get_logger">get_logger() (in module belso.utils.logging)</a>
+      <li><a href="dev_api/core.html#belso.core.schema.Schema.get_required_fields">get_required_fields() (belso.core.schema.Schema class method)</a>
 </li>
-      <li><a href="api/core.html#belso.core.schema.Schema.get_required_fields">get_required_fields() (belso.core.schema.Schema class method)</a>
+      <li><a href="user_api/utils.html#belso.utils.FORMATS.GOOGLE">GOOGLE (belso.utils.FORMATS attribute)</a>
+
+      <ul>
+        <li><a href="dev_api/utils.html#belso.utils.formats.FORMATS.GOOGLE">(belso.utils.formats.FORMATS attribute)</a>
 </li>
-      <li><a href="api/utils.html#belso.utils.constants.PROVIDERS.GOOGLE">GOOGLE (belso.utils.constants.PROVIDERS attribute)</a>
-</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="H">H</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/utils.html#belso.utils.constants.PROVIDERS.HUGGINGFACE">HUGGINGFACE (belso.utils.constants.PROVIDERS attribute)</a>
+      <li><a href="user_api/utils.html#belso.utils.FORMATS.HUGGINGFACE">HUGGINGFACE (belso.utils.FORMATS attribute)</a>
+
+      <ul>
+        <li><a href="dev_api/utils.html#belso.utils.formats.FORMATS.HUGGINGFACE">(belso.utils.formats.FORMATS attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="dev_api/core.html#belso.core.field.ArrayField.items_range">items_range (belso.core.field.ArrayField attribute)</a>
+
+      <ul>
+        <li><a href="dev_api/core.html#belso.core.field.NestedField.items_range">(belso.core.field.NestedField attribute)</a>
+</li>
+        <li><a href="dev_api/core.html#belso.core.schema.BaseField.items_range">(belso.core.schema.BaseField attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="dev_api/core.html#belso.core.field.ArrayField.items_type">items_type (belso.core.field.ArrayField attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -195,41 +295,77 @@
 <h2 id="J">J</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/utils.html#belso.utils.constants.PROVIDERS.JSON">JSON (belso.utils.constants.PROVIDERS attribute)</a>
+      <li><a href="user_api/utils.html#belso.utils.FORMATS.JSON">JSON (belso.utils.FORMATS attribute)</a>
+
+      <ul>
+        <li><a href="dev_api/utils.html#belso.utils.formats.FORMATS.JSON">(belso.utils.formats.FORMATS attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/formats.html#belso.formats.json_format.json_to_schema">json_to_schema() (in module belso.formats.json_format)</a>
-</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/utils.html#belso.utils.constants.PROVIDERS.LANGCHAIN">LANGCHAIN (belso.utils.constants.PROVIDERS attribute)</a>
+      <li><a href="user_api/utils.html#belso.utils.FORMATS.LANGCHAIN">LANGCHAIN (belso.utils.FORMATS attribute)</a>
+
+      <ul>
+        <li><a href="dev_api/utils.html#belso.utils.formats.FORMATS.LANGCHAIN">(belso.utils.formats.FORMATS attribute)</a>
 </li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="dev_api/core.html#belso.core.field.ArrayField.length_range">length_range (belso.core.field.ArrayField attribute)</a>
+
+      <ul>
+        <li><a href="dev_api/core.html#belso.core.field.NestedField.length_range">(belso.core.field.NestedField attribute)</a>
+</li>
+        <li><a href="dev_api/core.html#belso.core.schema.BaseField.length_range">(belso.core.schema.BaseField attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/utils.html#belso.utils.helpers.map_json_to_python_type">map_json_to_python_type() (in module belso.utils.helpers)</a>
+      <li><a href="dev_api/utils.html#belso.utils.helpers.map_json_to_python_type">map_json_to_python_type() (in module belso.utils.helpers)</a>
 </li>
+      <li><a href="dev_api/utils.html#belso.utils.helpers.map_python_to_json_type">map_python_to_json_type() (in module belso.utils.helpers)</a>
+</li>
+      <li><a href="user_api/utils.html#belso.utils.FORMATS.MISTRAL">MISTRAL (belso.utils.FORMATS attribute)</a>
+
+      <ul>
+        <li><a href="dev_api/utils.html#belso.utils.formats.FORMATS.MISTRAL">(belso.utils.formats.FORMATS attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/utils.html#belso.utils.helpers.map_python_to_json_type">map_python_to_json_type() (in module belso.utils.helpers)</a>
+      <li><a href="dev_api/core.html#belso.core.field.ArrayField.multiple_of">multiple_of (belso.core.field.ArrayField attribute)</a>
+
+      <ul>
+        <li><a href="dev_api/core.html#belso.core.field.NestedField.multiple_of">(belso.core.field.NestedField attribute)</a>
 </li>
-      <li><a href="api/utils.html#belso.utils.constants.PROVIDERS.MISTRAL">MISTRAL (belso.utils.constants.PROVIDERS attribute)</a>
+        <li><a href="dev_api/core.html#belso.core.schema.BaseField.multiple_of">(belso.core.schema.BaseField attribute)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/core.html#belso.core.field.NestedField">NestedField (class in belso.core.field)</a>
+      <li><a href="dev_api/core.html#belso.core.field.ArrayField.name">name (belso.core.field.ArrayField attribute)</a>
+
+      <ul>
+        <li><a href="dev_api/core.html#belso.core.field.NestedField.name">(belso.core.field.NestedField attribute)</a>
+</li>
+        <li><a href="dev_api/core.html#belso.core.schema.BaseField.name">(belso.core.schema.BaseField attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="dev_api/core.html#belso.core.field.NestedField">NestedField (class in belso.core.field)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -237,33 +373,77 @@
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/utils.html#belso.utils.constants.PROVIDERS.OLLAMA">OLLAMA (belso.utils.constants.PROVIDERS attribute)</a>
+      <li><a href="user_api/utils.html#belso.utils.FORMATS.OLLAMA">OLLAMA (belso.utils.FORMATS attribute)</a>
+
+      <ul>
+        <li><a href="dev_api/utils.html#belso.utils.formats.FORMATS.OLLAMA">(belso.utils.formats.FORMATS attribute)</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/utils.html#belso.utils.constants.PROVIDERS.OPENAI">OPENAI (belso.utils.constants.PROVIDERS attribute)</a>
+      <li><a href="user_api/utils.html#belso.utils.FORMATS.OPENAI">OPENAI (belso.utils.FORMATS attribute)</a>
+
+      <ul>
+        <li><a href="dev_api/utils.html#belso.utils.formats.FORMATS.OPENAI">(belso.utils.formats.FORMATS attribute)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/utils.html#belso.utils.constants.PROVIDERS">PROVIDERS (class in belso.utils.constants)</a>
+      <li><a href="dev_api/core.html#belso.core.field.ArrayField.properties_range">properties_range (belso.core.field.ArrayField attribute)</a>
+
+      <ul>
+        <li><a href="dev_api/core.html#belso.core.field.NestedField.properties_range">(belso.core.field.NestedField attribute)</a>
 </li>
+        <li><a href="dev_api/core.html#belso.core.schema.BaseField.properties_range">(belso.core.schema.BaseField attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="dev_api/core.html#belso.core.field.ArrayField.range_">range_ (belso.core.field.ArrayField attribute)</a>
+
+      <ul>
+        <li><a href="dev_api/core.html#belso.core.field.NestedField.range_">(belso.core.field.NestedField attribute)</a>
+</li>
+        <li><a href="dev_api/core.html#belso.core.schema.BaseField.range_">(belso.core.schema.BaseField attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="dev_api/core.html#belso.core.field.ArrayField.regex">regex (belso.core.field.ArrayField attribute)</a>
+
+      <ul>
+        <li><a href="dev_api/core.html#belso.core.field.NestedField.regex">(belso.core.field.NestedField attribute)</a>
+</li>
+        <li><a href="dev_api/core.html#belso.core.schema.BaseField.regex">(belso.core.schema.BaseField attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="dev_api/core.html#belso.core.field.ArrayField.required">required (belso.core.field.ArrayField attribute)</a>
+
+      <ul>
+        <li><a href="dev_api/core.html#belso.core.field.NestedField.required">(belso.core.field.NestedField attribute)</a>
+</li>
+        <li><a href="dev_api/core.html#belso.core.schema.BaseField.required">(belso.core.schema.BaseField attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/core.html#belso.core.schema.Schema">Schema (class in belso.core.schema)</a>
+      <li><a href="dev_api/core.html#belso.core.field.NestedField.schema">schema (belso.core.field.NestedField attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/formats.html#belso.formats.json_format.schema_to_json">schema_to_json() (in module belso.formats.json_format)</a>
-</li>
-      <li><a href="api/formats.html#belso.formats.xml_format.schema_to_xml">schema_to_xml() (in module belso.formats.xml_format)</a>
+      <li><a href="dev_api/core.html#belso.core.schema.Schema">Schema (class in belso.core.schema)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -271,21 +451,21 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/providers.html#belso.providers.to_anthropic">to_anthropic() (in module belso.providers)</a>
+      <li><a href="dev_api/core.html#belso.core.field.ArrayField.type_">type_ (belso.core.field.ArrayField attribute)</a>
+
+      <ul>
+        <li><a href="dev_api/core.html#belso.core.field.NestedField.type_">(belso.core.field.NestedField attribute)</a>
 </li>
-      <li><a href="api/providers.html#belso.providers.to_google">to_google() (in module belso.providers)</a>
+        <li><a href="dev_api/core.html#belso.core.schema.BaseField.type_">(belso.core.schema.BaseField attribute)</a>
 </li>
-      <li><a href="api/providers.html#belso.providers.to_huggingface">to_huggingface() (in module belso.providers)</a>
-</li>
+      </ul></li>
   </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/providers.html#belso.providers.to_langchain">to_langchain() (in module belso.providers)</a>
-</li>
-      <li><a href="api/providers.html#belso.providers.to_mistral">to_mistral() (in module belso.providers)</a>
-</li>
-      <li><a href="api/providers.html#belso.providers.to_ollama">to_ollama() (in module belso.providers)</a>
-</li>
-      <li><a href="api/providers.html#belso.providers.to_openai">to_openai() (in module belso.providers)</a>
+      <li><a href="dev_api/tools.html#belso.tools.validating.validate_schema">validate_schema() (in module belso.tools.validating)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -293,12 +473,24 @@
 <h2 id="X">X</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/utils.html#belso.utils.constants.PROVIDERS.XML">XML (belso.utils.constants.PROVIDERS attribute)</a>
+      <li><a href="user_api/utils.html#belso.utils.FORMATS.XML">XML (belso.utils.FORMATS attribute)</a>
+
+      <ul>
+        <li><a href="dev_api/utils.html#belso.utils.formats.FORMATS.XML">(belso.utils.formats.FORMATS attribute)</a>
 </li>
+      </ul></li>
   </ul></td>
+</tr></table>
+
+<h2 id="Y">Y</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/formats.html#belso.formats.xml_format.xml_to_schema">xml_to_schema() (in module belso.formats.xml_format)</a>
+      <li><a href="user_api/utils.html#belso.utils.FORMATS.YAML">YAML (belso.utils.FORMATS attribute)</a>
+
+      <ul>
+        <li><a href="dev_api/utils.html#belso.utils.formats.FORMATS.YAML">(belso.utils.formats.FORMATS attribute)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 

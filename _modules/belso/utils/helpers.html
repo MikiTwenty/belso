@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>belso.utils.helpers &mdash; belso 0.0.2 documentation</title>
+  <title>belso.utils.helpers &mdash; belso unknown documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=f471ba65" />
@@ -13,7 +13,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=e3a6060d"></script>
+      <script src="../../../_static/documentation_options.js?v=3f1b9271"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -48,9 +48,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_api/index.html">User</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev_api/index.html">Developer</a></li>
 </ul>
 
         </div>
@@ -104,7 +105,7 @@
 <span class="p">}</span>
 
 <div class="viewcode-block" id="create_fallback_schema">
-<a class="viewcode-back" href="../../../api/utils.html#belso.utils.helpers.create_fallback_schema">[docs]</a>
+<a class="viewcode-back" href="../../../dev_api/utils.html#belso.utils.helpers.create_fallback_schema">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">create_fallback_schema</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">[</span><span class="n">Schema</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create a standard fallback schema when conversion fails.\n</span>
@@ -126,7 +127,7 @@
 
 
 <div class="viewcode-block" id="map_python_to_json_type">
-<a class="viewcode-back" href="../../../api/utils.html#belso.utils.helpers.map_python_to_json_type">[docs]</a>
+<a class="viewcode-back" href="../../../dev_api/utils.html#belso.utils.helpers.map_python_to_json_type">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">map_python_to_json_type</span><span class="p">(</span><span class="n">field_type</span><span class="p">:</span> <span class="n">Type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Map Python type to JSON Schema type.\n</span>
@@ -141,7 +142,7 @@
 
 
 <div class="viewcode-block" id="map_json_to_python_type">
-<a class="viewcode-back" href="../../../api/utils.html#belso.utils.helpers.map_json_to_python_type">[docs]</a>
+<a class="viewcode-back" href="../../../dev_api/utils.html#belso.utils.helpers.map_json_to_python_type">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">map_json_to_python_type</span><span class="p">(</span><span class="n">json_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Map JSON Schema type to Python type.\n</span>
@@ -156,7 +157,7 @@
 
 
 <div class="viewcode-block" id="build_properties_dict">
-<a class="viewcode-back" href="../../../api/utils.html#belso.utils.helpers.build_properties_dict">[docs]</a>
+<a class="viewcode-back" href="../../../dev_api/utils.html#belso.utils.helpers.build_properties_dict">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">build_properties_dict</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">Schema</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Build a properties dictionary from a schema for JSON Schema formats.\n</span>

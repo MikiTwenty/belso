@@ -1,0 +1,473 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Core &mdash; belso unknown documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=f471ba65" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=3f1b9271"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Providers" href="providers.html" />
+    <link rel="prev" title="Developer" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            belso
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user_api/index.html">User</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Core</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#schema">Schema</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#belso.core.schema.Schema"><code class="docutils literal notranslate"><span class="pre">Schema</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#base-field">Base Field</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#belso.core.schema.BaseField"><code class="docutils literal notranslate"><span class="pre">BaseField</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#array-field">Array Field</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#belso.core.field.ArrayField"><code class="docutils literal notranslate"><span class="pre">ArrayField</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#nested-field">Nested Field</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#belso.core.field.NestedField"><code class="docutils literal notranslate"><span class="pre">NestedField</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#field">Field</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#belso.core.field.Field"><code class="docutils literal notranslate"><span class="pre">Field</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#schemaprocessor">SchemaProcessor</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="providers.html">Providers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="serialization.html">Serialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools.html">Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">Utilities</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">belso</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Developer</a></li>
+      <li class="breadcrumb-item active">Core</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/dev_api/core.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="core">
+<h1>Core<a class="headerlink" href="#core" title="Link to this heading"></a></h1>
+<section id="schema">
+<h2>Schema<a class="headerlink" href="#schema" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="belso.core.schema.Schema">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">belso.core.schema.</span></span><span class="sig-name descname"><span class="pre">Schema</span></span><a class="reference internal" href="../_modules/belso/core/schema.html#Schema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.core.schema.Schema" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A base class for defining schemas.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.schema.Schema.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">ClassVar</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code><span class="pre">[</span><a class="reference internal" href="#belso.core.schema.BaseField" title="belso.core.schema.BaseField"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseField</span></code></a><span class="pre">]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#belso.core.schema.Schema.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="belso.core.schema.Schema.get_field_by_name">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_field_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/core/schema.html#Schema.get_field_by_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.core.schema.Schema.get_field_by_name" title="Link to this definition"></a></dt>
+<dd><p>Get a field by its name.</p>
+<p class="rubric">Args</p>
+<ul class="simple">
+<li><p><strong>name</strong> (<code class="customtype docutils literal notranslate"><span class="pre">str</span></code>): the name of the field.</p></li>
+</ul>
+<p class="rubric">Returns</p>
+<ul class="simple">
+<li><p><code class="customtype docutils literal notranslate"><span class="pre">Optional[belso.core.BaseField]</span></code>: the field with the given name, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if not found.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="belso.core.schema.Schema.get_required_fields">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_required_fields</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/core/schema.html#Schema.get_required_fields"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.core.schema.Schema.get_required_fields" title="Link to this definition"></a></dt>
+<dd><p>Get the names of all required fields in the schema.</p>
+<p class="rubric">Returns</p>
+<ul class="simple">
+<li><p><code class="customtype docutils literal notranslate"><span class="pre">List[str]</span></code>: a list of required field names.</p></li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="base-field">
+<h2>Base Field<a class="headerlink" href="#base-field" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="belso.core.schema.BaseField">
+<em class="property"><span class="k"><span class="pre">final</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">belso.core.schema.</span></span><span class="sig-name descname"><span class="pre">BaseField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclusive_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">items_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">properties_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiple_of</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/core/schema.html#BaseField"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.core.schema.BaseField" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A base class for defining fields in a schema.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.schema.BaseField.default">
+<span class="sig-name descname"><span class="pre">default</span></span><a class="headerlink" href="#belso.core.schema.BaseField.default" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.schema.BaseField.description">
+<span class="sig-name descname"><span class="pre">description</span></span><a class="headerlink" href="#belso.core.schema.BaseField.description" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.schema.BaseField.enum">
+<span class="sig-name descname"><span class="pre">enum</span></span><a class="headerlink" href="#belso.core.schema.BaseField.enum" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.schema.BaseField.exclusive_range">
+<span class="sig-name descname"><span class="pre">exclusive_range</span></span><a class="headerlink" href="#belso.core.schema.BaseField.exclusive_range" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.schema.BaseField.format_">
+<span class="sig-name descname"><span class="pre">format_</span></span><a class="headerlink" href="#belso.core.schema.BaseField.format_" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.schema.BaseField.items_range">
+<span class="sig-name descname"><span class="pre">items_range</span></span><a class="headerlink" href="#belso.core.schema.BaseField.items_range" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.schema.BaseField.length_range">
+<span class="sig-name descname"><span class="pre">length_range</span></span><a class="headerlink" href="#belso.core.schema.BaseField.length_range" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.schema.BaseField.multiple_of">
+<span class="sig-name descname"><span class="pre">multiple_of</span></span><a class="headerlink" href="#belso.core.schema.BaseField.multiple_of" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.schema.BaseField.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#belso.core.schema.BaseField.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.schema.BaseField.properties_range">
+<span class="sig-name descname"><span class="pre">properties_range</span></span><a class="headerlink" href="#belso.core.schema.BaseField.properties_range" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.schema.BaseField.range_">
+<span class="sig-name descname"><span class="pre">range_</span></span><a class="headerlink" href="#belso.core.schema.BaseField.range_" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.schema.BaseField.regex">
+<span class="sig-name descname"><span class="pre">regex</span></span><a class="headerlink" href="#belso.core.schema.BaseField.regex" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.schema.BaseField.required">
+<span class="sig-name descname"><span class="pre">required</span></span><a class="headerlink" href="#belso.core.schema.BaseField.required" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.schema.BaseField.type_">
+<span class="sig-name descname"><span class="pre">type_</span></span><a class="headerlink" href="#belso.core.schema.BaseField.type_" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="array-field">
+<h2>Array Field<a class="headerlink" href="#array-field" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="belso.core.field.ArrayField">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">belso.core.field.</span></span><span class="sig-name descname"><span class="pre">ArrayField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">items_type=&lt;class</span> <span class="pre">'str'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description=''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enum=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range_=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclusive_range=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length_range=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">items_range=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">properties_range=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiple_of=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format_=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/core/field.html#ArrayField"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.core.field.ArrayField" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#belso.core.schema.BaseField" title="belso.core.schema.BaseField"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseField</span></code></a></p>
+<p>BaseField class for arrays of items.
+Supports all advanced validation parameters passed via BaseField.</p>
+<ul class="simple">
+<li><p>OpenAI</p></li>
+<li><p>Google</p></li>
+<li><p>Ollama</p></li>
+<li><p>Anthropic</p></li>
+<li><p>Mistral</p></li>
+<li><p>LangChain</p></li>
+<li><p>HuggingFace</p></li>
+</ul>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.field.ArrayField.default">
+<span class="sig-name descname"><span class="pre">default</span></span><a class="headerlink" href="#belso.core.field.ArrayField.default" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.field.ArrayField.description">
+<span class="sig-name descname"><span class="pre">description</span></span><a class="headerlink" href="#belso.core.field.ArrayField.description" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.field.ArrayField.enum">
+<span class="sig-name descname"><span class="pre">enum</span></span><a class="headerlink" href="#belso.core.field.ArrayField.enum" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.field.ArrayField.exclusive_range">
+<span class="sig-name descname"><span class="pre">exclusive_range</span></span><a class="headerlink" href="#belso.core.field.ArrayField.exclusive_range" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.field.ArrayField.format_">
+<span class="sig-name descname"><span class="pre">format_</span></span><a class="headerlink" href="#belso.core.field.ArrayField.format_" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.field.ArrayField.items_range">
+<span class="sig-name descname"><span class="pre">items_range</span></span><a class="headerlink" href="#belso.core.field.ArrayField.items_range" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.field.ArrayField.items_type">
+<span class="sig-name descname"><span class="pre">items_type</span></span><a class="headerlink" href="#belso.core.field.ArrayField.items_type" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.field.ArrayField.length_range">
+<span class="sig-name descname"><span class="pre">length_range</span></span><a class="headerlink" href="#belso.core.field.ArrayField.length_range" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.field.ArrayField.multiple_of">
+<span class="sig-name descname"><span class="pre">multiple_of</span></span><a class="headerlink" href="#belso.core.field.ArrayField.multiple_of" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.field.ArrayField.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#belso.core.field.ArrayField.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.field.ArrayField.properties_range">
+<span class="sig-name descname"><span class="pre">properties_range</span></span><a class="headerlink" href="#belso.core.field.ArrayField.properties_range" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.field.ArrayField.range_">
+<span class="sig-name descname"><span class="pre">range_</span></span><a class="headerlink" href="#belso.core.field.ArrayField.range_" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.field.ArrayField.regex">
+<span class="sig-name descname"><span class="pre">regex</span></span><a class="headerlink" href="#belso.core.field.ArrayField.regex" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.field.ArrayField.required">
+<span class="sig-name descname"><span class="pre">required</span></span><a class="headerlink" href="#belso.core.field.ArrayField.required" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.field.ArrayField.type_">
+<span class="sig-name descname"><span class="pre">type_</span></span><a class="headerlink" href="#belso.core.field.ArrayField.type_" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="nested-field">
+<h2>Nested Field<a class="headerlink" href="#nested-field" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="belso.core.field.NestedField">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">belso.core.field.</span></span><span class="sig-name descname"><span class="pre">NestedField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclusive_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">items_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">properties_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiple_of</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/core/field.html#NestedField"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.core.field.NestedField" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#belso.core.schema.BaseField" title="belso.core.schema.BaseField"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseField</span></code></a></p>
+<p>BaseField class for nested schemas.
+Supports all advanced validation parameters passed via BaseField.</p>
+<ul class="simple">
+<li><p>OpenAI</p></li>
+<li><p>Google</p></li>
+<li><p>Ollama</p></li>
+<li><p>Anthropic</p></li>
+<li><p>Mistral</p></li>
+<li><p>LangChain</p></li>
+<li><p>HuggingFace</p></li>
+</ul>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.field.NestedField.default">
+<span class="sig-name descname"><span class="pre">default</span></span><a class="headerlink" href="#belso.core.field.NestedField.default" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.field.NestedField.description">
+<span class="sig-name descname"><span class="pre">description</span></span><a class="headerlink" href="#belso.core.field.NestedField.description" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.field.NestedField.enum">
+<span class="sig-name descname"><span class="pre">enum</span></span><a class="headerlink" href="#belso.core.field.NestedField.enum" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.field.NestedField.exclusive_range">
+<span class="sig-name descname"><span class="pre">exclusive_range</span></span><a class="headerlink" href="#belso.core.field.NestedField.exclusive_range" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.field.NestedField.format_">
+<span class="sig-name descname"><span class="pre">format_</span></span><a class="headerlink" href="#belso.core.field.NestedField.format_" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.field.NestedField.items_range">
+<span class="sig-name descname"><span class="pre">items_range</span></span><a class="headerlink" href="#belso.core.field.NestedField.items_range" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.field.NestedField.length_range">
+<span class="sig-name descname"><span class="pre">length_range</span></span><a class="headerlink" href="#belso.core.field.NestedField.length_range" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.field.NestedField.multiple_of">
+<span class="sig-name descname"><span class="pre">multiple_of</span></span><a class="headerlink" href="#belso.core.field.NestedField.multiple_of" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.field.NestedField.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#belso.core.field.NestedField.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.field.NestedField.properties_range">
+<span class="sig-name descname"><span class="pre">properties_range</span></span><a class="headerlink" href="#belso.core.field.NestedField.properties_range" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.field.NestedField.range_">
+<span class="sig-name descname"><span class="pre">range_</span></span><a class="headerlink" href="#belso.core.field.NestedField.range_" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.field.NestedField.regex">
+<span class="sig-name descname"><span class="pre">regex</span></span><a class="headerlink" href="#belso.core.field.NestedField.regex" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.field.NestedField.required">
+<span class="sig-name descname"><span class="pre">required</span></span><a class="headerlink" href="#belso.core.field.NestedField.required" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.field.NestedField.schema">
+<span class="sig-name descname"><span class="pre">schema</span></span><a class="headerlink" href="#belso.core.field.NestedField.schema" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.field.NestedField.type_">
+<span class="sig-name descname"><span class="pre">type_</span></span><a class="headerlink" href="#belso.core.field.NestedField.type_" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="field">
+<h2>Field<a class="headerlink" href="#field" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="belso.core.field.Field">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">belso.core.field.</span></span><span class="sig-name descname"><span class="pre">Field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclusive_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">items_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">properties_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiple_of</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/core/field.html#Field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.core.field.Field" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Factory class that returns the correct <code class="docutils literal notranslate"><span class="pre">BaseField</span></code> subtype
+(<code class="docutils literal notranslate"><span class="pre">BaseField</span></code>, <code class="docutils literal notranslate"><span class="pre">NestedField</span></code>, or <code class="docutils literal notranslate"><span class="pre">ArrayField</span></code>).</p>
+</dd></dl>
+
+</section>
+<section id="schemaprocessor">
+<h2>SchemaProcessor<a class="headerlink" href="#schemaprocessor" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Developer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="providers.html" class="btn btn-neutral float-right" title="Providers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Michele Ventimiglia.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
