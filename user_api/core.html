@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Core &mdash; belso unknown documentation</title>
+  <title>Core &mdash; belso 0.0.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=f471ba65" />
@@ -14,7 +14,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=3f1b9271"></script>
+      <script src="../_static/documentation_options.js?v=47de8214"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -55,9 +55,18 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">User</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Core</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#schema">Schema</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#field">Field</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#schemaprocessor">SchemaProcessor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#schema">Schema</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#belso.core.Schema"><code class="docutils literal notranslate"><span class="pre">Schema</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#field">Field</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#belso.core.Field"><code class="docutils literal notranslate"><span class="pre">Field</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#schemaprocessor">SchemaProcessor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#belso.core.SchemaProcessor"><code class="docutils literal notranslate"><span class="pre">SchemaProcessor</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html">Utilities</a></li>
@@ -95,12 +104,164 @@
 <h1>Core<a class="headerlink" href="#core" title="Link to this heading"></a></h1>
 <section id="schema">
 <h2>Schema<a class="headerlink" href="#schema" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="belso.core.Schema">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">belso.core.</span></span><span class="sig-name descname"><span class="pre">Schema</span></span><a class="reference internal" href="../_modules/belso/core/schema.html#Schema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.core.Schema" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A base class for defining schemas.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="belso.core.Schema.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">ClassVar</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code><span class="pre">[</span><a class="reference internal" href="../dev_api/core.html#belso.core.schema.BaseField" title="belso.core.schema.BaseField"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseField</span></code></a><span class="pre">]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#belso.core.Schema.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="belso.core.Schema.get_field_by_name">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_field_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/core/schema.html#Schema.get_field_by_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.core.Schema.get_field_by_name" title="Link to this definition"></a></dt>
+<dd><p>Get a field by its name.</p>
+<p class="rubric">Args</p>
+<ul class="simple">
+<li><p><strong>name</strong> (<code class="customtype docutils literal notranslate"><span class="pre">str</span></code>): the name of the field.</p></li>
+</ul>
+<p class="rubric">Returns</p>
+<ul class="simple">
+<li><p><code class="customtype docutils literal notranslate"><span class="pre">Optional[belso.core.BaseField]</span></code>: the field with the given name, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if not found.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="belso.core.Schema.get_required_fields">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_required_fields</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/core/schema.html#Schema.get_required_fields"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.core.Schema.get_required_fields" title="Link to this definition"></a></dt>
+<dd><p>Get the names of all required fields in the schema.</p>
+<p class="rubric">Returns</p>
+<ul class="simple">
+<li><p><code class="customtype docutils literal notranslate"><span class="pre">List[str]</span></code>: a list of required field names.</p></li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 <section id="field">
 <h2>Field<a class="headerlink" href="#field" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="belso.core.Field">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">belso.core.</span></span><span class="sig-name descname"><span class="pre">Field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclusive_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">items_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">properties_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiple_of</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/core/field.html#Field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.core.Field" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Factory class that returns the correct <code class="docutils literal notranslate"><span class="pre">BaseField</span></code> subtype
+(<code class="docutils literal notranslate"><span class="pre">BaseField</span></code>, <code class="docutils literal notranslate"><span class="pre">NestedField</span></code>, or <code class="docutils literal notranslate"><span class="pre">ArrayField</span></code>).</p>
+</dd></dl>
+
 </section>
 <section id="schemaprocessor">
 <h2>SchemaProcessor<a class="headerlink" href="#schemaprocessor" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="belso.core.SchemaProcessor">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">belso.core.</span></span><span class="sig-name descname"><span class="pre">SchemaProcessor</span></span><a class="reference internal" href="../_modules/belso/core/processor.html#SchemaProcessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.core.SchemaProcessor" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A unified class for schema processing, including translation and validation.
+This class combines the functionality of the previous Translator and Validator classes.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="belso.core.SchemaProcessor.convert">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">convert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/core/processor.html#SchemaProcessor.convert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.core.SchemaProcessor.convert" title="Link to this definition"></a></dt>
+<dd><p>Convert a schema to a specific format.
+This method can automatically detect the input schema format and convert it
+to our internal format before translating to the target format.</p>
+<p class="rubric">Args</p>
+<ul class="simple">
+<li><p><strong>schema</strong> (<code class="customtype docutils literal notranslate"><span class="pre">Any</span></code>): the schema to conver.</p></li>
+<li><p><strong>to</strong> (<code class="customtype docutils literal notranslate"><span class="pre">str</span></code>): the target format. Can be a string or a <code class="docutils literal notranslate"><span class="pre">belso.utils.FORMATS</span></code> attribute.</p></li>
+<li><p><strong>from_format</strong> (<code class="customtype docutils literal notranslate"><span class="pre">Optional[str]</span></code>): optional format hint for the input schema. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the format will be auto-detected. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+</ul>
+<p class="rubric">Returns</p>
+<ul class="simple">
+<li><p><code class="customtype docutils literal notranslate"><span class="pre">Dict[str,</span> <span class="pre">Any]</span></code></p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="belso.core.SchemaProcessor.detect_format">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">detect_format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/core/processor.html#SchemaProcessor.detect_format"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.core.SchemaProcessor.detect_format" title="Link to this definition"></a></dt>
+<dd><p>Detect the format of a schema.</p>
+<p class="rubric">Args</p>
+<ul class="simple">
+<li><p><strong>schema</strong> (<code class="customtype docutils literal notranslate"><span class="pre">Any</span></code>): the schema to detect.</p></li>
+</ul>
+<p class="rubric">Returns</p>
+<ul class="simple">
+<li><p><code class="customtype docutils literal notranslate"><span class="pre">str</span></code>: the detected format as a string.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="belso.core.SchemaProcessor.display">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/core/processor.html#SchemaProcessor.display"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.core.SchemaProcessor.display" title="Link to this definition"></a></dt>
+<dd><p>Pretty-print a schema using colors and better layout, including nested fields.</p>
+<p class="rubric">Args</p>
+<ul class="simple">
+<li><p><strong>schema</strong> (<code class="customtype docutils literal notranslate"><span class="pre">Any</span></code>): the schema to print.</p></li>
+<li><p><strong>format_type</strong> (<code class="customtype docutils literal notranslate"><span class="pre">Optional[str]</span></code>): format of the schema. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="belso.core.SchemaProcessor.load">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standardize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/core/processor.html#SchemaProcessor.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.core.SchemaProcessor.load" title="Link to this definition"></a></dt>
+<dd><p>Load a schema from a file in the specified format.</p>
+<p class="rubric">Args</p>
+<ul class="simple">
+<li><p><strong>path</strong> (<code class="customtype docutils literal notranslate"><span class="pre">Union[str,</span> <span class="pre">Path]</span></code>): the path to the file to load.</p></li>
+<li><p><strong>standardize</strong> (<code class="customtype docutils literal notranslate"><span class="pre">bool</span></code>): whether to convert the schema to our internal ‘belso’ format. Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+</ul>
+<p class="rubric">Returns</p>
+<ul class="simple">
+<li><p><code class="customtype docutils literal notranslate"><span class="pre">Any</span></code>: the loaded schema.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="belso.core.SchemaProcessor.save">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/core/processor.html#SchemaProcessor.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.core.SchemaProcessor.save" title="Link to this definition"></a></dt>
+<dd><p>Save a schema to a file in the specified format.</p>
+<p class="rubric">Args</p>
+<ul class="simple">
+<li><p><strong>schema</strong> (<code class="customtype docutils literal notranslate"><span class="pre">Any</span></code>): the schema to save.</p></li>
+<li><p><strong>path</strong> (<code class="customtype docutils literal notranslate"><span class="pre">Union[str,</span> <span class="pre">Path]</span></code>): the path to save the schema to.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="belso.core.SchemaProcessor.standardize">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">standardize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/core/processor.html#SchemaProcessor.standardize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.core.SchemaProcessor.standardize" title="Link to this definition"></a></dt>
+<dd><p>Convert a schema from a specific format to our internal ‘belso’ format.
+If from_format is not specified, it will be auto-detected.</p>
+<p class="rubric">Args</p>
+<ul class="simple">
+<li><p><strong>schema</strong> (<code class="customtype docutils literal notranslate"><span class="pre">Any</span></code>): the schema to convert.</p></li>
+<li><p><strong>from_format</strong> (<code class="customtype docutils literal notranslate"><span class="pre">Optional[str]</span></code>): the format of the input schema. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the format will be auto-detected. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+</ul>
+<p class="rubric">Returns</p>
+<ul class="simple">
+<li><p><code class="customtype docutils literal notranslate"><span class="pre">Type[belso.Schema]</span></code>: the converted belso schema.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="belso.core.SchemaProcessor.validate">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/core/processor.html#SchemaProcessor.validate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.core.SchemaProcessor.validate" title="Link to this definition"></a></dt>
+<dd><p>Validate that the provided data conforms to the given schema.</p>
+<p class="rubric">Args</p>
+<ul class="simple">
+<li><p><strong>data</strong> (<code class="customtype docutils literal notranslate"><span class="pre">Union[Dict[str,</span> <span class="pre">Any],</span> <span class="pre">str]</span></code>): the data to validate (either a dict or JSON string).</p></li>
+<li><p><strong>schema</strong> (<code class="customtype docutils literal notranslate"><span class="pre">Type[belso.Schema]</span></code>): the schema to validate against.</p></li>
+</ul>
+<p class="rubric">Returns:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Dict[str,</span> <span class="pre">Any]</span></code>: the validated data.</p></li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 </section>
 

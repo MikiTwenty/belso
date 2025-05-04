@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Developer &mdash; belso unknown documentation</title>
+  <title>Developer &mdash; belso 0.0.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=f471ba65" />
@@ -14,7 +14,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=3f1b9271"></script>
+      <script src="../_static/documentation_options.js?v=47de8214"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -114,23 +114,66 @@
 <li class="toctree-l3"><a class="reference internal" href="core.html#belso.core.field.Field"><code class="docutils literal notranslate"><span class="pre">Field</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#schemaprocessor">SchemaProcessor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#schemaprocessor">SchemaProcessor</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="core.html#belso.core.processor.SchemaProcessor"><code class="docutils literal notranslate"><span class="pre">SchemaProcessor</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="providers.html">Providers</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="providers.html#openai">OpenAI</a></li>
-<li class="toctree-l2"><a class="reference internal" href="providers.html#anthropic">Anthropic</a></li>
-<li class="toctree-l2"><a class="reference internal" href="providers.html#google">Google</a></li>
-<li class="toctree-l2"><a class="reference internal" href="providers.html#mistral">Mistral</a></li>
-<li class="toctree-l2"><a class="reference internal" href="providers.html#ollama">Ollama</a></li>
-<li class="toctree-l2"><a class="reference internal" href="providers.html#huggingface">HuggingFace</a></li>
-<li class="toctree-l2"><a class="reference internal" href="providers.html#langchain">LangChain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="providers.html#openai">OpenAI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="providers.html#belso.providers.to_openai"><code class="docutils literal notranslate"><span class="pre">to_openai()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="providers.html#belso.providers.from_openai"><code class="docutils literal notranslate"><span class="pre">from_openai()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="providers.html#anthropic">Anthropic</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="providers.html#belso.providers.to_anthropic"><code class="docutils literal notranslate"><span class="pre">to_anthropic()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="providers.html#belso.providers.from_anthropic"><code class="docutils literal notranslate"><span class="pre">from_anthropic()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="providers.html#google">Google</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="providers.html#belso.providers.to_google"><code class="docutils literal notranslate"><span class="pre">to_google()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="providers.html#belso.providers.from_google"><code class="docutils literal notranslate"><span class="pre">from_google()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="providers.html#mistral">Mistral</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="providers.html#belso.providers.to_mistral"><code class="docutils literal notranslate"><span class="pre">to_mistral()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="providers.html#belso.providers.from_mistral"><code class="docutils literal notranslate"><span class="pre">from_mistral()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="providers.html#ollama">Ollama</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="providers.html#belso.providers.to_ollama"><code class="docutils literal notranslate"><span class="pre">to_ollama()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="providers.html#belso.providers.from_ollama"><code class="docutils literal notranslate"><span class="pre">from_ollama()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="providers.html#huggingface">HuggingFace</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="providers.html#belso.providers.to_huggingface"><code class="docutils literal notranslate"><span class="pre">to_huggingface()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="providers.html#belso.providers.from_huggingface"><code class="docutils literal notranslate"><span class="pre">from_huggingface()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="providers.html#langchain">LangChain</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="providers.html#belso.providers.to_langchain"><code class="docutils literal notranslate"><span class="pre">to_langchain()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="providers.html#belso.providers.from_langchain"><code class="docutils literal notranslate"><span class="pre">from_langchain()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="serialization.html">Serialization</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="serialization.html#json">JSON</a></li>
-<li class="toctree-l2"><a class="reference internal" href="serialization.html#yaml">YAML</a></li>
-<li class="toctree-l2"><a class="reference internal" href="serialization.html#xml">XML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="serialization.html#json">JSON</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="serialization.html#belso.serialization.json_format.to_json"><code class="docutils literal notranslate"><span class="pre">to_json()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="serialization.html#belso.serialization.json_format.from_json"><code class="docutils literal notranslate"><span class="pre">from_json()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="serialization.html#yaml">YAML</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="serialization.html#belso.serialization.yaml_format.to_yaml"><code class="docutils literal notranslate"><span class="pre">to_yaml()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="serialization.html#belso.serialization.yaml_format.from_yaml"><code class="docutils literal notranslate"><span class="pre">from_yaml()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="serialization.html#xml">XML</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="serialization.html#belso.serialization.xml_format.to_xml"><code class="docutils literal notranslate"><span class="pre">to_xml()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="serialization.html#belso.serialization.xml_format.from_xml"><code class="docutils literal notranslate"><span class="pre">from_xml()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="tools.html">Tools</a><ul>

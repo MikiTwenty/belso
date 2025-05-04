@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Serialization &mdash; belso unknown documentation</title>
+  <title>Serialization &mdash; belso 0.0.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=f471ba65" />
@@ -14,7 +14,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=3f1b9271"></script>
+      <script src="../_static/documentation_options.js?v=47de8214"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -58,9 +58,21 @@
 <li class="toctree-l2"><a class="reference internal" href="core.html">Core</a></li>
 <li class="toctree-l2"><a class="reference internal" href="providers.html">Providers</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Serialization</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#json">JSON</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#yaml">YAML</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#xml">XML</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#json">JSON</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#belso.serialization.json_format.to_json"><code class="docutils literal notranslate"><span class="pre">to_json()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#belso.serialization.json_format.from_json"><code class="docutils literal notranslate"><span class="pre">from_json()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#yaml">YAML</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#belso.serialization.yaml_format.to_yaml"><code class="docutils literal notranslate"><span class="pre">to_yaml()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#belso.serialization.yaml_format.from_yaml"><code class="docutils literal notranslate"><span class="pre">from_yaml()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#xml">XML</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#belso.serialization.xml_format.to_xml"><code class="docutils literal notranslate"><span class="pre">to_xml()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#belso.serialization.xml_format.from_xml"><code class="docutils literal notranslate"><span class="pre">from_xml()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="tools.html">Tools</a></li>
@@ -98,12 +110,109 @@
 <h1>Serialization<a class="headerlink" href="#serialization" title="Link to this heading"></a></h1>
 <section id="json">
 <h2>JSON<a class="headerlink" href="#json" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.serialization.json_format.to_json">
+<span class="sig-prename descclassname"><span class="pre">belso.serialization.json_format.</span></span><span class="sig-name descname"><span class="pre">to_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/serialization/json_format.html#to_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.serialization.json_format.to_json" title="Link to this definition"></a></dt>
+<dd><p>Serialize <code class="docutils literal notranslate"><span class="pre">schema</span></code> in JSON format.</p>
+<p class="rubric">Args</p>
+<ul class="simple">
+<li><p><strong>schema</strong> (<code class="customtype docutils literal notranslate"><span class="pre">Type[Schema]</span></code>): schema to serialize.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">file_path</span></code> (<code class="docutils literal notranslate"><span class="pre">Optional[Union[str,</span> <span class="pre">Path]]</span></code>, optional): path to save the JSON file.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">schema_name</span></code> (<code class="docutils literal notranslate"><span class="pre">str</span></code>, optional): prefix to apply to the root schema name.</p></li>
+</ul>
+<p class="rubric">Returns</p>
+<ul class="simple">
+<li><p><code class="customtype docutils literal notranslate"><span class="pre">Dict[str,</span> <span class="pre">Any]</span></code>: dict JSON-ready representation of <code class="docutils literal notranslate"><span class="pre">schema</span></code>.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.serialization.json_format.from_json">
+<span class="sig-prename descclassname"><span class="pre">belso.serialization.json_format.</span></span><span class="sig-name descname"><span class="pre">from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/serialization/json_format.html#from_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.serialization.json_format.from_json" title="Link to this definition"></a></dt>
+<dd><p>Load JSON (string / file / dict) into a belso Schema.</p>
+<p class="rubric">Args</p>
+<ul class="simple">
+<li><p><strong>json_input</strong> (<code class="customtype docutils literal notranslate"><span class="pre">Union[str,</span> <span class="pre">Path,</span> <span class="pre">Dict[str,</span> <span class="pre">Any]]</span></code>): JSON input to load.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">schema_name</span></code> (<code class="docutils literal notranslate"><span class="pre">str</span></code>, optional): prefix to apply to the root schema name.</p></li>
+</ul>
+<p class="rubric">Returns</p>
+<ul class="simple">
+<li><p><code class="customtype docutils literal notranslate"><span class="pre">Type[Schema]</span></code>: belso Schema loaded from JSON input.</p></li>
+</ul>
+</dd></dl>
+
 </section>
 <section id="yaml">
 <h2>YAML<a class="headerlink" href="#yaml" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.serialization.yaml_format.to_yaml">
+<span class="sig-prename descclassname"><span class="pre">belso.serialization.yaml_format.</span></span><span class="sig-name descname"><span class="pre">to_yaml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/serialization/yaml_format.html#to_yaml"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.serialization.yaml_format.to_yaml" title="Link to this definition"></a></dt>
+<dd><p>Serialise <code class="docutils literal notranslate"><span class="pre">schema</span></code> to YAML. <code class="docutils literal notranslate"><span class="pre">schema_name</span></code> is applied once to the
+root schema only; children keep their own names untouched.</p>
+<p class="rubric">Args</p>
+<ul class="simple">
+<li><p><strong>schema</strong> (<code class="customtype docutils literal notranslate"><span class="pre">Type[Schema]</span></code>): schema to serialise.</p></li>
+<li><p><strong>file_path</strong> (<code class="customtype docutils literal notranslate"><span class="pre">Optional[Union[str,</span> <span class="pre">Path]]</span></code>): path to save the YAML file.</p></li>
+<li><p><strong>schema_name</strong> (<code class="customtype docutils literal notranslate"><span class="pre">str</span></code>): prefix to apply to the root schema name.</p></li>
+</ul>
+<p class="rubric">Returns</p>
+<ul class="simple">
+<li><p><code class="customtype docutils literal notranslate"><span class="pre">str</span></code>: YAML representation of <code class="docutils literal notranslate"><span class="pre">schema</span></code>.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.serialization.yaml_format.from_yaml">
+<span class="sig-prename descclassname"><span class="pre">belso.serialization.yaml_format.</span></span><span class="sig-name descname"><span class="pre">from_yaml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yaml_input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/serialization/yaml_format.html#from_yaml"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.serialization.yaml_format.from_yaml" title="Link to this definition"></a></dt>
+<dd><p>Load YAML (string / file / dict) into a belso Schema.
+<code class="docutils literal notranslate"><span class="pre">schema_name</span></code> is applied only to the root schema name.</p>
+<p class="rubric">Args</p>
+<ul class="simple">
+<li><p><strong>yaml_input</strong> (<code class="customtype docutils literal notranslate"><span class="pre">Union[str,</span> <span class="pre">Path,</span> <span class="pre">Dict[str,</span> <span class="pre">Any]]</span></code>): YAML input.</p></li>
+<li><p><strong>schema_name</strong> (<code class="customtype docutils literal notranslate"><span class="pre">str</span></code>): prefix to apply to the root schema name.</p></li>
+</ul>
+<p class="rubric">Returns</p>
+<ul class="simple">
+<li><p><code class="customtype docutils literal notranslate"><span class="pre">Type[Schema]</span></code>: schema deserialised from <code class="docutils literal notranslate"><span class="pre">yaml_input</span></code>.</p></li>
+</ul>
+</dd></dl>
+
 </section>
 <section id="xml">
 <h2>XML<a class="headerlink" href="#xml" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.serialization.xml_format.to_xml">
+<span class="sig-prename descclassname"><span class="pre">belso.serialization.xml_format.</span></span><span class="sig-name descname"><span class="pre">to_xml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/serialization/xml_format.html#to_xml"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.serialization.xml_format.to_xml" title="Link to this definition"></a></dt>
+<dd><p>Serialise <code class="docutils literal notranslate"><span class="pre">schema</span></code> to XML. <code class="docutils literal notranslate"><span class="pre">schema_name</span></code> is applied once to the
+root schema only; children keep their own names untouched.</p>
+<p class="rubric">Args</p>
+<ul class="simple">
+<li><p><strong>schema</strong> (<code class="customtype docutils literal notranslate"><span class="pre">Type[Schema]</span></code>): schema to serialise.</p></li>
+<li><p><strong>file_path</strong> (<code class="customtype docutils literal notranslate"><span class="pre">Optional[Union[str,</span> <span class="pre">Path]]</span></code>): path to save the XML file.</p></li>
+<li><p><strong>schema_name</strong> (<code class="customtype docutils literal notranslate"><span class="pre">str</span></code>): prefix to apply to the root schema name.</p></li>
+</ul>
+<p class="rubric">Returns</p>
+<ul class="simple">
+<li><p><code class="customtype docutils literal notranslate"><span class="pre">str</span></code>: XML representation of <code class="docutils literal notranslate"><span class="pre">schema</span></code>.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="belso.serialization.xml_format.from_xml">
+<span class="sig-prename descclassname"><span class="pre">belso.serialization.xml_format.</span></span><span class="sig-name descname"><span class="pre">from_xml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xml_input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/belso/serialization/xml_format.html#from_xml"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#belso.serialization.xml_format.from_xml" title="Link to this definition"></a></dt>
+<dd><p>Load XML (string / file / Element) into a belso Schema.
+<code class="docutils literal notranslate"><span class="pre">schema_name</span></code> is applied <strong>only</strong> to the root schema name.</p>
+<p class="rubric">Args</p>
+<ul class="simple">
+<li><p><strong>xml_input</strong> (<code class="customtype docutils literal notranslate"><span class="pre">Union[str,</span> <span class="pre">Path,</span> <span class="pre">ET.Element]</span></code>): XML input.</p></li>
+<li><p><strong>schema_name</strong> (<code class="customtype docutils literal notranslate"><span class="pre">str</span></code>): prefix to apply to the root schema name.</p></li>
+</ul>
+<p class="rubric">Returns</p>
+<ul class="simple">
+<li><p><code class="customtype docutils literal notranslate"><span class="pre">Type[Schema]</span></code>: schema deserialised from <code class="docutils literal notranslate"><span class="pre">xml_input</span></code>.</p></li>
+</ul>
+</dd></dl>
+
 </section>
 </section>
 
