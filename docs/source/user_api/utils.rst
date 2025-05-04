@@ -5,7 +5,7 @@ Constants
 ---------
 
 FORMATS
-~~~~~~~~~
+~~~~~~~
 
 .. autoclass:: belso.utils.FORMATS
    :members:

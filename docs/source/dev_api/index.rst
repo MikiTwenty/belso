@@ -1,5 +1,5 @@
 Developer
-=============
+=========
 
 This section provides detailed API documentation for belso.
 

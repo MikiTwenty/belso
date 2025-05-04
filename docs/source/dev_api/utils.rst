@@ -5,7 +5,7 @@ Constants
 ---------
 
 FORMATS
-~~~~~~~~~
+~~~~~~~
 
 .. autoclass:: belso.utils.formats.FORMATS
    :members:
@@ -24,7 +24,7 @@ Detecting
 .. autofunction:: belso.utils.detecting.detect_schema_format
 
 Helpers
---------------
+-------
 
 Mapping
 ~~~~~~~

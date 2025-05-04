@@ -1,13 +1,13 @@
-Welcome to belso's documentation!
+Welcome to Belso's documentation!
 =================================
 
-**belso** (Better LLMs Structured Outputs) is a Python library for managing structured schema definitions across multiple LLM providers.
-It simplifies the translation, validation, and visualization of complex nested data models used in tools like OpenAI function calling, Google PAI, Anthropic tools, LangChain, and others.
+**Belso** (Better LLMs Structured Outputs) is a Python library for managing structured schema definitions across multiple LLM providers.
+It simplifies the **definition**, **translation**, **validation**, and **visualization** of deeply nested data models used in tools like OpenAI function calling, Google PAI, Anthropic tools, LangChain, and others.
 
 Features
 --------
 
-- ✅ Unified schema interface using Python classes
+- ✅ Define schemas using Python classes with a unified interface
 - 🔁 Bi-directional conversion between provider formats (OpenAI, Google, Ollama, Anthropic, Mistral, HuggingFace, LangChain)
 - 📦 Support for nested fields and array types
 - 📋 Validation and visualization tools for human-readable schema inspection
@@ -25,7 +25,7 @@ Install `belso` from PyPI:
 Quick Start
 -----------
 
-Define your schema and convert it to a target provider format:
+This minimal example shows how to define a schema and convert it to an OpenAI-compatible format:
 
 .. code-block:: python
 
@@ -58,7 +58,7 @@ API Reference
 
 .. toctree::
    :maxdepth: 2
-   :caption: API DOCUMENTATION
+   :caption: API Reference
 
    user_api/index
    dev_api/index

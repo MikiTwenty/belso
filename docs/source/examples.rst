@@ -1,7 +1,7 @@
 Examples
 ========
 
-Here are some examples of how to use belso in different scenarios.
+Explore these practical examples to understand how Belso can be used in different scenarios.
 
 Basic Schema Example
 --------------------
