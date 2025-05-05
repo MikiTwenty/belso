@@ -7,68 +7,30 @@ from belso.utils import FORMATS
 from belso import Schema, Field
 from belso.core.processor import SchemaProcessor
 
-# Define a simple schema for items in the array
-class ItemSchema(Schema):
+class Light(Schema):
     fields = [
+        Field("is_on", type=bool, description="Whether the light should be on or off"),
+        Field("brightness", type=int, description="Brightness of the light, from 0 to 100 - 0 if light is off"),
         Field(
-            "id",
-            type=int,
-            description="Unique identifier for the item"
-        ),
-        Field(
-            "name",
+            "temperature",
             type=str,
-            description="Name of the item"
+            enum=['warm', 'neutral', 'cold'],  # Predefined output values
+            description="The temperature of the light, from warm to cold"
         ),
-        Field(
-            "active",
-            type=bool,
-            description="Whether the item is active",
-            required=False
-        )
     ]
 
-# Define a schema with different types of array fields
-class ArrayFieldsTestSchema(Schema):
-    fields = [
-        # Simple array of primitive types
-        Field(
-            "tags",
-            type=List[str],
-            description="List of string tags"
-        ),
+class Room(Schema):
+    fields = [Field("Lights", type=List[Light], description="The lights in the room", items_range=(1, 3))]
 
-        # Array with range constraints
-        Field(
-            "scores",
-            type=List[int],
-            description="List of integer scores",
-            items_range=(1, 5)  # Min 1, max 5 items
-        ),
-
-        # Array of complex objects (nested schema)
-        Field(
-            "items",
-            type=List[ItemSchema],
-            description="List of item objects"
-        ),
-
-        # Optional array
-        Field(
-            "optional_data",
-            type=List[float],
-            description="Optional list of float values",
-            required=False,
-            default=[]
-        )
-    ]
+class House(Schema):
+    fields = [Field("Rooms", type=List[Room], description="The rooms in the house", items_range=(1, 3))]
 
 def main():
     # Display the schema
-    SchemaProcessor.display(ArrayFieldsTestSchema)
+    SchemaProcessor.display(House)
 
     # Convert the schema to Ollama format
-    ollama_schema = SchemaProcessor.convert(ArrayFieldsTestSchema, to=FORMATS.OLLAMA)
+    ollama_schema = SchemaProcessor.convert(House, to=FORMATS.OLLAMA)
 
     # Display the converted schema
     print("\nConverted schema to Ollama format:")
@@ -76,7 +38,7 @@ def main():
 
     try:
         # Define the prompt for array data generation
-        default_prompt = "Generate an array of 3 items with tags, scores, and item details"
+        default_prompt = "Generate an house with multiple rooms and lights."
         print(f"\nDefault prompt:\n\"{default_prompt}\"")
 
         # Ask the user for a prompt

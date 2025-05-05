@@ -77,15 +77,27 @@ def convert_array_field(
     ### Returns
     - `dict`: the property dictionary.
     """
-    if hasattr(field, 'items_schema') and field.items_schema:
+    # Handle array of nested schemas
+    if hasattr(field, "items_schema") and field.items_schema:
         items_schema_dict = to_func(field.items_schema)
         items_schema = {
             "type": "object",
             "properties": items_schema_dict.get("properties", {}),
             "required": items_schema_dict.get("required", [])
         }
+    # Handle items_type that is a Schema subclass (not passed via items_schema explicitly)
+    elif isinstance(field.items_type, type) and issubclass(field.items_type, Schema):
+        items_schema_dict = to_func(field.items_type)
+        items_schema = {
+            "type": "object",
+            "properties": items_schema_dict.get("properties", {}),
+            "required": items_schema_dict.get("required", [])
+        }
     else:
-        items_schema = {"type": map_python_to_json_type(field.items_type)}
+        # Primitive type
+        items_schema = {
+            "type": map_python_to_json_type(field.items_type)
+        }
 
     result = {
         "type": "array",

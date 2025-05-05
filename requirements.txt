@@ -2,6 +2,7 @@ beartype
 colorama
 google-generativeai>=0.8.5
 google.ai.generativelanguage>=0.6.15
+gradio>=5.29.0
 pydantic
 pytest
 pyyaml

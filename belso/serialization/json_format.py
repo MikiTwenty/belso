@@ -81,8 +81,6 @@ def _to_json(
             fld_dict["items_type"] = (
                 fld.items_type.__name__ if hasattr(fld.items_type, "__name__") else str(fld.items_type)
             )
-            if fld.items_schema:
-                fld_dict["items_schema"] = _to_json(fld.items_schema, root_prefix="")
             schema_json["fields"].append(fld_dict)
             continue
 

@@ -149,10 +149,16 @@ def from_pydantic_model(
             ConvertedSchema.fields.append(NestedField(name, nested, description, required, default))
         elif get_origin(field_type) in (list, List):
             item_type = field_type.__args__[0]
+
             if isinstance(item_type, type) and issubclass(item_type, BaseModel):
-                ConvertedSchema.fields.append(ArrayField(name, dict, description, required, default))
+                nested_schema = from_pydantic_model(item_type, schema_name=f"{name}Item")
+                ConvertedSchema.fields.append(
+                    ArrayField(name, items_type=nested_schema, description=description, required=required, default=default)
+                )
             else:
-                ConvertedSchema.fields.append(ArrayField(name, item_type, description, required, default))
+                ConvertedSchema.fields.append(
+                    ArrayField(name, items_type=item_type, description=description, required=required, default=default)
+                )
         else:
             ConvertedSchema.fields.append(BaseField(name, field_type, description, required, default))
 
