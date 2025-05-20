@@ -1,4 +1,4 @@
-from belso.gui import SchemaGenerator
+from belso.gui import run
 
 if __name__ == "__main__":
-    SchemaGenerator.run()
+    run()
