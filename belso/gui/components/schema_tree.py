@@ -1,5 +1,6 @@
 # belso.gui.components.schema_tree
 
+import logging
 from typing import Type
 
 import gradio as gr
@@ -8,6 +9,8 @@ from belso.gui.state import GUIState
 from belso.core.schema import Schema
 from belso.core.field import NestedField, ArrayField
 from belso.gui.handlers import handle_edit_field, handle_remove_field
+
+logger = logging.getLogger(__name__)
 
 def render_schema_tree(
         schema: Type[Schema],
@@ -26,6 +29,7 @@ def render_schema_tree(
     - `depth` (`int`): Level of indentation for nested fields.
     """
     if not schema or not hasattr(schema, "fields"):
+        logger.warning(f"Invalid schema: {schema}")
         return
 
     for field in schema.fields:
@@ -35,7 +39,7 @@ def render_schema_tree(
         with gr.Row():
             gr.HTML(label)
             gr.Button("✏️", elem_id=f"edit-{field.name}").click(
-                fn=lambda s: handle_edit_field(s, schema, field),
+                fn=lambda s: handle_edit_field(s, field),
                 inputs=[state_component],
                 outputs=[state_component],
             )

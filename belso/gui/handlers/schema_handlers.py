@@ -1,6 +1,10 @@
 # belso.gui.handlers.schema_handlers
 
+import logging
+
 from belso.gui.state import GUIState
+
+logger = logging.getLogger(__name__)
 
 def handle_add_schema(state: GUIState) -> GUIState:
     """
@@ -12,7 +16,9 @@ def handle_add_schema(state: GUIState) -> GUIState:
     ### Returns
     - `GUIState`: The updated GUI state.
     """
+    logger.info(f"Adding new schema...")
     state.create_schema()
+    logger.info(f"New schema added: \"{state.active_schema_name}\".")
     return state.clone()
 
 def handle_switch_schema(
@@ -29,6 +35,10 @@ def handle_switch_schema(
     ### Returns
     - `GUIState`: The updated GUI state.
     """
+    logger.info(f"Switching to schema: \"{schema_name}\".")
     if schema_name in state.schemas:
         state.active_schema_name = schema_name
+        logger.info(f"Switched to schema: \"{schema_name}\".")
+    else:
+        logger.warning(f"Schema not found: \"{schema_name}\".")
     return state.clone()

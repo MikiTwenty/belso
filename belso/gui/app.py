@@ -13,8 +13,5 @@ def run() -> None:
     """
     logger.info("Starting Belso GUI...")
     state = GUIState()
-    logger.info("GUI state initialized.")
     interface = build_interface(state)
-    logger.info("GUI interface built.")
     interface.launch()
-
