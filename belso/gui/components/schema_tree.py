@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 def render_schema_tree(
         schema: Type[Schema],
         state_component: gr.State,
-        state_value: GUIState,
+        state_value: GUIState, # Renamed from state to avoid conflict if state_component is also named state
         depth: int = 0
     ) -> None:
     """
@@ -38,22 +38,22 @@ def render_schema_tree(
 
         with gr.Row():
             gr.HTML(label)
-            gr.Button("✏️", elem_id=f"edit-{field.name}").click(
-                fn=lambda s: handle_edit_field(s, field),
+            gr.Button("✏️", size="sm", elem_id=f"edit-{schema.__name__}-{field.name}").click(
+                fn=lambda s, current_field=field: handle_edit_field(s, current_field), # Use current_field in lambda
                 inputs=[state_component],
                 outputs=[state_component],
             )
 
-            gr.Button("🗑️", elem_id=f"del-{field.name}").click(
-                fn=lambda s: handle_remove_field(s, schema, field),
+            gr.Button("🗑️", size="sm", elem_id=f"del-{schema.__name__}-{field.name}").click(
+                fn=lambda s, current_schema=schema, current_field=field: handle_remove_field(s, current_schema, current_field), # Use current_schema and current_field
                 inputs=[state_component],
                 outputs=[state_component],
             )
 
         # Handle nested schema or array of schema
         if isinstance(field, NestedField):
-            render_schema_tree(field.schema, state_value, depth + 1)
+            render_schema_tree(field.schema, state_component, state_value, depth + 1)
         elif isinstance(field, ArrayField):
             # If item type is a schema, render it
-            if hasattr(field.items_type, "fields"):
-                render_schema_tree(field.items_type, state_value, depth + 1)
+            if hasattr(field.items_type, "fields"): # Check if items_type is a class with fields
+                render_schema_tree(field.items_type, state_component, state_value, depth + 1)

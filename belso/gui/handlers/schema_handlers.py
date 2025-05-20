@@ -21,6 +21,38 @@ def handle_add_schema(state: GUIState) -> GUIState:
     logger.info(f"New schema added: \"{state.active_schema_name}\".")
     return state.clone()
 
+def handle_rename_schema(
+        state: GUIState,
+        old_name: str,
+        new_name: str
+    ) -> GUIState:
+    """
+    Renames a schema in the GUI state.\n
+    ---
+    ### Args
+    - `state` (`GUIState`): The current GUI state.
+    - `old_name` (`str`): The current name of the schema.
+    - `new_name` (`str`): The new name for the schema.\n
+    ---
+    ### Returns
+    - `GUIState`: The updated GUI state.
+    """
+    logger.info(f"Handling rename schema request: from \"{old_name}\" to \"{new_name}\".")
+    if not new_name.strip():
+        logger.warning("New schema name cannot be empty.")
+        # Qui potresti voler inviare un messaggio all'utente, es: gr.Info("Il nome non può essere vuoto")
+        # Tuttavia, per mantenere la funzione di handler semplice, gestiamo solo lo stato.
+        # L'UI dovrebbe idealmente prevenire nomi vuoti.
+        return state.clone() # Clona per aggiornare l'UI se necessario (es. per pulire un input errato)
+
+    success = state.rename_schema(old_name, new_name)
+    if success:
+        logger.info(f"Schema renamed from \"{old_name}\" to \"{new_name}\".")
+    else:
+        logger.warning(f"Failed to rename schema from \"{old_name}\" to \"{new_name}\".")
+        # Anche qui, potresti voler inviare un gr.Warning("Nome già esistente o errore.")
+    return state.clone()
+
 def handle_switch_schema(
         state: GUIState,
         schema_name: str

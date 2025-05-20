@@ -44,10 +44,19 @@ class GUIState:
         if not name:
             name = f"Schema{self._counter}"
             logger.debug(f"No name provided, using default name: \"{name}\".")
-        while name in self.schemas:
-            self._counter += 1
-            name = f"Schema{self._counter}"
-            logger.debug(f"Name already exists, using default name: \"{name}\".")
+
+        # Ensure the initial name is unique before creating the class
+        unique_name = name
+        temp_counter = self._counter
+        while unique_name in self.schemas:
+            temp_counter += 1
+            unique_name = f"Schema{temp_counter}" if not name or name.startswith("Schema") else f"{name}{temp_counter - self._counter +1}"
+
+        if name != unique_name :
+             logger.debug(f"Name \"{name}\" already exists or is a base name, using unique name: \"{unique_name}\".")
+             name = unique_name
+
+        self._counter = temp_counter # Update main counter if it was used
 
         # Define a new Schema subclass dynamically
         class NewSchema(Schema):
@@ -56,8 +65,51 @@ class GUIState:
         NewSchema.__name__ = name
         self.schemas[name] = NewSchema
         self.active_schema_name = name
-        self._counter += 1
+        # Increment counter only if the base "Schema" name was used and incremented
+        if name.startswith("Schema") and name[len("Schema"):].isdigit():
+             self._counter = max(self._counter, int(name[len("Schema"):]) + 1)
+        else:
+             self._counter +=1 # general increment if a custom name was provided or for next default
         return name
+
+    def rename_schema(
+            self,
+            old_name: str,
+            new_name: str
+        ) -> bool:
+        """
+        Rename a schema.\n
+        ---
+        ### Args
+        - `old_name` (`str`): The current name of the schema.
+        - `new_name` (`str`): The new name for the schema.\n
+        ---
+        ### Returns
+        - `bool`: True if renaming was successful, False otherwise.
+        """
+        logger.debug(f"Attempting to rename schema \"{old_name}\" to \"{new_name}\".")
+        if not new_name or not new_name.strip():
+            logger.warning("New schema name cannot be empty.")
+            return False
+        if old_name not in self.schemas:
+            logger.warning(f"Schema \"{old_name}\" not found for renaming.")
+            return False
+        if new_name == old_name:
+            logger.info(f"New name \"{new_name}\" is the same as the old name. No change.")
+            return True
+        if new_name in self.schemas:
+            logger.warning(f"Schema name \"{new_name}\" already exists. Cannot rename.")
+            return False
+
+        schema_obj = self.schemas.pop(old_name)
+        schema_obj.__name__ = new_name # Update the internal name of the schema class
+        self.schemas[new_name] = schema_obj
+
+        if self.active_schema_name == old_name:
+            self.active_schema_name = new_name
+
+        logger.info(f"Schema \"{old_name}\" renamed to \"{new_name}\" successfully.")
+        return True
 
     def delete_schema(
             self,
