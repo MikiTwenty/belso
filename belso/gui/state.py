@@ -21,6 +21,7 @@ class GUIState:
     - `_counter` (`int`): Internal counter for unique schema names.
     """
     def __init__(self) -> None:
+        logger.debug("Initializing GUI state...")
         self.schemas: Dict[str, Type[Schema]] = {}
         self.active_schema_name: Optional[str] = None
         self.selected_field: Optional[BaseField] = None
@@ -67,9 +68,9 @@ class GUIState:
         self.active_schema_name = name
         # Increment counter only if the base "Schema" name was used and incremented
         if name.startswith("Schema") and name[len("Schema"):].isdigit():
-             self._counter = max(self._counter, int(name[len("Schema"):]) + 1)
+            self._counter = max(self._counter, int(name[len("Schema"):]) + 1)
         else:
-             self._counter +=1 # general increment if a custom name was provided or for next default
+            self._counter +=1 # general increment if a custom name was provided or for next default
         return name
 
     def rename_schema(
@@ -107,6 +108,7 @@ class GUIState:
 
         if self.active_schema_name == old_name:
             self.active_schema_name = new_name
+            logger.debug(f"Active schema set to \"{self.active_schema_name}\".")
 
         logger.info(f"Schema \"{old_name}\" renamed to \"{new_name}\" successfully.")
         return True
@@ -124,8 +126,12 @@ class GUIState:
         logger.debug(f"Deleting schema \"{name}\"...")
         if name in self.schemas:
             del self.schemas[name]
+            logger.info(f"Schema \"{name}\" deleted successfully.")
             if self.active_schema_name == name:
                 self.active_schema_name = next(iter(self.schemas), None)
+                logger.debug(f"Active schema set to \"{self.active_schema_name}\".")
+        else:
+            logger.warning(f"Schema \"{name}\" not found for deletion.")
 
     def get_active_schema(self) -> Optional[Type[Schema]]:
         """

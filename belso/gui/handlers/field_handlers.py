@@ -12,41 +12,47 @@ from belso.utils.mappings.type_mappings import _FILE_TYPE_MAP
 
 logger = logging.getLogger(__name__)
 
-def _parse_range(range_str: str) -> Optional[tuple]:
+def _merge_range(min_val: str, max_val: str) -> Optional[tuple]:
     """
-    Converte una stringa di intervallo in una tupla.\n
+    Merge min and max values into a range tuple.\n
     ---
     ### Args
-    - `range_str` (`str`): stringa di intervallo nel formato "min,max".\n
+    - `min_val` (`str`): minimum value as string.
+    - `max_val` (`str`): maximum value as string.\n
     ---
     ### Returns
-    - `Optional[tuple]`: tupla (min, max) o None se la stringa è vuota o invalida.
+    - `Optional[tuple]`: tuple (min, max) or None if both values are empty.
     """
-    if not range_str or range_str.strip() == "":
+    if not min_val.strip() and not max_val.strip():
         return None
 
     try:
-        parts = range_str.split(",")
-        if len(parts) != 2:
-            return None
+        # Parse min value
+        if min_val.strip():
+            min_parsed = int(min_val.strip()) if min_val.strip().isdigit() else float(min_val.strip())
+        else:
+            min_parsed = 0  # Default minimum value
 
-        min_val = int(parts[0].strip()) if parts[0].strip().isdigit() else float(parts[0].strip())
-        max_val = int(parts[1].strip()) if parts[1].strip().isdigit() else float(parts[1].strip())
+        # Parse max value
+        if max_val.strip():
+            max_parsed = int(max_val.strip()) if max_val.strip().isdigit() else float(max_val.strip())
+        else:
+            max_parsed = float('inf')  # Default to infinity if not specified
 
-        return (min_val, max_val)
+        return (min_parsed, max_parsed)
     except (ValueError, IndexError):
-        logger.warning(f"Formato intervallo non valido: {range_str}")
+        logger.warning(f"Invalid range values: min={min_val}, max={max_val}")
         return None
 
 def _parse_enum(enum_str: str) -> Optional[List[Any]]:
     """
-    Converte una stringa di enum in una lista di valori.\n
+    Convert an enum string into a list of values.\n
     ---
     ### Args
-    - `enum_str` (`str`): stringa di enum con valori separati da virgola.\n
+    - `enum_str` (`str`): enum string with comma-separated values.\n
     ---
     ### Returns
-    - `Optional[List[Any]]`: lista di valori o None se la stringa è vuota.
+    - `Optional[List[Any]]`: list of values or None if the string is empty.
     """
     if not enum_str or enum_str.strip() == "":
         return None
@@ -60,14 +66,24 @@ def handle_add_field(
         req: bool,
         default: str,
         state: GUIState,
-        length_range: str = "",
+        # String options
+        length_min: str = "",
+        length_max: str = "",
         regex: str = "",
         format_: str = "",
-        range_: str = "",
-        exclusive_range: str = "",
+        # Number options
+        range_min: str = "",
+        range_max: str = "",
+        exclusive_min: str = "",
+        exclusive_max: str = "",
         multiple_of: Optional[float] = None,
-        items_range: str = "",
-        properties_range: str = "",
+        # List options
+        items_min: str = "",
+        items_max: str = "",
+        # Dict options
+        properties_min: str = "",
+        properties_max: str = "",
+        # Common options
         enum: str = ""
     ) -> GUIState:
     """
@@ -79,14 +95,19 @@ def handle_add_field(
     - `desc` (`str`): The description of the field.
     - `req` (`bool`): Whether the field is required.
     - `default` (`str`): The default value of the field.
-    - `length_range` (`str`): Range of valid string lengths.
+    - `length_min` (`str`): Minimum length for strings.
+    - `length_max` (`str`): Maximum length for strings.
     - `regex` (`str`): Regular expression for validating strings.
     - `format_` (`str`): Format for validating strings.
-    - `range_` (`str`): Range of valid numeric values.
-    - `exclusive_range` (`str`): Exclusive range of valid numeric values.
+    - `range_min` (`str`): Minimum value for numbers.
+    - `range_max` (`str`): Maximum value for numbers.
+    - `exclusive_min` (`str`): Exclusive minimum value for numbers.
+    - `exclusive_max` (`str`): Exclusive maximum value for numbers.
     - `multiple_of` (`Optional[float]`): Multiple of valid numeric values.
-    - `items_range` (`str`): Range of valid list items.
-    - `properties_range` (`str`): Range of valid object properties.
+    - `items_min` (`str`): Minimum number of items in a list.
+    - `items_max` (`str`): Maximum number of items in a list.
+    - `properties_min` (`str`): Minimum number of properties in an object.
+    - `properties_max` (`str`): Maximum number of properties in an object.
     - `enum` (`str`): List of valid values.
     - `state` (`GUIState`): The current GUI state.\n
     ---
@@ -100,7 +121,7 @@ def handle_add_field(
 
     py_type = _FILE_TYPE_MAP.get(type_, str)
 
-    # Prepara i parametri avanzati
+    # Prepare basic parameters
     kwargs = {
         "name": name,
         "type": py_type,
@@ -109,34 +130,43 @@ def handle_add_field(
         "default": default or None,
     }
 
-    # Aggiungi parametri specifici per tipo
+    # Add type-specific parameters
     if type_ == "str":
+        length_range = _merge_range(length_min, length_max)
         if length_range:
-            kwargs["length_range"] = _parse_range(length_range)
+            kwargs["length_range"] = length_range
         if regex and regex.strip():
             kwargs["regex"] = regex.strip()
         if format_ and format_.strip():
             kwargs["format"] = format_.strip()
 
     if type_ in ["int", "float"]:
-        if range_:
-            kwargs["range"] = _parse_range(range_)
+        range_tuple = _merge_range(range_min, range_max)
+        if range_tuple:
+            kwargs["range"] = range_tuple
+
+        exclusive_range = _merge_range(exclusive_min, exclusive_max)
         if exclusive_range:
-            kwargs["exclusive_range"] = _parse_range(exclusive_range)
+            kwargs["exclusive_range"] = exclusive_range
+
         if multiple_of is not None:
             kwargs["multiple_of"] = multiple_of
 
-    if type_ == "list" and items_range:
-        kwargs["items_range"] = _parse_range(items_range)
+    if type_ == "list":
+        items_range = _merge_range(items_min, items_max)
+        if items_range:
+            kwargs["items_range"] = items_range
 
-    if type_ == "dict" and properties_range:
-        kwargs["properties_range"] = _parse_range(properties_range)
+    if type_ == "dict":
+        properties_range = _merge_range(properties_min, properties_max)
+        if properties_range:
+            kwargs["properties_range"] = properties_range
 
-    # Enum è comune a tutti i tipi
+    # Enum is common to all types
     if enum:
         kwargs["enum"] = _parse_enum(enum)
 
-    # Crea il nuovo campo con tutti i parametri
+    # Create the new field with all parameters
     new_field = Field(**kwargs)
 
     if state.selected_field:
@@ -186,56 +216,46 @@ def handle_remove_field(
     ### Returns
     - `GUIState`: The updated GUI state.
     """
-    logger.info(f"Removing field \"{field.name}\" from schema \"{schema.name}\".")
+    logger.info(f"Removing field \"{field.name}\" from schema \"{schema.__name__}\".")
     try:
         schema.fields = [f for f in schema.fields if f.name != field.name]
         logger.info("Field removed successfully.")
         return state.clone()
     except Exception as e:
-        logger.error(f"Errore nella rimozione campo: {e}")
+        logger.error(f"Error removing field: {e}")
+        return state.clone()
 
-def handle_type_change(
-        t: str,
-        length_range: str,
-        regex: str,
-        format_: str,
-        range_: str,
-        exclusive_range: str,
-        multiple_of: Optional[float],
-        items_range: str,
-        properties_range: str
-    ) -> tuple:
+def handle_type_change(type_: str) -> tuple:
     """
-    Update visibility and reset values depending on field type.\n
+    Handle type change in the field editor.\n
     ---
     ### Args
-    - `t` (`str`): The selected field type.
-    - `length_range` (`str`): Range of valid string lengths.
-    - `regex` (`str`): Regular expression for validating strings.
-    - `format_` (`str`): Format for validating strings.
-    - `range_` (`str`): Range of valid numeric values.
-    - `exclusive_range` (`str`): Exclusive range of valid numeric values.
-    - `multiple_of` (`Optional[float]`): Multiple of valid numeric values.
-    - `items_range` (`str`): Range of valid list items.
-    - `properties_range` (`str`): Range of valid object properties.\n
+    - `type_` (`str`): the new type.\n
     ---
     ### Returns
-    - `tuple`: Updated visibility and reset values for fields.
+    - `tuple`: visibility and values for all field options.
     """
+    # Determine visibility based on type
+    is_str = type_ == "str"
+    is_num = type_ in ["int", "float"]
+    is_list = type_ == "list"
+    is_dict = type_ == "dict"
+
     return (
-        gr.update(visible=t == "str"),  # str_options
-        gr.update(visible=t in ["int", "float"]),  # num_options
-        gr.update(visible=t == "list"),  # list_options
-        gr.update(visible=t == "dict"),  # dict_options
+        # Prima aggiorna visibilità dei gruppi
+        gr.update(visible=is_str),   # str_options
+        gr.update(visible=is_num),   # num_options
+        gr.update(visible=is_list),  # list_options
+        gr.update(visible=is_dict),  # dict_options
 
-        "" if t != "str" else length_range,  # length_range
-        "" if t != "str" else regex,  # regex
-        "" if t != "str" else format_,  # format_
+        # Poi i valori/visibilità dei singoli componenti
+        gr.update(visible=is_str, value=""), gr.update(visible=is_str, value=""),
+        gr.update(visible=is_str, value=""), gr.update(visible=is_str, value=""),
 
-        "" if t not in ["int", "float"] else range_,  # range_
-        "" if t not in ["int", "float"] else exclusive_range,  # exclusive_range
-        None if t not in ["int", "float"] else multiple_of,  # multiple_of
+        gr.update(visible=is_num, value=""), gr.update(visible=is_num, value=""),
+        gr.update(visible=is_num, value=""), gr.update(visible=is_num, value=""),
+        gr.update(visible=is_num, value=None),
 
-        "" if t != "list" else items_range,  # items_range
-        "" if t != "dict" else properties_range  # properties_range
+        gr.update(visible=is_list, value=""), gr.update(visible=is_list, value=""),
+        gr.update(visible=is_dict, value=""), gr.update(visible=is_dict, value=""),
     )

@@ -1,19 +1,20 @@
 # belso.gui.components.field_editor
 
 import logging
-from typing import Optional, List
+from typing import Optional, List, Any
 
-from belso.core.field import Field
+from belso.core.field import BaseField, _VALIDATION_PARAMS
+from belso.utils.mappings.type_mappings import _FILE_TYPE_MAP
 
 logger = logging.getLogger(__name__)
 
-def open_field_editor_data(existing_field:Optional[Field]=None) -> dict:
+def open_field_editor_data(existing_field:Optional[BaseField]=None) -> dict:
     """
     Open the field editor with the given field data.
     If no field is given, open the editor with empty fields.\n
     ---
     ### Args
-    - `existing_field` (`Optional[Field]`): field to edit.\n
+    - `existing_field` (`Optional[BaseField]`): field to edit.\n
     ---
     ### Returns
     - `dict`: field data for the editor.
@@ -71,17 +72,11 @@ def get_field_type_options(type_name: str) -> List[str]:
     ### Returns
     - `List[str]`: lista delle opzioni disponibili.
     """
-    # Opzioni comuni a tutti i tipi
-    common_options = ["enum"]
+    # Get the Python type from the type name
+    py_type = _FILE_TYPE_MAP.get(type_name, str)
 
-    # Opzioni specifiche per tipo
-    type_options = {
-        "str": ["length_range", "regex", "format_"],
-        "int": ["range_", "exclusive_range", "multiple_of"],
-        "float": ["range_", "exclusive_range", "multiple_of"],
-        "bool": [],
-        "list": ["items_range"],
-        "dict": ["properties_range"],
-    }
+    # Get type-specific validation options
+    type_options = _VALIDATION_PARAMS.get(py_type, _VALIDATION_PARAMS[Any])
 
-    return common_options + type_options.get(type_name, [])
+    # Combine and return all options
+    return sorted(list(type_options))

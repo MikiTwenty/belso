@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 def render_schema_tree(
         schema: Type[Schema],
         state_component: gr.State,
-        state_value: GUIState, # Renamed from state to avoid conflict if state_component is also named state
+        state: GUIState,
         depth: int = 0
     ) -> None:
     """
@@ -25,7 +25,7 @@ def render_schema_tree(
     ### Args
     - `schema` (`Type[Schema]`): The schema whose fields to display.
     - `state_component` (`gr.State`): The state component for the GUI.
-    - `state_value` (`GUIState`): The current GUI state_value.
+    - `state` (`GUIState`): The current GUI state.
     - `depth` (`int`): Level of indentation for nested fields.
     """
     if not schema or not hasattr(schema, "fields"):
@@ -39,21 +39,24 @@ def render_schema_tree(
         with gr.Row():
             gr.HTML(label)
             gr.Button("✏️", size="sm", elem_id=f"edit-{schema.__name__}-{field.name}").click(
-                fn=lambda s, current_field=field: handle_edit_field(s, current_field), # Use current_field in lambda
+                fn=lambda s,
+                current_field=field: handle_edit_field(s, current_field), # Use current_field in lambda
                 inputs=[state_component],
                 outputs=[state_component],
             )
 
             gr.Button("🗑️", size="sm", elem_id=f"del-{schema.__name__}-{field.name}").click(
-                fn=lambda s, current_schema=schema, current_field=field: handle_remove_field(s, current_schema, current_field), # Use current_schema and current_field
+                fn=lambda s,
+                current_schema=schema,
+                current_field=field:handle_remove_field(s, current_schema, current_field), # Use current_schema and current_field
                 inputs=[state_component],
                 outputs=[state_component],
             )
 
         # Handle nested schema or array of schema
         if isinstance(field, NestedField):
-            render_schema_tree(field.schema, state_component, state_value, depth + 1)
+            render_schema_tree(field.schema, state_component, state, depth + 1)
         elif isinstance(field, ArrayField):
             # If item type is a schema, render it
             if hasattr(field.items_type, "fields"): # Check if items_type is a class with fields
-                render_schema_tree(field.items_type, state_component, state_value, depth + 1)
+                render_schema_tree(field.items_type, state_component, state, depth + 1)

@@ -18,10 +18,10 @@ logger = logging.getLogger(__name__)
 
 def build_interface(initial_state: GUIState) -> gr.Blocks:
     """
-    Build the Belso Schema Editor interface.
+    Build the Belso Schema Editor interface.\n
     ---
     ### Args
-    - `initial_state` (`GUIState`): the initial state of the application.
+    - `initial_state` (`GUIState`): the initial state of the application.\n
     ---
     ### Returns
     - `gr.Blocks`:  the Gradio application.
@@ -63,7 +63,7 @@ def build_interface(initial_state: GUIState) -> gr.Blocks:
                             name_edit_textbox = gr.Textbox(label="Schame Name", value=original_name, scale=3, elem_id=f"schema-name-edit-{original_name}")
                             gr.Button("✏️ Rename Schema", size="sm", elem_id=f"save-schema-name-{original_name}").click(
                                 fn=lambda state_val, new_name_val, captured_old_name=original_name: handle_rename_schema(state_val, captured_old_name, new_name_val),
-                                inputs=[current_state, name_edit_textbox], # Pass current_state and the textbox component's value
+                                inputs=[current_state, name_edit_textbox],
                                 outputs=[current_state]
                             )
                             gr.Button("🗑️ Delete Schema", size="sm", elem_id=f"delete-schema-{original_name}").click(
@@ -93,45 +93,70 @@ def build_interface(initial_state: GUIState) -> gr.Blocks:
 
                             # Contenitore per opzioni dinamiche
                             with gr.Accordion("Advanced Setting", open=False):
-                                # Opzioni per stringhe
+                                # String options
                                 with gr.Group(visible=field_data["type"] == "str") as str_options:
-                                    length_range = gr.Textbox(
-                                        label="Lenght Range (min,max)",
-                                        value=str(field_data.get("length_range", ""))
-                                    )
+                                    with gr.Row():
+                                        length_min = gr.Textbox(
+                                            label="Min Length",
+                                            value=str(field_data.get("length_min", ""))
+                                        )
+                                        length_max = gr.Textbox(
+                                            label="Max Length",
+                                            value=str(field_data.get("length_max", ""))
+                                        )
                                     regex = gr.Textbox(label="Regex", value=field_data.get("regex", ""))
                                     format_ = gr.Textbox(label="Format", value=field_data.get("format_", ""))
 
-                                # Opzioni per numeri (int e float)
+                                # Number options (int and float)
                                 with gr.Group(visible=field_data["type"] in ["int", "float"]) as num_options:
-                                    range_ = gr.Textbox(
-                                        label="Range (min,max)",
-                                        value=str(field_data.get("range_", ""))
-                                    )
-                                    exclusive_range = gr.Textbox(
-                                        label="Exclusive Range (min,max)",
-                                        value=str(field_data.get("exclusive_range", ""))
-                                    )
+                                    with gr.Row():
+                                        range_min = gr.Textbox(
+                                            label="Min Value",
+                                            value=str(field_data.get("range_min", ""))
+                                        )
+                                        range_max = gr.Textbox(
+                                            label="Max Value",
+                                            value=str(field_data.get("range_max", ""))
+                                        )
+                                    with gr.Row():
+                                        exclusive_min = gr.Textbox(
+                                            label="Exclusive Min",
+                                            value=str(field_data.get("exclusive_min", ""))
+                                        )
+                                        exclusive_max = gr.Textbox(
+                                            label="Exclusive Max",
+                                            value=str(field_data.get("exclusive_max", ""))
+                                        )
                                     multiple_of = gr.Number(
                                         label="Multiple of",
                                         value=field_data.get("multiple_of", None)
                                     )
 
-                                # Opzioni per liste
+                                # List options
                                 with gr.Group(visible=field_data["type"] == "list") as list_options:
-                                    items_range = gr.Textbox(
-                                        label="Items Range (min,max)",
-                                        value=str(field_data.get("items_range", ""))
-                                    )
+                                    with gr.Row():
+                                        items_min = gr.Textbox(
+                                            label="Min Items",
+                                            value=str(field_data.get("items_min", ""))
+                                        )
+                                        items_max = gr.Textbox(
+                                            label="Max Items",
+                                            value=str(field_data.get("items_max", ""))
+                                        )
 
-                                # Opzioni per oggetti/dizionari
+                                # Dictionary/object options
                                 with gr.Group(visible=field_data["type"] == "dict") as dict_options:
-                                    properties_range = gr.Textbox(
-                                        label="Properties Range (min,max)",
-                                        value=str(field_data.get("properties_range", ""))
-                                    )
+                                    with gr.Row():
+                                        properties_min = gr.Textbox(
+                                            label="Min Properties",
+                                            value=str(field_data.get("properties_min", ""))
+                                        )
+                                        properties_max = gr.Textbox(
+                                            label="Max Properties",
+                                            value=str(field_data.get("properties_max", ""))
+                                        )
 
-                                # Opzione enum comune a tutti i tipi
+                                # Common option for all types
                                 enum = gr.Textbox(
                                     label="Enum (comma separated)",
                                     value=str(field_data.get("enum", ""))
@@ -140,26 +165,21 @@ def build_interface(initial_state: GUIState) -> gr.Blocks:
                             # Aggiorna la visibilità e i valori delle opzioni quando cambia il tipo
                             type_.change(
                                 fn=handle_type_change,
-                                inputs=[
-                                    type_,
-                                    length_range, regex, format_,
-                                    range_, exclusive_range, multiple_of,
-                                    items_range, properties_range
-                                ],
+                                inputs=[type_],
                                 outputs=[
-                                    str_options, num_options, list_options, dict_options,
-                                    length_range, regex, format_,
-                                    range_, exclusive_range, multiple_of,
-                                    items_range, properties_range
+                                    str_options, num_options, list_options, dict_options,  # ✅ GRUPPI
+                                    length_min, length_max, regex, format_,
+                                    range_min, range_max, exclusive_min, exclusive_max, multiple_of,
+                                    items_min, items_max, properties_min, properties_max
                                 ]
                             )
 
                             # Raccogli tutti i campi di input per passarli alla funzione di salvataggio
                             all_inputs = [
                                 name, type_, desc, req, default, current_state,
-                                length_range, regex, format_,
-                                range_, exclusive_range, multiple_of,
-                                items_range, properties_range, enum
+                                length_min, length_max, regex, format_,
+                                range_min, range_max, exclusive_min, exclusive_max, multiple_of,
+                                items_min, items_max, properties_min, properties_max, enum
                             ]
 
                             gr.Button("💾 Save Field", scale=1).click(
