@@ -2,15 +2,18 @@ import React from "react";
 import { getAllowedParams, FIELD_TYPES, emptyField } from "./constants";
 import "./styles.css";
 
-export default function FieldEditor({ field, index, onFieldChange, onRemoveField, schemas = [], selectedSchemaIdx = 0, onFieldSchemaRef }) {
+export default function FieldEditor({
+  field,
+  index,
+  onFieldChange,
+  onRemoveField,
+  schemas = [],
+  selectedSchemaIdx = 0,
+  onFieldSchemaRef,
+}) {
   const allowedParams = getAllowedParams(field.type);
   // For nested schema selection
   const schemaOptions = schemas.filter((_, idx) => idx !== selectedSchemaIdx);
-
-  // Only show param if value is not undefined, null, or empty string
-  function showParam(param) {
-    return allowedParams.includes(param) && field[param] !== undefined && field[param] !== null && field[param] !== "";
-  }
 
   return (
     <div className="field-editor">
@@ -37,122 +40,121 @@ export default function FieldEditor({ field, index, onFieldChange, onRemoveField
             onChange={e => onFieldChange(index, "required", e.target.checked)}
           /> Required
         </label>
-        <button className="field-remove-button" onClick={() => onRemoveField(index)}>Remove</button>
+        <button className="field-remove-button" onClick={() => onRemoveField(index)}>
+          Remove
+        </button>
       </div>
 
-      {/* Dynamic params - only show if value is specified or being edited */}
+      {/* Dynamic params - show ALL allowed for the type */}
       <div className="field-params">
-        {showParam("description") && (
+        {allowedParams.includes("description") && (
           <div className="field-param-container" style={{ flex: 1, minWidth: 200 }}>
             <label>Description:</label>
             <input
               placeholder="Field description"
-              value={field.description}
+              value={field.description || ""}
               onChange={e => onFieldChange(index, "description", e.target.value)}
             />
           </div>
         )}
-        {showParam("default") && (
+        {allowedParams.includes("default") && (
           <div className="field-param-container">
             <label>Default Value:</label>
             <input
               placeholder="Default value"
-              value={field.default}
+              value={field.default || ""}
               onChange={e => onFieldChange(index, "default", e.target.value)}
             />
           </div>
         )}
-        {/* Repeat for all other params, using showParam(param) */}
-        {allowedParams.includes("enum") && (field.enum || field.enum === "") && (
+        {allowedParams.includes("enum") && (
           <div className="field-param-container">
             <label>Enum Values:</label>
             <input
               placeholder="Value1, Value2, Value3"
-              value={field.enum}
-              onChange={e => {
-                onFieldChange(index, "enum", e.target.value);
-              }}
+              value={field.enum || ""}
+              onChange={e => onFieldChange(index, "enum", e.target.value)}
               style={{ width: 180 }}
               title="Enter values separated by commas"
             />
           </div>
         )}
-        {allowedParams.includes("range_") && (field.range_ || field.range_ === "") && (
+        {allowedParams.includes("range_") && (
           <div className="field-param-container">
             <label>Range (min,max):</label>
             <input
               placeholder="0,100"
-              value={field.range_}
+              value={field.range_ || ""}
               onChange={e => onFieldChange(index, "range_", e.target.value)}
             />
           </div>
         )}
-        {allowedParams.includes("exclusive_range") && (field.exclusive_range || field.exclusive_range === "") && (
+        {allowedParams.includes("exclusive_range") && (
           <div className="field-param-container">
             <label>Exclusive Range:</label>
             <input
               placeholder="true,false"
-              value={field.exclusive_range}
+              value={field.exclusive_range || ""}
               onChange={e => onFieldChange(index, "exclusive_range", e.target.value)}
             />
           </div>
         )}
-        {allowedParams.includes("length_range") && (field.length_range || field.length_range === "") && (
+        {allowedParams.includes("length_range") && (
           <div className="field-param-container">
             <label>Length Range:</label>
             <input
               placeholder="1,100"
-              value={field.length_range}
+              value={field.length_range || ""}
               onChange={e => onFieldChange(index, "length_range", e.target.value)}
             />
           </div>
         )}
-        {allowedParams.includes("items_range") && (field.items_range || field.items_range === "") && (
+        {allowedParams.includes("items_range") && (
           <div className="field-param-container">
             <label>Items Range:</label>
             <input
               placeholder="1,10"
-              value={field.items_range}
+              value={field.items_range || ""}
               onChange={e => onFieldChange(index, "items_range", e.target.value)}
             />
           </div>
         )}
-        {allowedParams.includes("properties_range") && (field.properties_range || field.properties_range === "") && (
+        {allowedParams.includes("properties_range") && (
           <div className="field-param-container">
             <label>Properties Range:</label>
             <input
               placeholder="1,10"
-              value={field.properties_range}
+              value={field.properties_range || ""}
               onChange={e => onFieldChange(index, "properties_range", e.target.value)}
             />
           </div>
         )}
-        {allowedParams.includes("regex") && (field.regex || field.regex === "") && (
+        {allowedParams.includes("regex") && (
           <div className="field-param-container">
             <label>Regex Pattern:</label>
             <input
               placeholder="^[a-z]+$"
-              value={field.regex}
+              value={field.regex || ""}
               onChange={e => onFieldChange(index, "regex", e.target.value)}
             />
           </div>
         )}
-        {allowedParams.includes("multiple_of") && (field.multiple_of || field.multiple_of === "") && (
+        {allowedParams.includes("multiple_of") && (
           <div className="field-param-container">
             <label>Multiple Of:</label>
             <input
               placeholder="2"
-              value={field.multiple_of}
+              value={field.multiple_of || ""}
               onChange={e => onFieldChange(index, "multiple_of", e.target.value)}
             />
           </div>
         )}
-        {allowedParams.includes("format_") && (field.format_ || field.format_ === "") && (
+        {allowedParams.includes("format_") && (
           <div className="field-param-container">
             <label>Format:</label>
             <input
               placeholder="email"
-              value={field.format_}
+              value={field.format_ || ""}
               onChange={e => onFieldChange(index, "format_", e.target.value)}
             />
           </div>
@@ -181,7 +183,7 @@ export default function FieldEditor({ field, index, onFieldChange, onRemoveField
           <h4>Nested Fields (Schema: {field.name || "Unnamed"})</h4>
           <NestedFieldList
             fields={field.fields}
-            onFieldsChange={(nestedFields) => onFieldChange(index, "fields", nestedFields)}
+            onFieldsChange={nestedFields => onFieldChange(index, "fields", nestedFields)}
             schemas={schemas}
             selectedSchemaIdx={selectedSchemaIdx}
           />
@@ -298,7 +300,7 @@ function NestedFieldList({ fields, onFieldsChange, schemas = [], selectedSchemaI
               <h4>Sub-Schema: {field.name || "Unnamed"}</h4>
               <NestedFieldList
                 fields={field.fields || []}
-                onFieldsChange={(nestedFields) => handleNestedFieldChange(idx, "fields", nestedFields)}
+                onFieldsChange={nestedFields => handleNestedFieldChange(idx, "fields", nestedFields)}
                 schemas={schemas}
                 selectedSchemaIdx={selectedSchemaIdx}
               />
