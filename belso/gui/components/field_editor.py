@@ -57,8 +57,11 @@ def open_field_editor_data(existing_field:Optional[BaseField]=None) -> dict:
             field_data["properties_range"] = existing_field.properties_range
 
         # Opzione enum comune a tutti i tipi
-        if hasattr(existing_field, "enum"):
-            field_data["enum"] = existing_field.enum
+        if hasattr(existing_field, "enum") and existing_field.enum:
+            field_data["enum"] = ",".join(str(v) for v in existing_field.enum)
+        else:
+            field_data["enum"] = ""
+
 
     return field_data
 

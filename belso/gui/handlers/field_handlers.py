@@ -1,7 +1,7 @@
 # belso.gui.handlers.field_handlers
 
 import logging
-from typing import Optional, List, Any
+from typing import Optional, List, Any, Tuple
 
 import gradio as gr
 
@@ -12,7 +12,10 @@ from belso.utils.mappings.type_mappings import _FILE_TYPE_MAP
 
 logger = logging.getLogger(__name__)
 
-def _merge_range(min_val: str, max_val: str) -> Optional[tuple]:
+def _merge_range(
+        min_val: str,
+        max_val: str
+    ) -> Optional[tuple]:
     """
     Merge min and max values into a range tuple.\n
     ---
@@ -66,26 +69,22 @@ def handle_add_field(
         req: bool,
         default: str,
         state: GUIState,
-        # String options
+        schema_name: str = "",
         length_min: str = "",
         length_max: str = "",
         regex: str = "",
         format_: str = "",
-        # Number options
         range_min: str = "",
         range_max: str = "",
         exclusive_min: str = "",
         exclusive_max: str = "",
         multiple_of: Optional[float] = None,
-        # List options
         items_min: str = "",
         items_max: str = "",
-        # Dict options
         properties_min: str = "",
         properties_max: str = "",
-        # Common options
         enum: str = ""
-    ) -> GUIState:
+    ) -> Tuple[GUIState, str]:
     """
     Open the field editor to add a new field.\n
     ---
@@ -95,6 +94,8 @@ def handle_add_field(
     - `desc` (`str`): The description of the field.
     - `req` (`bool`): Whether the field is required.
     - `default` (`str`): The default value of the field.
+    - `state` (`GUIState`): The current GUI state.
+    - `schema_name` (`str`): The name of the schema.
     - `length_min` (`str`): Minimum length for strings.
     - `length_max` (`str`): Maximum length for strings.
     - `regex` (`str`): Regular expression for validating strings.
@@ -108,20 +109,18 @@ def handle_add_field(
     - `items_max` (`str`): Maximum number of items in a list.
     - `properties_min` (`str`): Minimum number of properties in an object.
     - `properties_max` (`str`): Maximum number of properties in an object.
-    - `enum` (`str`): List of valid values.
-    - `state` (`GUIState`): The current GUI state.\n
+    - `enum` (`str`): List of valid values.\n
     ---
     ### Returns
-    - `GUIState`: The updated GUI state.
+    - `Tuple[GUIState, str]`: The updated GUI state and the name of the schema.
     """
-    schema = state.get_active_schema()
+    schema = state.schemas.get(schema_name)
     if not schema:
-        logger.warning("No active schema found.")
-        return state.clone()
+        logger.warning(f"No schema found with name: {schema_name}")
+        return state.clone(), ""  # Return empty string as second value
 
     py_type = _FILE_TYPE_MAP.get(type_, str)
 
-    # Prepare basic parameters
     kwargs = {
         "name": name,
         "type": py_type,
@@ -130,48 +129,54 @@ def handle_add_field(
         "default": default or None,
     }
 
-    # Add type-specific parameters
-    if type_ == "str":
+    # String
+    if length_min.strip() or length_max.strip():
         length_range = _merge_range(length_min, length_max)
         if length_range:
             kwargs["length_range"] = length_range
-        if regex and regex.strip():
-            kwargs["regex"] = regex.strip()
-        if format_ and format_.strip():
-            kwargs["format"] = format_.strip()
 
-    if type_ in ["int", "float"]:
-        range_tuple = _merge_range(range_min, range_max)
-        if range_tuple:
-            kwargs["range"] = range_tuple
+    if regex.strip():
+        kwargs["regex"] = regex.strip()
 
+    if format_.strip():
+        kwargs["format"] = format_.strip()
+
+    # Number
+    if range_min.strip() or range_max.strip():
+        range_ = _merge_range(range_min, range_max)
+        if range_:
+            kwargs["range"] = range_
+
+    if exclusive_min.strip() or exclusive_max.strip():
         exclusive_range = _merge_range(exclusive_min, exclusive_max)
         if exclusive_range:
             kwargs["exclusive_range"] = exclusive_range
 
-        if multiple_of is not None:
-            kwargs["multiple_of"] = multiple_of
+    if isinstance(multiple_of, (int, float)) and multiple_of != 0:
+        kwargs["multiple_of"] = float(multiple_of)
 
-    if type_ == "list":
+    # List
+    if items_min.strip() or items_max.strip():
         items_range = _merge_range(items_min, items_max)
         if items_range:
             kwargs["items_range"] = items_range
 
-    if type_ == "dict":
+    # Dict
+    if properties_min.strip() or properties_max.strip():
         properties_range = _merge_range(properties_min, properties_max)
         if properties_range:
             kwargs["properties_range"] = properties_range
 
-    # Enum is common to all types
-    if enum:
-        kwargs["enum"] = _parse_enum(enum)
+    # Enum (comune)
+    parsed_enum = _parse_enum(enum)
+    if parsed_enum:
+        kwargs["enum"] = parsed_enum
 
-    # Create the new field with all parameters
+    # Creazione campo
     new_field = Field(**kwargs)
 
     if state.selected_field:
         logger.info("Editing existing field...")
-        # Edit mode
         schema.fields = [
             new_field if f.name == state.selected_field.name else f
             for f in schema.fields
@@ -181,7 +186,11 @@ def handle_add_field(
         schema.fields.append(new_field)
 
     state.set_selected_field(None)
-    return state.clone()
+
+    # Ensure we stay on the current schema by setting it as active
+    state.active_schema_name = schema_name
+
+    return state.clone(), schema_name
 
 def handle_edit_field(
         state: GUIState,

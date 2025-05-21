@@ -1,25 +1,26 @@
 # belso.gui.handlers.schema_handlers
 
 import logging
+from typing import Tuple
 
 from belso.gui.state import GUIState
 
 logger = logging.getLogger(__name__)
 
-def handle_add_schema(state: GUIState) -> GUIState:
+def handle_add_schema(state: GUIState) -> Tuple[GUIState, str]:
     """
     Adds a new empty schema to the editor.\n
     ---
     ### Args
-    - `state` (`GUIState`): The current GUI state.\n
+    - `state` (`GUIState`): the current GUI state.\n
     ---
     ### Returns
-    - `GUIState`: The updated GUI state.
+    - `Tuple[GUIState, str]`: the updated GUI state and the name of the new schema.
     """
     logger.info(f"Adding new schema...")
     state.create_schema()
     logger.info(f"New schema added: \"{state.active_schema_name}\".")
-    return state.clone()
+    return state.clone(), state.active_schema_name
 
 def handle_rename_schema(
         state: GUIState,
@@ -40,17 +41,13 @@ def handle_rename_schema(
     logger.info(f"Handling rename schema request: from \"{old_name}\" to \"{new_name}\".")
     if not new_name.strip():
         logger.warning("New schema name cannot be empty.")
-        # Qui potresti voler inviare un messaggio all'utente, es: gr.Info("Il nome non può essere vuoto")
-        # Tuttavia, per mantenere la funzione di handler semplice, gestiamo solo lo stato.
-        # L'UI dovrebbe idealmente prevenire nomi vuoti.
-        return state.clone() # Clona per aggiornare l'UI se necessario (es. per pulire un input errato)
+        return state.clone()
 
     success = state.rename_schema(old_name, new_name)
     if success:
         logger.info(f"Schema renamed from \"{old_name}\" to \"{new_name}\".")
     else:
         logger.warning(f"Failed to rename schema from \"{old_name}\" to \"{new_name}\".")
-        # Anche qui, potresti voler inviare un gr.Warning("Nome già esistente o errore.")
     return state.clone()
 
 def handle_switch_schema(

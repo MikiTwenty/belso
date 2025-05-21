@@ -10,7 +10,8 @@ from belso.gui.handlers import (
     handle_add_schema,
     handle_add_field,
     handle_rename_schema,
-    handle_type_change
+    handle_type_change,
+    handle_switch_schema
 )
 from belso.gui.components.field_editor import open_field_editor_data
 
@@ -32,22 +33,30 @@ def build_interface(initial_state: GUIState) -> gr.Blocks:
 
         # Current state of the application
         current_state = gr.State(value=initial_state)
+        selected_schema_name = gr.State(value=initial_state.active_schema_name or "")
 
         # Buttons for schema operations
-        gr.Button("➕ Nuovo Schema", size="sm").click(
+        gr.Button(
+            "➕ Add Schema",
+            size="sm"
+        ).click(
             fn=handle_add_schema,
             inputs=[current_state],
-            outputs=[current_state],
+            outputs=[current_state, selected_schema_name],
         )
 
         # Render the schema tree
-        @gr.render(inputs=[current_state])
-        def render(gui_state: GUIState) -> None:
+        @gr.render(inputs=[current_state, selected_schema_name])
+        def render(
+                gui_state: GUIState,
+                selected_name: str
+            ) -> None:
             """
             Render the schema tree for the current state.\n
             ---
             ### Args
             - `gui_state` (`GUIState`): the current state of the application.
+            - `selected_name` (`str`): the name of the selected schema.
             """
             # If no schemas are found, display a warning message
             if not gui_state.schemas:
@@ -55,19 +64,52 @@ def build_interface(initial_state: GUIState) -> gr.Blocks:
                 gr.Markdown("⚠️ Nessuno schema ancora creato.")
                 return
 
+            if not selected_name or selected_name not in gui_state.schemas:
+                selected_name = gui_state.active_schema_name or next(iter(gui_state.schemas), "")
+            logger.info(f"Rendering schema tree for schema: {selected_name}")
+
+            gui_state=handle_switch_schema(gui_state, selected_name)
+
+            tab_labels = list(gui_state.schemas.keys())
+            selected_index = tab_labels.index(selected_name) if selected_name in tab_labels else 0
+
             # Render the schema tree
-            with gr.Tabs():
+            with gr.Tabs(selected=selected_index) as tabs:
                 for original_name, schema in gui_state.schemas.items(): # Use original_name for closure
-                    with gr.Tab(label=original_name):
+                    with gr.Tab(label=original_name) as current_tab:
+                        tab_name_for_select = original_name
+                        current_tab.select(
+                            fn=lambda name=tab_name_for_select: name,
+                            inputs=[],
+                            outputs=[selected_schema_name],
+                        )
+                        # Schema name editing
                         with gr.Row():
-                            name_edit_textbox = gr.Textbox(label="Schame Name", value=original_name, scale=3, elem_id=f"schema-name-edit-{original_name}")
-                            gr.Button("✏️ Rename Schema", size="sm", elem_id=f"save-schema-name-{original_name}").click(
-                                fn=lambda state_val, new_name_val, captured_old_name=original_name: handle_rename_schema(state_val, captured_old_name, new_name_val),
+                            name_edit_textbox = gr.Textbox(
+                                label="Schame Name",
+                                value=original_name,
+                                scale=3,
+                                elem_id=f"schema-name-edit-{original_name}"
+                            )
+
+                            gr.Button(
+                                "✏️ Rename Schema",
+                                size="sm",
+                                elem_id=f"save-schema-name-{original_name}"
+                            ).click(
+                                fn=lambda state_val, new_name_val, captured_old_name=original_name: handle_rename_schema(
+                                    state_val, captured_old_name, new_name_val
+                                ),
                                 inputs=[current_state, name_edit_textbox],
                                 outputs=[current_state]
                             )
-                            gr.Button("🗑️ Delete Schema", size="sm", elem_id=f"delete-schema-{original_name}").click(
-                                fn=lambda s, n=original_name: s.delete_schema(n) or s.clone(),
+
+                            gr.Button(
+                                "🗑️ Delete Schema",
+                                size="sm",
+                                elem_id=f"delete-schema-{original_name}"
+                            ).click(
+                                fn=lambda state, name=original_name: state.delete_schema(name) or state.clone(),
                                 inputs=[current_state],
                                 outputs=[current_state]
                             )
@@ -91,7 +133,7 @@ def build_interface(initial_state: GUIState) -> gr.Blocks:
                             req = gr.Checkbox(label="Required", value=field_data["required"])
                             default = gr.Textbox(label="Default", value=field_data["default"])
 
-                            # Contenitore per opzioni dinamiche
+                            # Container for advanced settings
                             with gr.Accordion("Advanced Setting", open=False):
                                 # String options
                                 with gr.Group(visible=field_data["type"] == "str") as str_options:
@@ -162,7 +204,7 @@ def build_interface(initial_state: GUIState) -> gr.Blocks:
                                     value=str(field_data.get("enum", ""))
                                 )
 
-                            # Aggiorna la visibilità e i valori delle opzioni quando cambia il tipo
+                            # Update visibility of advanced settings based on type
                             type_.change(
                                 fn=handle_type_change,
                                 inputs=[type_],
@@ -174,9 +216,10 @@ def build_interface(initial_state: GUIState) -> gr.Blocks:
                                 ]
                             )
 
-                            # Raccogli tutti i campi di input per passarli alla funzione di salvataggio
+                            # All inputs for the handle_add_field function
                             all_inputs = [
                                 name, type_, desc, req, default, current_state,
+                                selected_schema_name,
                                 length_min, length_max, regex, format_,
                                 range_min, range_max, exclusive_min, exclusive_max, multiple_of,
                                 items_min, items_max, properties_min, properties_max, enum
@@ -185,7 +228,7 @@ def build_interface(initial_state: GUIState) -> gr.Blocks:
                             gr.Button("💾 Save Field", scale=1).click(
                                 fn=handle_add_field,
                                 inputs=all_inputs,
-                                outputs=[current_state]
+                                outputs=[current_state, selected_schema_name]
                             )
 
     logger.info("GUI interface built.")
