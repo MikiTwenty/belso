@@ -12,6 +12,20 @@ from belso.core.schema import Schema, BaseField
 
 _logger = get_logger(__name__)
 
+# Common parameters for all fields
+_COMMON_PARAMS = {"name", "description", "required", "default"}
+
+# Validation parameters for each type
+_VALIDATION_PARAMS: Dict[Type, set] = {
+    str: {"enum", "length_range", "regex", "format_"},
+    int: {"enum", "range_", "exclusive_range", "multiple_of"},
+    float: {"enum", "range_", "exclusive_range", "multiple_of"},
+    bool: {"enum"},
+    list: {"enum", "items_range"},
+    dict: {"enum", "properties_range"},
+    Any: {"enum"}
+}
+
 def _validate_field_params(
         type_: Type,
         **kwargs
@@ -26,47 +40,23 @@ def _validate_field_params(
     ### Returns
     - `Dict[str, Any]`: validated field parameters.
     """
+    base_type = get_origin(type_) or type_
+
+    if isinstance(type_, type) and issubclass(type_, Schema):
+        base_type = dict
+
+    allowed_keys = _VALIDATION_PARAMS.get(base_type, _VALIDATION_PARAMS[Any])
+    all_valid_keys = allowed_keys | _COMMON_PARAMS
+
     valid_params = {}
-
-    # Parametri comuni per tutti i tipi
-    common_params = ['name', 'description', 'required', 'default', 'enum']
-    for param in common_params:
-        if param in kwargs and kwargs[param] is not None:
-            valid_params[param] = kwargs[param]
-
-    # Validazione specifica per tipo
-    if type_ in (str, bytes):
-        # Parametri validi per stringhe
-        string_params = ['length_range', 'regex', 'format_']
-        for param in string_params:
-            if param in kwargs and kwargs[param] is not None:
-                valid_params[param] = kwargs[param]
-
-    if type_ in (int, float):
-        # Parametri validi per numeri
-        number_params = ['range_', 'exclusive_range', 'multiple_of']
-        for param in number_params:
-            if param in kwargs and kwargs[param] is not None:
-                valid_params[param] = kwargs[param]
-
-    if type_ == list or get_origin(type_) in (list, List):
-        # Parametri validi per liste
-        list_params = ['items_range']
-        for param in list_params:
-            if param in kwargs and kwargs[param] is not None:
-                valid_params[param] = kwargs[param]
-
-    if type_ == dict or (isinstance(type_, type) and issubclass(type_, Schema)):
-        # Parametri validi per oggetti/dizionari
-        object_params = ['properties_range']
-        for param in object_params:
-            if param in kwargs and kwargs[param] is not None:
-                valid_params[param] = kwargs[param]
-
-    # Logga eventuali parametri ignorati
     for param, value in kwargs.items():
-        if param not in valid_params and param not in common_params and value is not None:
-            _logger.warning(f"Parametro '{param}' ignorato per il tipo {type_.__name__}")
+        if value is not None and param in all_valid_keys:
+            valid_params[param] = value
+        elif value is not None:
+            _logger.warning(
+                f"Parametro '{param}' ignorato per il tipo {base_type.__name__}. "
+                f"Parametri validi: {sorted(all_valid_keys)}"
+            )
 
     return valid_params
 
@@ -283,7 +273,7 @@ class Field:
         # Valida i parametri per il tipo specifico
         valid_params = _validate_field_params(
             type,
-            **{k: v for k, v in kwargs.items() if k not in ['name', 'description', 'required', 'default']}
+            **kwargs
         )
 
         # Aggiungi i parametri base

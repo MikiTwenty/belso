@@ -1,7 +1,8 @@
 # belso.core.schema
 
-from belso.utils import get_logger
 from typing import Any, List, Optional, Type, ClassVar, Tuple, final
+
+from belso.utils import get_logger
 
 _logger = get_logger(__name__)
 
@@ -68,7 +69,7 @@ class Schema:
     @classmethod
     def get_required_fields(cls) -> List[str]:
         """
-        Get the names of all required fields in the schema.
+        Get the names of all required fields in the schema.\n
         ---
         ### Returns
         - `List[str]`: a list of required field names.
@@ -78,14 +79,14 @@ class Schema:
 
     @classmethod
     def get_field_by_name(
-        cls,
-        name: str
-    ) -> Optional[BaseField]:
+            cls,
+            name: str
+        ) -> Optional[BaseField]:
         """
-        Get a field by its name.
+        Get a field by its name.\n
         ---
         ### Args
-        - `name` (`str`): the name of the field.
+        - `name` (`str`): the name of the field.\n
         ---
         ### Returns
         - `Optional[belso.core.BaseField]`: the field with the given name, or `None` if not found.
