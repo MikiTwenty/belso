@@ -32,6 +32,9 @@ setup(
     license = "MIT",
     url="https://github.com/MikiTwenty/belso",
     packages = find_packages(exclude=["tests", "tests.*"]),
+    package_data={
+        "belso.gui": ["static/*", "static/**/*"],
+    },
     include_package_data = True,
     python_requires=">=3.10",
     install_requires = requirements,

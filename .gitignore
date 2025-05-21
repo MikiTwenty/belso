@@ -3,6 +3,7 @@
 .pre-commit-config.yaml
 .pylintrc
 pyproject.toml
+scripts/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
