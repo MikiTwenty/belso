@@ -38,14 +38,14 @@ def main():
     schema = SchemaProcessor.convert(schema, to=FORMATS.JSON)
 
     # Save and load the schema using different formats
-    SchemaProcessor.save(schema, path="./examples/schemas/nested_schema.json")
-    schema = SchemaProcessor.load(path="./examples/schemas/nested_schema.json")
+    SchemaProcessor.save(schema, path="./schemas/nested_schema.json")
+    schema = SchemaProcessor.load(path="./schemas/nested_schema.json")
     schema = SchemaProcessor.convert(schema, to=FORMATS.XML)
-    SchemaProcessor.save(schema, path="./examples/schemas/nested_schema.xml")
-    schema = SchemaProcessor.load(path="./examples/schemas/nested_schema.xml")
+    SchemaProcessor.save(schema, path="./schemas/nested_schema.xml")
+    schema = SchemaProcessor.load(path="./schemas/nested_schema.xml")
     schema = SchemaProcessor.convert(schema, to=FORMATS.YAML)
-    SchemaProcessor.save(schema, path="./examples/schemas/nested_schema.yaml")
-    schema = SchemaProcessor.load(path="./examples/schemas/nested_schema.yaml")
+    SchemaProcessor.save(schema, path="./schemas/nested_schema.yaml")
+    schema = SchemaProcessor.load(path="./schemas/nested_schema.yaml")
 
     # Standardize the schema
     schema = SchemaProcessor.standardize(schema)

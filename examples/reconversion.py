@@ -18,12 +18,12 @@ def main():
     schema = SchemaProcessor.convert(schema, to=FORMATS.MISTRAL)
 
     # Save and load the schema using different formats
-    SchemaProcessor.save(schema, "./examples/schemas/simple_schema.json")
-    schema = SchemaProcessor.load("./examples/schemas/simple_schema.json")
-    SchemaProcessor.save(schema, "./examples/schemas/simple_schema.xml")
-    schema = SchemaProcessor.load("./examples/schemas/simple_schema.xml")
-    SchemaProcessor.save(schema, "./examples/schemas/simple_schema.yaml")
-    schema = SchemaProcessor.load("./examples/schemas/simple_schema.yaml")
+    SchemaProcessor.save(schema, "./schemas/simple_schema.json")
+    schema = SchemaProcessor.load("./schemas/simple_schema.json")
+    SchemaProcessor.save(schema, "./schemas/simple_schema.xml")
+    schema = SchemaProcessor.load("./schemas/simple_schema.xml")
+    SchemaProcessor.save(schema, "./schemas/simple_schema.yaml")
+    schema = SchemaProcessor.load("./schemas/simple_schema.yaml")
 
     # Standardize the schema
     schema = SchemaProcessor.standardize(schema)
